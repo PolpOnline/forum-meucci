@@ -1,0 +1,5 @@
+{
+  "src/frontend/**": {
+    "framework": "svelte"
+  }
+}
