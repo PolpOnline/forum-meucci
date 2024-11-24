@@ -1,0 +1,8 @@
+[variables]
+NIXPACKS_NODE_VERSION = '22'
+
+[phases.build]
+cmd = 'bun run build'
+
+[start]
+cmd = 'bun ./build/index.js'
