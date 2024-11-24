@@ -2,7 +2,7 @@
 RUSTFLAGS = '-C link-arg=-fuse-ld=mold'
 
 [phases.setup]
-nixPkgs = ['...', 'libiconv', 'openssl', 'pkgconfig']
+nixPkgs = ['...', 'libiconv', 'openssl', 'pkg-config']
 
 [phases.build]
 nixPkgs = ['...', 'mold']
