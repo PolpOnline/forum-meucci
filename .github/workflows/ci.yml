@@ -40,9 +40,10 @@ jobs:
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ env.IMAGE_NAME }}:latest
 
-      - name: Deploy to Coolify
-        run: |
-          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_BACKEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
+#      - name: Deploy to Coolify
+#        run: |
+#          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_BACKEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
+
   frontend:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
@@ -75,6 +76,6 @@ jobs:
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ env.IMAGE_NAME }}:latest
 
-      - name: Deploy to Coolify
-        run: |
-          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_FRONTEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
+#      - name: Deploy to Coolify
+#        run: |
+#          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_FRONTEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
