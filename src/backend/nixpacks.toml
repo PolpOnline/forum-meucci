@@ -2,7 +2,7 @@
 RUSTFLAGS = '-C link-arg=-fuse-ld=mold'
 
 [phases.setup]
-nixPkgs = ['...', 'openssl', 'pkg-config']
+aptPkgs = ['...', 'openssl-dev']
 
 [phases.build]
 nixPkgs = ['...', 'mold']
