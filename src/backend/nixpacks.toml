@@ -1,6 +1,9 @@
 [variables]
 RUSTFLAGS = '-C link-arg=-fuse-ld=mold'
 
+[phases.setup]
+nixPkgs = ['...', 'openssl']
+
 [phases.build]
 nixPkgs = ['...', 'mold']
 cmds = ['mkdir -p bin', 'RUSTFLAGS="-C link-arg=-fuse-ld=mold" cargo build --release', 'cp target/release/forum_meucci bin/']
