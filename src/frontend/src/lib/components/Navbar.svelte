@@ -51,7 +51,7 @@
 				<DropdownMenu.Separator />
 				<DropdownMenuLinkItem href="https://github.com/PolpOnline/forum-meucci" target="_blank">
 					<LucideGithub class="mr-2 h-4 w-4" />
-					Vedi su GitHub
+					GitHub
 				</DropdownMenuLinkItem>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
