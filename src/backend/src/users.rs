@@ -35,6 +35,7 @@ impl LoginBackend {
                 Nonce::new_random,
             )
             .add_scope(Scope::new("email".to_string()))
+            .add_extra_param("hd", std::env::var("EMAIL_DOMAIN").unwrap())
             .url();
 
         (authorize_url, csrf_state)

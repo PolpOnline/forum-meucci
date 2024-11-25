@@ -8,7 +8,9 @@ use serde::Deserialize;
 use tower_sessions::Session;
 use utoipa::IntoParams;
 
-use crate::{app::AUTH_TAG, models::credentials::Credentials, users::AuthSession};
+use crate::{
+    app::AUTH_TAG, models::credentials::Credentials, users::AuthSession, EMAIL_DOMAIN, SITE_URL,
+};
 
 #[derive(Deserialize, IntoParams)]
 pub(super) struct AuthzResp {
@@ -17,7 +19,13 @@ pub(super) struct AuthzResp {
     state: CsrfToken,
 }
 
-//noinspection RsLiveness
+#[derive(Deserialize)]
+#[serde(untagged)]
+pub(super) enum AuthParams {
+    Valid(AuthzResp),
+    Invalid(#[allow(dead_code)] serde_json::Value),
+}
+
 #[utoipa::path(
     get,
     path = "/callback",
@@ -28,6 +36,7 @@ pub(super) struct AuthzResp {
         )),
         (status = BAD_REQUEST, description = "csrf_state not found in session"),
         (status = UNAUTHORIZED, description = "Invalid CSRF state"),
+        (status = FORBIDDEN, description = "Invalid email domain"),
         (status = INTERNAL_SERVER_ERROR, description = "Failed to authenticate user")
     ),
     tag = AUTH_TAG
@@ -35,11 +44,16 @@ pub(super) struct AuthzResp {
 pub(super) async fn google_oauth_callback_handler(
     mut auth_session: AuthSession,
     session: Session,
-    Query(AuthzResp {
+    Query(params): Query<AuthParams>,
+) -> impl IntoResponse {
+    let AuthParams::Valid(AuthzResp {
         code,
         state: new_state,
-    }): Query<AuthzResp>,
-) -> impl IntoResponse {
+    }) = params
+    else {
+        return Redirect::to(&SITE_URL).into_response();
+    };
+
     let Ok(Some(old_state)) = session.get("csrf_state").await else {
         return StatusCode::BAD_REQUEST.into_response();
     };
@@ -58,9 +72,13 @@ pub(super) async fn google_oauth_callback_handler(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
+    if !user.email.ends_with(EMAIL_DOMAIN.as_str()) {
+        return Redirect::to(&SITE_URL).into_response();
+    }
+
     if auth_session.login(&user).await.is_err() {
         return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     }
 
-    Redirect::to("/auth/login-success").into_response()
+    Redirect::to(&SITE_URL).into_response()
 }

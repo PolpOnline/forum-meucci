@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use axum::middleware;
+use axum::routing::get;
 use axum_login::{
     tower_sessions::{Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
@@ -11,16 +12,17 @@ use sqlx::{postgres::PgPoolOptions, PgPool};
 use tower_http::{
     compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
 };
-use tower_sessions::cookie::Key;
+use tower_sessions::cookie::{Key, SameSite};
 use tower_sessions_redis_store::{
     fred::prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
     RedisStore,
 };
+use tower_sessions_redis_store::fred::types::ReconnectPolicy;
 use tracing::info;
-use utoipa::OpenApi;
+use utoipa::{Modify, OpenApi};
+use utoipa::openapi::security::{ApiKey, ApiKeyValue, SecurityScheme};
 use utoipa_axum::router::OpenApiRouter;
-use utoipa_swagger_ui::SwaggerUi;
-
+use utoipa_scalar::{Scalar, Servable};
 use crate::{
     auth::google_oauth::build_google_oauth_client,
     custom_login_required,
@@ -30,15 +32,33 @@ use crate::{
     BACKEND_URL,
 };
 
-pub const AUTH_TAG: &str = "auth";
+pub const AUTH_TAG: &str = "Auth";
+pub const SYSTEM_TAG: &str = "System";
+pub const USER_TAG: &str = "User";
 
 #[derive(OpenApi)]
 #[openapi(
+    modifiers(&ApiDocSecurityAddon),
     tags(
-        (name = AUTH_TAG, description = "AUTH endpoints"),
+        (name = AUTH_TAG, description = "Endpoints to authenticate users"),
+        (name = SYSTEM_TAG, description = "Endpoints to monitor the system"),
+        (name = USER_TAG, description = "Endpoints related to users")
     )
 )]
 struct ApiDoc;
+
+struct ApiDocSecurityAddon;
+
+impl Modify for ApiDocSecurityAddon {
+    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
+        if let Some(components) = openapi.components.as_mut() {
+            components.add_security_scheme(
+                "session",
+                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("meucci_forum_id"))),
+            )
+        }
+    }
+}
 
 pub struct App {
     db: PgPool,
@@ -75,7 +95,10 @@ impl App {
         let key = parse_cookie_key(key);
 
         let session_layer = SessionManagerLayer::new(session_store)
-            .with_secure(true)
+            .with_name("meucci_forum_id")
+            .with_domain("localhost")
+            .with_secure(std::env::var("COOKIE_DOMAIN").is_ok())
+            .with_same_site(SameSite::Lax)
             .with_expiry(Expiry::OnInactivity(
                 tower_sessions::cookie::time::Duration::days(7),
             ))
@@ -102,8 +125,14 @@ impl App {
             .layer(CompressionLayer::new())
             .layer(DecompressionLayer::new())
             .split_for_parts();
+        
+        let router = {
+            let api_json = serde_json::to_value(api.clone()).expect("Failed to convert api to JSON");
 
-        let router = router.merge(SwaggerUi::new("/swagger-ui").url("/apidoc/openapi.json", api));
+            router
+                .route("/openapi.json", get(move || async { axum::Json(api_json) }))
+                .merge(Scalar::with_url("/scalar", api))
+        };
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
@@ -153,7 +182,7 @@ impl App {
 
         let config = RedisFredConfig::from_url(&redis_url)?;
 
-        let pool = RedisFredPool::new(config, None, None, None, 6)?;
+        let pool = RedisFredPool::new(config, None, None, Some(ReconnectPolicy::default()), 6)?;
 
         pool.init().await?;
 

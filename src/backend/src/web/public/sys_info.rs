@@ -3,6 +3,7 @@ use serde::Serialize;
 use sysinfo::System;
 use tokio::time::sleep;
 use utoipa::ToSchema;
+use crate::app::SYSTEM_TAG;
 
 #[derive(Serialize, ToSchema)]
 pub struct MemInfo {
@@ -48,7 +49,8 @@ pub struct SystemInfoResponse {
     path = "/sys_info",
     responses(
             (status = 200, description = "System info", body = SystemInfoResponse),
-    )
+    ),
+    tag = SYSTEM_TAG
 )]
 pub async fn sys_info() -> impl IntoResponse {
     let mut s = System::new_all();

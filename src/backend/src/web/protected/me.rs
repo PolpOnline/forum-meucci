@@ -1,7 +1,7 @@
 use axum::response::IntoResponse;
 use http::StatusCode;
 
-use crate::users::AuthSession;
+use crate::{app::USER_TAG, users::AuthSession};
 
 #[utoipa::path(
     get,
@@ -9,7 +9,12 @@ use crate::users::AuthSession;
     responses(
         (status = 200, description = "Returns the user's name"),
         (status = 401, description = "Not logged in")
-    )
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = USER_TAG,
+
 )]
 pub(super) async fn me(auth_session: AuthSession) -> impl IntoResponse {
     if let Some(user) = auth_session.user {

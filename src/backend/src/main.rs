@@ -1,6 +1,6 @@
+use std::sync::LazyLock;
 use color_eyre::Result;
 use dotenvy::dotenv;
-use once_cell::sync::Lazy;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
@@ -12,11 +12,13 @@ pub mod models;
 pub mod users;
 pub mod web;
 
-pub static PRODUCTION: Lazy<bool> = Lazy::new(|| std::env::var("PRODUCTION").is_ok());
-pub static SITE_URL: Lazy<String> =
-    Lazy::new(|| std::env::var("SITE_URL").unwrap_or_else(|_| "http://localhost:5173".into()));
-pub static BACKEND_URL: Lazy<String> =
-    Lazy::new(|| std::env::var("BACKEND_URL").unwrap_or_else(|_| "http://localhost:3000".into()));
+pub static PRODUCTION: LazyLock<bool> = LazyLock::new(|| std::env::var("PRODUCTION").is_ok());
+pub static SITE_URL: LazyLock<String> =
+    LazyLock::new(|| std::env::var("SITE_URL").unwrap_or_else(|_| "http://localhost:5173".into()));
+pub static BACKEND_URL: LazyLock<String> =
+    LazyLock::new(|| std::env::var("BACKEND_URL").unwrap_or_else(|_| "http://localhost:3000".into()));
+pub static EMAIL_DOMAIN: LazyLock<String> =
+    LazyLock::new(|| std::env::var("EMAIL_DOMAIN").unwrap());
 
 #[tokio::main]
 async fn main() -> Result<()> {
