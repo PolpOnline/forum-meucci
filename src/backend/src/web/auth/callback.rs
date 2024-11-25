@@ -31,7 +31,7 @@ pub(super) enum AuthParams {
     path = "/callback",
     params(AuthzResp),
     responses(
-        (status = 303, description = "Redirect to Auth Success page", headers(
+        (status = 303, description = "Redirect to Auth Success page, with a message in the reason query param", headers(
             ("Set-Cookie" = String, description = "Session cookie")
         )),
         (status = BAD_REQUEST, description = "csrf_state not found in session"),
@@ -51,6 +51,7 @@ pub(super) async fn google_oauth_callback_handler(
         state: new_state,
     }) = params
     else {
+        auth_session.logout().await.ok();
         return Redirect::to(&SITE_URL).into_response();
     };
 
@@ -73,7 +74,9 @@ pub(super) async fn google_oauth_callback_handler(
     };
 
     if !user.email.ends_with(EMAIL_DOMAIN.as_str()) {
-        return Redirect::to(&SITE_URL).into_response();
+        let redirect_url = format!("{}/auth/login_failed?reason=invalid_email", &SITE_URL.as_str());
+        
+        return Redirect::to(&redirect_url).into_response();
     }
 
     if auth_session.login(&user).await.is_err() {

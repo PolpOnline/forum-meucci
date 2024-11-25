@@ -10,9 +10,3 @@
 		Login with Google
 	</Button>
 </div>
-
-<style lang="postcss">
-	.h-screen-not-navbar {
-		height: calc(100vh - 5rem);
-	}
-</style>

@@ -59,3 +59,7 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+.h-screen-not-navbar {
+	height: calc(100vh - 5rem);
+}

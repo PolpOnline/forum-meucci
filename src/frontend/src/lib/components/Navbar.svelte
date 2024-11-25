@@ -1,11 +1,8 @@
 <script lang="ts">
-	import LucideMoon from '~icons/lucide/moon';
-	import LucideSun from '~icons/lucide/sun';
 	import LucideLogOut from '~icons/lucide/log-out';
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import LucideSettings from '~icons/lucide/settings';
-	import { mode, toggleMode } from 'mode-watcher';
 	import LucideGithub from '~icons/lucide/github';
 	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import DropdownMenuLinkItem from '$lib/components/DropdownMenuLinkItem.svelte';
@@ -30,25 +27,17 @@
 				<LucideSettings />
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
-				<DropdownMenu.Group>
-					<DropdownMenu.Item onclick={toggleMode}>
-						{#if $mode === 'dark'}
-							<LucideSun class="mr-2 h-4 w-4" />
-						{:else}
-							<LucideMoon class="mr-2 h-4 w-4" />
-						{/if}
-						<span> Cambia tema </span>
-					</DropdownMenu.Item>
-					{#if loggedIn}
+				{#if loggedIn}
+					<DropdownMenu.Group>
 						<div data-sveltekit-preload-data="off">
-							<DropdownMenuLinkItem class="text-red-600" href="/logout">
+							<DropdownMenuLinkItem class="text-red-600" href="/auth/logout">
 								<LucideLogOut class="mr-2 h-4 w-4" />
 								Logout
 							</DropdownMenuLinkItem>
 						</div>
-					{/if}
-				</DropdownMenu.Group>
-				<DropdownMenu.Separator />
+					</DropdownMenu.Group>
+					<DropdownMenu.Separator />
+				{/if}
 				<DropdownMenuLinkItem href="https://github.com/PolpOnline/forum-meucci" target="_blank">
 					<LucideGithub class="mr-2 h-4 w-4" />
 					GitHub

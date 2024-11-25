@@ -3,7 +3,7 @@
   <component name="SwaggerSettings">
     <remoteSpecificationUrls>
       <UrlInfo>
-        <option name="urlString" value="http://localhost:3000/apidoc/openapi.json" />
+        <option name="urlString" value="http://localhost:3000/openapi.json" />
       </UrlInfo>
     </remoteSpecificationUrls>
   </component>
