@@ -17,6 +17,7 @@ impl User {
     pub async fn get_or_create_user_by_email(
         db: &PgPool,
         email: String,
+        name: String,
     ) -> Result<Self, sqlx::Error> {
         let user = sqlx::query_as!(
             User,
@@ -36,9 +37,10 @@ impl User {
                     User,
                     // language=PostgreSQL
                     r#"
-                    INSERT INTO "user" (email) VALUES ($1) RETURNING *
+                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING *
                     "#,
-                    email
+                    email,
+                    name
                 )
                 .fetch_one(db)
                 .await?;

@@ -1,14 +1,22 @@
+use axum::Json;
 use axum::response::IntoResponse;
 use http::StatusCode;
-
+use serde::Serialize;
+use utoipa::ToSchema;
 use crate::{app::USER_TAG, users::AuthSession};
+
+#[derive(Serialize, ToSchema)]
+pub struct User {
+    name: Option<String>,
+    email: String,
+}
 
 #[utoipa::path(
     get,
     path = "/me",
     responses(
-        (status = 200, description = "Returns the user's name"),
-        (status = 401, description = "Not logged in")
+        (status = OK, description = "Returns the user's info", body = User),
+        (status = UNAUTHORIZED, description = "Not logged in")
     ),
     security(
         ("session" = [])
@@ -18,10 +26,11 @@ use crate::{app::USER_TAG, users::AuthSession};
 )]
 pub(super) async fn me(auth_session: AuthSession) -> impl IntoResponse {
     if let Some(user) = auth_session.user {
-        let res = format!("You are {:?} <{:?}>", user.name, user.email);
-
-        return (StatusCode::OK, res).into_response();
+        return Json(User {
+            name: user.name,
+            email: user.email,
+        }).into_response();
     }
 
-    (StatusCode::UNAUTHORIZED, "Not logged in").into_response()
+    StatusCode::UNAUTHORIZED.into_response()
 }

@@ -1,11 +1,6 @@
 use async_trait::async_trait;
 use axum_login::{AuthnBackend, UserId};
-use openidconnect::{
-    core::{CoreClient, CoreResponseType, CoreUserInfoClaims},
-    reqwest::async_http_client,
-    url::Url,
-    AuthorizationCode, CsrfToken, Nonce, OAuth2TokenResponse, Scope,
-};
+use openidconnect::{core::{CoreClient, CoreResponseType, CoreUserInfoClaims}, reqwest::async_http_client, url::Url, AuthorizationCode, CsrfToken, LanguageTag, Nonce, OAuth2TokenResponse, Scope};
 use sqlx::PgPool;
 use tokio::task;
 use tracing::log::trace;
@@ -35,6 +30,7 @@ impl LoginBackend {
                 Nonce::new_random,
             )
             .add_scope(Scope::new("email".to_string()))
+            .add_scope(Scope::new("profile".to_string()))
             .add_extra_param("hd", std::env::var("EMAIL_DOMAIN").unwrap())
             .url();
 
@@ -88,7 +84,9 @@ impl AuthnBackend for LoginBackend {
             .unwrap();
 
         let email = profile.email().unwrap().to_string();
+        let name = profile.name().unwrap().get(None).unwrap().to_string();
         trace!("Got email: {}", email);
+        trace!("Got name: {}", name);
 
         self.google_oauth_client
             .revoke_token(token.access_token().into())
@@ -97,7 +95,7 @@ impl AuthnBackend for LoginBackend {
             .await
             .expect("Failed to revoke token");
 
-        let user: User = User::get_or_create_user_by_email(&self.db, email)
+        let user: User = User::get_or_create_user_by_email(&self.db, email, name)
             .await
             .unwrap();
 

@@ -7,7 +7,7 @@ use crate::{app::AUTH_TAG, users::AuthSession};
     get,
     path = "/logout",
     responses(
-        (status = OK),
+        (status = OK, description = "Successfully logged out"),
         (status = INTERNAL_SERVER_ERROR, description = "Failed to logout user, user may be not logged in")
     ),
     security(
