@@ -1,4 +1,5 @@
 use std::sync::LazyLock;
+
 use color_eyre::Result;
 use dotenvy::dotenv;
 use tracing::info;
@@ -15,8 +16,9 @@ pub mod web;
 pub static PRODUCTION: LazyLock<bool> = LazyLock::new(|| std::env::var("PRODUCTION").is_ok());
 pub static SITE_URL: LazyLock<String> =
     LazyLock::new(|| std::env::var("SITE_URL").unwrap_or_else(|_| "http://localhost:5173".into()));
-pub static BACKEND_URL: LazyLock<String> =
-    LazyLock::new(|| std::env::var("BACKEND_URL").unwrap_or_else(|_| "http://localhost:3000".into()));
+pub static BACKEND_URL: LazyLock<String> = LazyLock::new(|| {
+    std::env::var("BACKEND_URL").unwrap_or_else(|_| "http://localhost:3000".into())
+});
 pub static EMAIL_DOMAIN: LazyLock<String> =
     LazyLock::new(|| std::env::var("EMAIL_DOMAIN").unwrap());
 

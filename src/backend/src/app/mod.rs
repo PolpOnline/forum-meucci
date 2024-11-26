@@ -1,7 +1,6 @@
 use std::str::FromStr;
 
-use axum::middleware;
-use axum::routing::get;
+use axum::{middleware, routing::get};
 use axum_login::{
     tower_sessions::{Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
@@ -14,15 +13,20 @@ use tower_http::{
 };
 use tower_sessions::cookie::{Key, SameSite};
 use tower_sessions_redis_store::{
-    fred::prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
+    fred::{
+        prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
+        types::ReconnectPolicy,
+    },
     RedisStore,
 };
-use tower_sessions_redis_store::fred::types::ReconnectPolicy;
 use tracing::info;
-use utoipa::{Modify, OpenApi};
-use utoipa::openapi::security::{ApiKey, ApiKeyValue, SecurityScheme};
+use utoipa::{
+    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
+    Modify, OpenApi,
+};
 use utoipa_axum::router::OpenApiRouter;
 use utoipa_scalar::{Scalar, Servable};
+
 use crate::{
     auth::google_oauth::build_google_oauth_client,
     custom_login_required,
@@ -125,9 +129,10 @@ impl App {
             .layer(CompressionLayer::new())
             .layer(DecompressionLayer::new())
             .split_for_parts();
-        
+
         let router = {
-            let api_json = serde_json::to_value(api.clone()).expect("Failed to convert api to JSON");
+            let api_json =
+                serde_json::to_value(api.clone()).expect("Failed to convert api to JSON");
 
             router
                 .route("/openapi.json", get(move || async { axum::Json(api_json) }))

@@ -3,6 +3,7 @@ use serde::Serialize;
 use sysinfo::System;
 use tokio::time::sleep;
 use utoipa::ToSchema;
+
 use crate::app::SYSTEM_TAG;
 
 #[derive(Serialize, ToSchema)]

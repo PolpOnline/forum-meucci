@@ -74,8 +74,11 @@ pub(super) async fn google_oauth_callback_handler(
     };
 
     if !user.email.ends_with(EMAIL_DOMAIN.as_str()) {
-        let redirect_url = format!("{}/auth/login_failed?reason=invalid_email", &SITE_URL.as_str());
-        
+        let redirect_url = format!(
+            "{}/auth/login_failed?reason=invalid_email",
+            &SITE_URL.as_str()
+        );
+
         return Redirect::to(&redirect_url).into_response();
     }
 

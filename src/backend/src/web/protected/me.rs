@@ -1,8 +1,8 @@
-use axum::Json;
-use axum::response::IntoResponse;
+use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Serialize;
 use utoipa::ToSchema;
+
 use crate::{app::USER_TAG, users::AuthSession};
 
 #[derive(Serialize, ToSchema)]
@@ -29,7 +29,8 @@ pub(super) async fn me(auth_session: AuthSession) -> impl IntoResponse {
         return Json(User {
             name: user.name,
             email: user.email,
-        }).into_response();
+        })
+        .into_response();
     }
 
     StatusCode::UNAUTHORIZED.into_response()
