@@ -3,7 +3,7 @@ use http::StatusCode;
 use serde::Serialize;
 use utoipa::ToSchema;
 
-use crate::{app::USER_TAG, users::AuthSession};
+use crate::{app::openapi::USER_TAG, users::AuthSession};
 
 #[derive(Serialize, ToSchema)]
 pub struct User {

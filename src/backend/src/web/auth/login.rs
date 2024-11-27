@@ -1,7 +1,7 @@
 use axum::response::{IntoResponse, Redirect};
 use tower_sessions::Session;
 
-use crate::{app::AUTH_TAG, users::AuthSession};
+use crate::{app::openapi::AUTH_TAG, users::AuthSession};
 
 #[utoipa::path(
     get,

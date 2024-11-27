@@ -1,3 +1,7 @@
+mod db;
+pub mod openapi;
+mod redis;
+
 use std::str::FromStr;
 
 use axum::{middleware, routing::get};
@@ -7,27 +11,19 @@ use axum_login::{
 };
 use http::StatusCode;
 use openidconnect::core::CoreClient;
-use sqlx::{postgres::PgPoolOptions, PgPool};
+use sqlx::PgPool;
 use tower_http::{
     compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
 };
 use tower_sessions::cookie::{Key, SameSite};
-use tower_sessions_redis_store::{
-    fred::{
-        prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
-        types::ReconnectPolicy,
-    },
-    RedisStore,
-};
+use tower_sessions_redis_store::{fred::prelude::RedisPool as RedisFredPool, RedisStore};
 use tracing::info;
-use utoipa::{
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
-    Modify, OpenApi,
-};
+use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
 use utoipa_scalar::{Scalar, Servable};
 
 use crate::{
+    app::openapi::ApiDoc,
     auth::google_oauth::build_google_oauth_client,
     custom_login_required,
     middleware::set_cache_control::set_cache_control,
@@ -35,34 +31,6 @@ use crate::{
     web::{auth, protected, public},
     BACKEND_URL,
 };
-
-pub const AUTH_TAG: &str = "Auth";
-pub const SYSTEM_TAG: &str = "System";
-pub const USER_TAG: &str = "User";
-
-#[derive(OpenApi)]
-#[openapi(
-    modifiers(&ApiDocSecurityAddon),
-    tags(
-        (name = AUTH_TAG, description = "Endpoints to authenticate users"),
-        (name = SYSTEM_TAG, description = "Endpoints to monitor the system"),
-        (name = USER_TAG, description = "Endpoints related to users")
-    )
-)]
-struct ApiDoc;
-
-struct ApiDocSecurityAddon;
-
-impl Modify for ApiDocSecurityAddon {
-    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
-        if let Some(components) = openapi.components.as_mut() {
-            components.add_security_scheme(
-                "session",
-                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("meucci_forum_id"))),
-            )
-        }
-    }
-}
 
 pub struct App {
     db: PgPool,
@@ -100,13 +68,16 @@ impl App {
 
         let session_layer = SessionManagerLayer::new(session_store)
             .with_name("meucci_forum_id")
-            .with_domain("localhost")
-            .with_secure(std::env::var("COOKIE_DOMAIN").is_ok())
+            .with_secure(false)
+            .with_domain(std::env::var("COOKIE_DOMAIN")?)
             .with_same_site(SameSite::Lax)
             .with_expiry(Expiry::OnInactivity(
                 tower_sessions::cookie::time::Duration::days(7),
             ))
             .with_signed(key);
+
+        #[cfg(not(debug_assertions))]
+        let session_layer = session_layer.with_secure(true);
 
         // Auth service.
         //
@@ -147,53 +118,6 @@ impl App {
         axum::serve(listener, router.into_make_service()).await?;
 
         Ok(())
-    }
-
-    async fn setup_db() -> color_eyre::Result<PgPool> {
-        info!("SQLx: Connecting to the database...");
-
-        let database_url = match std::env::var("DATABASE_PRIVATE_URL") {
-            Ok(url) => {
-                info!("SQLx: Using DATABASE_PRIVATE_URL");
-                url
-            }
-            Err(_) => {
-                info!("SQLx: Using DATABASE_URL");
-                std::env::var("DATABASE_URL")?
-            }
-        };
-
-        let pool = PgPoolOptions::new()
-            .max_connections(5)
-            .connect(&database_url)
-            .await?;
-
-        info!("SQLx: Connected to the database");
-
-        sqlx::migrate!().run(&pool).await?;
-
-        info!("SQLx: Migrations run");
-
-        Ok(pool)
-    }
-
-    async fn setup_redis_fred() -> color_eyre::Result<RedisFredPool> {
-        info!("Redis Fred: Connecting to Redis (to manage sessions)...");
-
-        let db_num = 0u8;
-
-        let redis_url = std::env::var("REDIS_URL")?;
-        let redis_url = format!("{}/{}", redis_url, db_num);
-
-        let config = RedisFredConfig::from_url(&redis_url)?;
-
-        let pool = RedisFredPool::new(config, None, None, Some(ReconnectPolicy::default()), 6)?;
-
-        pool.init().await?;
-
-        info!("Redis Fred: Connected to Redis (to manage sessions)");
-
-        Ok(pool)
     }
 }
 

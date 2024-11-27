@@ -1,7 +1,7 @@
 use axum::response::IntoResponse;
 use http::StatusCode;
 
-use crate::{app::AUTH_TAG, users::AuthSession};
+use crate::{app::openapi::AUTH_TAG, users::AuthSession};
 
 #[utoipa::path(
     get,
