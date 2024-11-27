@@ -38,7 +38,7 @@ jobs:
           cache_tag: ${{ env.IMAGE_NAME }}:latest
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ github.ref == 'refs/heads/main' && format('{0}:latest', env.IMAGE_NAME) || '' }}
 
 #      - name: Deploy to Coolify
 #        run: |
@@ -74,7 +74,7 @@ jobs:
           cache_tag: ${{ env.IMAGE_NAME }}:latest
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ github.ref == 'refs/heads/main' && format('{0}:latest', env.IMAGE_NAME) || '' }}
 
 #      - name: Deploy to Coolify
 #        run: |
