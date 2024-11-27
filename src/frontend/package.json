@@ -17,7 +17,7 @@
 		"@iconify-json/logos": "^1.2.3",
 		"@iconify-json/lucide": "^1.2.16",
 		"@sveltejs/adapter-node": "^5.2.9",
-		"@sveltejs/kit": "^2.8.4",
+		"@sveltejs/kit": "^2.8.5",
 		"@sveltejs/vite-plugin-svelte": "^4.0.2",
 		"@sveltejs/vite-plugin-svelte-inspector": "^3.0.1",
 		"@tailwindcss/forms": "^0.5.9",
@@ -33,10 +33,10 @@
 		"lucide-svelte": "^0.460.1",
 		"openapi-fetch": "^0.13.0",
 		"openapi-typescript": "^7.4.3",
-		"prettier": "^3.3.3",
+		"prettier": "^3.4.1",
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.9",
-		"svelte": "^5.2.8",
+		"svelte": "^5.2.9",
 		"svelte-check": "^4.1.0",
 		"tailwind-merge": "^2.5.5",
 		"tailwind-variants": "^0.3.0",
@@ -50,6 +50,6 @@
 		"@types/set-cookie-parser": "^2.4.10",
 		"mode-watcher": "^0.5.0",
 		"set-cookie-parser": "^2.7.1",
-		"unplugin-icons": "^0.20.1"
+		"unplugin-icons": "^0.20.2"
 	}
 }
