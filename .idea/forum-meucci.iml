@@ -7,6 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/src/backend/target" />
       <excludeFolder url="file://$MODULE_DIR$/src/frontend/.svelte-kit" />
+      <excludeFolder url="file://$MODULE_DIR$/src/backend/.sqlx" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
