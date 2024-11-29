@@ -134,6 +134,10 @@ export interface components {
             memory: components["schemas"]["MemInfo"];
             swap: components["schemas"]["SwapInfo"];
         };
+        User: {
+            email: string;
+            name?: string | null;
+        };
     };
     responses: never;
     parameters: never;
@@ -221,6 +225,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Successfully logged out */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -265,12 +270,14 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Returns the user's name */
+            /** @description Returns the user's info */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
             };
             /** @description Not logged in */
             401: {
