@@ -13,11 +13,31 @@ pub struct MemInfo {
     used: String,
 }
 
+impl MemInfo {
+    pub fn new(s: &System) -> Self {
+        Self {
+            total: fmt_bytes(s.total_memory()),
+            free: fmt_bytes(s.free_memory()),
+            used: fmt_bytes(s.used_memory()),
+        }
+    }
+}
+
 #[derive(Serialize, ToSchema)]
 pub struct SwapInfo {
     total: String,
     free: String,
     used: String,
+}
+
+impl SwapInfo {
+    pub fn new(s: &System) -> Self {
+        Self {
+            total: fmt_bytes(s.total_swap()),
+            free: fmt_bytes(s.free_swap()),
+            used: fmt_bytes(s.used_swap()),
+        }
+    }
 }
 
 #[derive(Serialize, ToSchema)]
@@ -29,6 +49,20 @@ pub struct CpuInfo {
     frequency: String,
 }
 
+impl CpuInfo {
+    pub fn new(s: &System) -> Self {
+        let cpu = s.cpus().first().unwrap();
+
+        Self {
+            usage: cpu.cpu_usage(),
+            name: cpu.name().to_string(),
+            vendor_id: cpu.vendor_id().to_string(),
+            brand: cpu.brand().to_string(),
+            frequency: fmt_frequency(cpu.frequency()),
+        }
+    }
+}
+
 #[derive(Serialize, ToSchema)]
 pub struct BasicSystemInfo {
     system_name: String,
@@ -37,12 +71,34 @@ pub struct BasicSystemInfo {
     system_host_name: String,
 }
 
+impl BasicSystemInfo {
+    pub fn new() -> Self {
+        Self {
+            system_name: System::name().unwrap_or("Unknown".to_string()),
+            system_kernel_version: System::kernel_version().unwrap_or("Unknown".to_string()),
+            system_os_version: System::os_version().unwrap_or("Unknown".to_string()),
+            system_host_name: System::host_name().unwrap_or("Unknown".to_string()),
+        }
+    }
+}
+
 #[derive(Serialize, ToSchema)]
 pub struct SystemInfoResponse {
     cpu_info: CpuInfo,
     memory: MemInfo,
     swap: SwapInfo,
     basic: BasicSystemInfo,
+}
+
+impl SystemInfoResponse {
+    pub fn new(s: &System) -> Self {
+        Self {
+            cpu_info: CpuInfo::new(s),
+            memory: MemInfo::new(s),
+            swap: SwapInfo::new(s),
+            basic: BasicSystemInfo::new(),
+        }
+    }
 }
 
 #[utoipa::path(
@@ -61,51 +117,7 @@ pub async fn sys_info() -> impl IntoResponse {
     // Refresh CPUs again.
     s.refresh_cpu_all();
 
-    let res = SystemInfoResponse {
-        cpu_info: get_cpu_info(&s),
-        memory: get_mem_info(&s),
-        swap: get_swap_info(&s),
-        basic: get_basic_info(),
-    };
-
-    Json(res)
-}
-
-fn get_cpu_info(s: &System) -> CpuInfo {
-    let cpu = s.cpus().first().unwrap();
-
-    CpuInfo {
-        usage: cpu.cpu_usage(),
-        name: cpu.name().to_string(),
-        vendor_id: cpu.vendor_id().to_string(),
-        brand: cpu.brand().to_string(),
-        frequency: fmt_frequency(cpu.frequency()),
-    }
-}
-
-fn get_mem_info(s: &System) -> MemInfo {
-    MemInfo {
-        total: fmt_bytes(s.total_memory()),
-        free: fmt_bytes(s.free_memory()),
-        used: fmt_bytes(s.used_memory()),
-    }
-}
-
-fn get_swap_info(s: &System) -> SwapInfo {
-    SwapInfo {
-        total: fmt_bytes(s.total_swap()),
-        free: fmt_bytes(s.free_swap()),
-        used: fmt_bytes(s.used_swap()),
-    }
-}
-
-fn get_basic_info() -> BasicSystemInfo {
-    BasicSystemInfo {
-        system_name: System::name().unwrap_or("Unknown".to_string()),
-        system_kernel_version: System::kernel_version().unwrap_or("Unknown".to_string()),
-        system_os_version: System::os_version().unwrap_or("Unknown".to_string()),
-        system_host_name: System::host_name().unwrap_or("Unknown".to_string()),
-    }
+    Json(SystemInfoResponse::new(&s))
 }
 
 fn fmt_bytes(bytes: u64) -> String {
