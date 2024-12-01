@@ -10,7 +10,16 @@ pub struct User {
     pub interactive_done: bool,
     pub section: i32,
     pub class: Option<String>,
-    pub admin: bool,
+    pub r#type: UserType,
+}
+
+#[derive(Debug, Clone, Deserialize, sqlx::Type)]
+#[sqlx(type_name = "user_type", rename_all = "snake_case")]
+#[serde(rename_all = "snake_case")]
+pub enum UserType {
+    Normal,
+    Host,
+    Admin,
 }
 
 impl User {
@@ -23,7 +32,7 @@ impl User {
             User,
             // language=PostgreSQL
             r#"
-            SELECT * FROM "user" WHERE email = $1 
+            SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType" FROM "user" WHERE email = $1
             "#,
             email
         )
@@ -37,7 +46,7 @@ impl User {
                     User,
                     // language=PostgreSQL
                     r#"
-                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING *
+                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING  id, name, email, interactive_done, section, class, type AS "type!: UserType"
                     "#,
                     email,
                     name
@@ -55,7 +64,7 @@ impl User {
             User,
             // language=PostgreSQL
             r#"
-            SELECT *
+            SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType"
             FROM "user"
             WHERE id = $1
             "#,
