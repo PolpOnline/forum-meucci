@@ -3,7 +3,7 @@ RUSTFLAGS = '-C link-arg=-fuse-ld=mold'
 
 [phases.build]
 nixPkgs = ['...', 'mold']
-cmds = ['RUSTFLAGS="-C link-arg=-fuse-ld=mold" cargo build --release', 'cp target/release/forum_meucci bin/']
+cmds = ['RUSTFLAGS="-C link-arg=-fuse-ld=mold" cargo build --release']
 
 [start]
 runImage = 'debian:bookworm-slim'
