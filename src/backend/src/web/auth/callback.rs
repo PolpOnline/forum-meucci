@@ -3,7 +3,7 @@ use axum::{
     response::{IntoResponse, Redirect},
 };
 use http::StatusCode;
-use oauth2::CsrfToken;
+use openidconnect::CsrfToken;
 use serde::Deserialize;
 use tower_sessions::Session;
 use utoipa::IntoParams;

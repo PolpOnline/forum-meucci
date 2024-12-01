@@ -1,4 +1,4 @@
-use oauth2::CsrfToken;
+use openidconnect::CsrfToken;
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize)]

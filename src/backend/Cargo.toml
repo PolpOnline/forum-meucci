@@ -27,7 +27,6 @@ tower-sessions-redis-store = { version = "0.14", features = ["enable-rustls"] }
 sysinfo = { version = "0.32", features = ["serde", "system"], default-features = false }
 futures = "0.3"
 ahash = "0.8"
-oauth2 = { version = "4.4", features = ["rustls-tls", "reqwest"], default-features = false }
 reqwest = { version = "0.12", features = ["zstd", "rustls-tls", "brotli", "json"] }
 openidconnect = "3.5"
 utoipa = { version = "5.2", features = ["uuid", "chrono", "axum_extras", "auto_into_responses"] }

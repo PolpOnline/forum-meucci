@@ -980,7 +980,6 @@ dependencies = [
  "futures",
  "http 1.1.0",
  "hyper 1.5.1",
- "oauth2",
  "openidconnect",
  "password-auth",
  "reqwest 0.12.9",
