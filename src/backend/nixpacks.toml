@@ -3,9 +3,9 @@ RUSTFLAGS = '-C link-arg=-fuse-ld=mold'
 
 [phases.build]
 nixPkgs = ['...', 'mold']
-cmds = ['mkdir -p bin', 'RUSTFLAGS="-C link-arg=-fuse-ld=mold" cargo build --release', 'cp target/release/forum_meucci bin/']
+cmds = ['RUSTFLAGS="-C link-arg=-fuse-ld=mold" cargo build --release', 'cp target/release/forum_meucci bin/']
 
 [start]
-runImage = 'debian:bullseye-slim'
-onlyIncludeFiles = ['bin/forum_meucci']
-cmd = './bin/forum_meucci'
+runImage = 'debian:bookworm-slim'
+onlyIncludeFiles = ['target/release/forum_meucci']
+cmd = 'target/release/forum_meucci'
