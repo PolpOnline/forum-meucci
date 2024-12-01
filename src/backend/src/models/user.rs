@@ -1,5 +1,5 @@
 use axum_login::AuthUser;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use sqlx::PgPool;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -10,15 +10,7 @@ pub struct User {
     pub interactive_done: bool,
     pub section: i32,
     pub class: Option<String>,
-    pub r#type: UserType,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, sqlx::Type)]
-#[serde(rename_all = "snake_case")]
-pub enum UserType {
-    Normal,
-    Host,
-    Admin,
+    pub admin: bool,
 }
 
 impl User {
@@ -31,7 +23,7 @@ impl User {
             User,
             // language=PostgreSQL
             r#"
-            SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType" FROM "user" WHERE email = $1
+            SELECT * FROM "user" WHERE email = $1 
             "#,
             email
         )
@@ -45,7 +37,7 @@ impl User {
                     User,
                     // language=PostgreSQL
                     r#"
-                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING id, name, email, interactive_done, section, class, type AS "type!: UserType"
+                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING *
                     "#,
                     email,
                     name
@@ -63,7 +55,7 @@ impl User {
             User,
             // language=PostgreSQL
             r#"
-            SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType"
+            SELECT *
             FROM "user"
             WHERE id = $1
             "#,

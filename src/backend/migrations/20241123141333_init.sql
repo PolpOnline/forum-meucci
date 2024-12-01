@@ -7,17 +7,15 @@ CREATE TABLE IF NOT EXISTS event
     minimum_section INT  NOT NULL DEFAULT 0
 );
 
-CREATE TYPE user_type AS enum ('normal', 'host', 'admin');
-
 CREATE TABLE IF NOT EXISTS "user"
 (
     id               SERIAL PRIMARY KEY,
     name             TEXT,
-    email            TEXT      NOT NULL UNIQUE,
-    interactive_done BOOLEAN   NOT NULL DEFAULT FALSE,
-    section          INT       NOT NULL DEFAULT 1,
+    email            TEXT    NOT NULL UNIQUE,
+    interactive_done BOOLEAN NOT NULL DEFAULT FALSE,
+    section          INT     NOT NULL DEFAULT 1,
     class            TEXT,
-    type             user_type NOT NULL DEFAULT 'normal'
+    admin            BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE INDEX ON "user" (email);
