@@ -14,14 +14,14 @@
 	const loggedIn = $derived(loginStatus === 'logged_in');
 </script>
 
-<nav class="grid h-20 grid-cols-3">
-	<div class="flex items-center">
+<nav class="grid h-20 grid-cols-12">
+	<div class="grid-span-2 col-span-2 flex items-center">
 		<ItisMeucciLogo class="ml-3 h-20 w-20" />
 	</div>
-	<div class="flex items-center justify-center">
+	<div class="col-span-8 flex items-center justify-center">
 		<a href="/" class="text-3xl"> Forum Meucci </a>
 	</div>
-	<div class="mr-3 flex items-center gap-1 justify-self-end">
+	<div class="col-span-2 mr-3 flex items-center gap-1 justify-self-end">
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger class={buttonVariants({ size: 'icon' })} aria-label="Navbar Menu">
 				<LucideSettings />

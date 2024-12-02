@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import { ModeWatcher } from 'mode-watcher';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { LayoutData } from './$types';
 	import type { Snippet } from 'svelte';
@@ -8,6 +7,7 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { fly } from 'svelte/transition';
 	import Loader from '$lib/components/Loader.svelte';
+	import { title } from '$lib/stores/title.store';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -26,14 +26,19 @@
 	afterNavigate(() => (isLoading = false));
 </script>
 
-<Navbar loginStatus={data.loginStatus} />
-<ModeWatcher defaultMode="dark" />
+<svelte:head>
+	<title>{$title}</title>
+</svelte:head>
 
-{#if isLoading}
-	<Loader />
-{/if}
-{#key data.pathname}
-	<div in:fly={transitionIn} out:fly={transitionOut}>
-		{@render children()}
-	</div>
-{/key}
+<div data-vaul-drawer-wrapper>
+	<Navbar loginStatus={data.loginStatus} />
+
+	{#if isLoading}
+		<Loader />
+	{/if}
+	{#key data.pathname}
+		<div in:fly={transitionIn} out:fly={transitionOut}>
+			{@render children()}
+		</div>
+	{/key}
+</div>
