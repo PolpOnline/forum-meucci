@@ -16,7 +16,7 @@ use tower_http::{
     compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
 };
 use tower_sessions::cookie::{Key, SameSite};
-use tower_sessions_redis_store::{fred::prelude::RedisPool as RedisFredPool, RedisStore};
+use tower_sessions_redis_store::{fred::prelude::Pool as FredPool, RedisStore};
 use tracing::info;
 use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
@@ -34,7 +34,7 @@ use crate::{
 
 pub struct App {
     db: PgPool,
-    redis_fred: RedisFredPool,
+    redis_fred: FredPool,
     google_oauth_client: CoreClient,
 }
 
