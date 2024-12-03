@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n            SELECT * FROM \"user\" WHERE email = $1 \n            ",
+  "query": "\n                    INSERT INTO \"user\" (email, name) VALUES ($1, $2) RETURNING  id, name, email, interactive_done, section, class, type AS \"type!: UserType\"\n                    ",
   "describe": {
     "columns": [
       {
@@ -35,12 +35,24 @@
       },
       {
         "ordinal": 6,
-        "name": "admin",
-        "type_info": "Bool"
+        "name": "type!: UserType",
+        "type_info": {
+          "Custom": {
+            "name": "user_type",
+            "kind": {
+              "Enum": [
+                "normal",
+                "host",
+                "admin"
+              ]
+            }
+          }
+        }
       }
     ],
     "parameters": {
       "Left": [
+        "Text",
         "Text"
       ]
     },
@@ -54,5 +66,5 @@
       false
     ]
   },
-  "hash": "ca4c6516a1d39727665e70339687fd6ed67da934b9ad0b55fa9e0a77d7d9a508"
+  "hash": "5204c4b27430765bfbed0bbfc490779243edf95d95fc4f05279b49db6ada8125"
 }

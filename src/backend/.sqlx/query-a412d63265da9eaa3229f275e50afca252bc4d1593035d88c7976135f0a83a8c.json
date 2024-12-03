@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n            SELECT *\n            FROM \"user\"\n            WHERE id = $1\n            ",
+  "query": "\n            SELECT id, name, email, interactive_done, section, class, type AS \"type!: UserType\"\n            FROM \"user\"\n            WHERE id = $1\n            ",
   "describe": {
     "columns": [
       {
@@ -35,8 +35,19 @@
       },
       {
         "ordinal": 6,
-        "name": "admin",
-        "type_info": "Bool"
+        "name": "type!: UserType",
+        "type_info": {
+          "Custom": {
+            "name": "user_type",
+            "kind": {
+              "Enum": [
+                "normal",
+                "host",
+                "admin"
+              ]
+            }
+          }
+        }
       }
     ],
     "parameters": {
@@ -54,5 +65,5 @@
       false
     ]
   },
-  "hash": "0e7d9a0db3d47b1f2cc5d0d95b54b1a58a4b89c1f468bf065dacdb9d03586fd7"
+  "hash": "a412d63265da9eaa3229f275e50afca252bc4d1593035d88c7976135f0a83a8c"
 }
