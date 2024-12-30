@@ -1,13 +1,16 @@
 <script lang="ts">
 	import LucidePencil from '~icons/lucide/pencil';
 	import EventSelectorDrawer from '$lib/components/EventSelectorDrawer.svelte';
+	import { buttonVariants } from '$lib/components/ui/button';
+	import { cn } from '$lib/utils';
 
 	const { round, name, formattedDate }: { round: number; name: string; formattedDate: string } =
 		$props();
 </script>
 
 <div
-	class="w-100 relative flex items-center justify-center rounded-xl border p-5"
+	class="relative flex w-full items-center justify-center rounded-xl border"
+	class:p-5={name}
 	class:border-dashed={!name}
 	class:custom-absent={name === 'absent'}
 >
@@ -16,11 +19,26 @@
 	{:else if name}
 		<div class="text-lg">{name}</div>
 	{:else}
-		<div class="text-lg text-muted-foreground">+ Seleziona un evento</div>
+		<EventSelectorDrawer
+			{formattedDate}
+			{round}
+			class={cn(
+				buttonVariants({ variant: 'ghost' }),
+				'h-full min-h-[4.25rem] w-full text-lg text-muted-foreground'
+			)}
+		>
+			{#snippet trigger()}
+				+ Seleziona un evento
+			{/snippet}
+		</EventSelectorDrawer>
 	{/if}
 
 	{#if name}
-		<EventSelectorDrawer {formattedDate} {round} class="absolute right-5">
+		<EventSelectorDrawer
+			{formattedDate}
+			{round}
+			class={cn('absolute right-5', buttonVariants({ variant: 'outline', size: 'icon' }))}
+		>
 			{#snippet trigger()}
 				<LucidePencil />
 			{/snippet}

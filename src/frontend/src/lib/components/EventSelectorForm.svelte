@@ -18,7 +18,7 @@
 		<Command.Group>
 			{#each availableEvents as event (event.id)}
 				<Command.Item
-					value={String(event.id)}
+					value={String(event.name)}
 					onSelect={() => {
 						selectedId = String(event.id);
 					}}

@@ -5,14 +5,19 @@
 	import type { Snippet } from 'svelte';
 	import { title } from '$lib/stores/title.store';
 	import EventSelectorForm from '$lib/components/EventSelectorForm.svelte';
-	import { type AvailableEventItem, cn } from '$lib/utils';
+	import { type AvailableEventItem } from '$lib/utils';
 
 	const {
 		trigger,
 		formattedDate,
 		round,
 		class: className
-	}: { trigger: Snippet; formattedDate: string; round: number; class: string } = $props();
+	}: {
+		trigger: Snippet;
+		formattedDate: string;
+		round: number;
+		class: string;
+	} = $props();
 
 	const availableEvents: AvailableEventItem[] = [
 		{
@@ -41,7 +46,7 @@
 		},
 		{
 			id: 4,
-			name: 'Evento 4',
+			name: 'Evento 4 (test)',
 			description: 'Descrizione evento 4',
 			room: 'Sala 4',
 			availableSeats: 10,
@@ -149,7 +154,7 @@
 </script>
 
 <Drawer.Root bind:open>
-	<Drawer.Trigger class={cn(className, buttonVariants({ variant: 'outline', size: 'icon' }))}>
+	<Drawer.Trigger class={className}>
 		{@render trigger()}
 	</Drawer.Trigger>
 	<Drawer.Content>
