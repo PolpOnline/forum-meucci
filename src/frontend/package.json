@@ -10,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"generate-openapi": "openapi-typescript http://localhost:3000/openapi.json -o ./src/lib/api/schema.d.ts\n"
+		"generate-openapi": "openapi-typescript http://localhost:3000/openapi.json -o ./src/lib/api/schema.d.ts"
 	},
 	"devDependencies": {
 		"@iconify-json/line-md": "^1.2.2",

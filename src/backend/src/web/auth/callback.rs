@@ -9,7 +9,8 @@ use tower_sessions::Session;
 use utoipa::IntoParams;
 
 use crate::{
-    app::openapi::AUTH_TAG, models::credentials::Credentials, users::AuthSession, EMAIL_DOMAIN, SITE_URL,
+    app::openapi::AUTH_TAG, models::credentials::Credentials, users::AuthSession, EMAIL_DOMAIN,
+    SITE_URL,
 };
 
 #[derive(Deserialize, IntoParams)]

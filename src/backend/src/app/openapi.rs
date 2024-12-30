@@ -6,6 +6,7 @@ use utoipa::{
 pub const AUTH_TAG: &str = "Auth";
 pub const SYSTEM_TAG: &str = "System";
 pub const USER_TAG: &str = "User";
+pub const EVENT_TAG: &str = "Event";
 
 #[derive(OpenApi)]
 #[openapi(

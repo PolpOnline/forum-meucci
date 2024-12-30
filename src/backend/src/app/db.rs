@@ -1,6 +1,6 @@
-use sqlx::PgPool;
-use sqlx::postgres::PgPoolOptions;
+use sqlx::{postgres::PgPoolOptions, PgPool};
 use tracing::info;
+
 use crate::app::App;
 
 impl App {

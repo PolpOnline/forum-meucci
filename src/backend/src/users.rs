@@ -10,19 +10,24 @@ use sqlx::PgPool;
 use tokio::task;
 use tracing::log::trace;
 
-use crate::models::{credentials::Credentials, user::User};
+use crate::{
+    app::config::Config,
+    models::{credentials::Credentials, user::User},
+};
 
 #[derive(Debug, Clone)]
 pub struct LoginBackend {
-    db: PgPool,
+    pub(crate) db: PgPool,
     google_oauth_client: CoreClient,
+    pub config: Config,
 }
 
 impl LoginBackend {
-    pub fn new(db: PgPool, client: CoreClient) -> Self {
+    pub fn new(db: PgPool, client: CoreClient, config: Config) -> Self {
         Self {
             db,
             google_oauth_client: client,
+            config,
         }
     }
 

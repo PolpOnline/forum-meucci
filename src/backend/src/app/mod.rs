@@ -1,3 +1,4 @@
+pub mod config;
 mod db;
 pub mod openapi;
 mod redis;
@@ -23,7 +24,7 @@ use utoipa_axum::router::OpenApiRouter;
 use utoipa_scalar::{Scalar, Servable};
 
 use crate::{
-    app::openapi::ApiDoc,
+    app::{config::Config, openapi::ApiDoc},
     auth::google_oauth::build_google_oauth_client,
     custom_login_required,
     middleware::set_cache_control::set_cache_control,
@@ -36,6 +37,7 @@ pub struct App {
     db: PgPool,
     redis_fred: FredPool,
     google_oauth_client: CoreClient,
+    config: Config,
 }
 
 impl App {
@@ -52,6 +54,7 @@ impl App {
             db,
             redis_fred,
             google_oauth_client,
+            config: Config::init(),
         })
     }
 
@@ -83,7 +86,7 @@ impl App {
         //
         // This combines the session layer with our backendOld to establish the auth
         // service which will provide the auth session as a request extension.
-        let backend = LoginBackend::new(self.db, self.google_oauth_client);
+        let backend = LoginBackend::new(self.db, self.google_oauth_client, self.config);
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())

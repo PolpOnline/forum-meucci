@@ -4,8 +4,12 @@
 	import { buttonVariants } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 
-	const { round, name, formattedDate }: { round: number; name: string; formattedDate: string } =
-		$props();
+	const {
+		round,
+		name,
+		description,
+		formattedDate
+	}: { round: number; name: string; description?: string | null; formattedDate: string } = $props();
 </script>
 
 <div
@@ -17,14 +21,19 @@
 	{#if name === 'absent'}
 		<div class="text-lg">Assente</div>
 	{:else if name}
-		<div class="text-lg">{name}</div>
+		<div class="flex flex-col items-center">
+			<div class="text-lg">{name}</div>
+			{#if description}
+				<div class="text-sm text-muted-foreground">{description}</div>
+			{/if}
+		</div>
 	{:else}
 		<EventSelectorDrawer
 			{formattedDate}
 			{round}
 			class={cn(
 				buttonVariants({ variant: 'ghost' }),
-				'h-full min-h-[4.25rem] w-full text-lg text-muted-foreground'
+				'h-full min-h-[4.25rem] w-full rounded-xl text-lg text-muted-foreground'
 			)}
 		>
 			{#snippet trigger()}
