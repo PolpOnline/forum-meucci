@@ -3,13 +3,14 @@
 	import EventSelectorDrawer from '$lib/components/EventSelectorDrawer.svelte';
 	import { buttonVariants } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
+	import type { components } from '$lib/api/schema';
 
 	const {
-		round,
-		name,
-		description,
+		event,
 		formattedDate
-	}: { round: number; name: string; description?: string | null; formattedDate: string } = $props();
+	}: { event: components['schemas']['SelectedEvent']; formattedDate: string } = $props();
+
+	const { id, name, description, round } = event;
 </script>
 
 <div
@@ -47,6 +48,7 @@
 			{formattedDate}
 			{round}
 			class={cn('absolute right-5', buttonVariants({ variant: 'outline', size: 'icon' }))}
+			initialId={id}
 		>
 			{#snippet trigger()}
 				<LucidePencil />

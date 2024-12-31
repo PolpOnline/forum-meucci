@@ -11,12 +11,14 @@
 		trigger,
 		formattedDate,
 		round,
-		class: className
+		class: className,
+		initialId
 	}: {
 		trigger: Snippet;
 		formattedDate: string;
 		round: number;
 		class: string;
+		initialId?: number;
 	} = $props();
 
 	type AvailableEventResponse = components['schemas']['AvailableEventResponse'];
@@ -34,7 +36,7 @@
 	let getAvailableEvents = $state(queryEvents);
 
 	function reloadEvents() {
-		console.log('Hot reloading events');
+		console.debug('Hot reloading events for round', round);
 		getAvailableEvents = queryEvents;
 	}
 
@@ -67,7 +69,7 @@
 					<LineMdLoadingLoop />
 				</div>
 			{:then availableEvents}
-				<EventSelectorForm {round} availableEvents={availableEvents.events} />
+				<EventSelectorForm {round} availableEvents={availableEvents.events} {initialId} />
 			{:catch error}
 				<div class="text-destructive-foreground">
 					<p>Errore: {error.message}</p>

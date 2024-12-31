@@ -6,9 +6,12 @@
 	import AvailableEventCard from '$lib/components/AvailableEventCard.svelte';
 	import { LucideCheck } from 'lucide-svelte';
 
-	const { availableEvents }: { round: number; availableEvents: AvailableEvent[] } = $props();
+	const {
+		availableEvents,
+		initialId
+	}: { round: number; availableEvents: AvailableEvent[]; initialId?: number } = $props();
 
-	let selectedId = $state('');
+	let selectedId = $state(initialId);
 </script>
 
 <Command.Root
@@ -26,13 +29,11 @@
 				<Command.Item
 					value={String(event.name)}
 					onSelect={() => {
-						selectedId = String(event.id);
+						selectedId = event.id;
 					}}
 					class={cn('my-2', event.name === 'Assente' ? '!custom-absent-saturated' : '')}
 				>
-					<LucideCheck
-						class={cn('mr-2 size-4', selectedId !== String(event.id) && 'text-transparent')}
-					/>
+					<LucideCheck class={cn('mr-2 size-4', selectedId !== event.id && 'text-transparent')} />
 					<AvailableEventCard {event} />
 				</Command.Item>
 			{/each}

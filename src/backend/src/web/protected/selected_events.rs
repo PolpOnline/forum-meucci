@@ -17,6 +17,7 @@ pub struct SelectedEventResponse {
 
 #[derive(Default)]
 struct SelectedEventWithoutDate {
+    id: i32,
     round: i32,
     name: String,
     description: Option<String>,
@@ -25,6 +26,7 @@ struct SelectedEventWithoutDate {
 
 #[derive(Serialize, ToSchema)]
 pub struct SelectedEvent {
+    id: i32,
     /// The round of the event (0-indexed)
     round: i32,
     name: String,
@@ -56,7 +58,8 @@ pub(super) async fn selected_events(auth_session: AuthSession) -> impl IntoRespo
         SelectedEventWithoutDate,
         // language=PostgreSQL
         r#"
-         SELECT event_user.round    AS round,
+         SELECT event.id            AS id,
+                event_user.round    AS round,
                 event.name          AS name,
                 event.description   AS description,
                 event.room          AS room
@@ -98,6 +101,7 @@ fn fill_gaps(
     for round in 0..num_rounds as i32 {
         if let Some(existing) = round_map.get(&round) {
             filled_events.push(SelectedEventWithoutDate {
+                id: existing.id,
                 round: existing.round,
                 name: existing.name.clone(),
                 description: existing.description.clone(),
@@ -119,6 +123,7 @@ impl SelectedEvent {
         let date_map = &config.date_map;
 
         SelectedEvent {
+            id: event.id,
             round: event.round,
             name: event.name,
             description: event.description,

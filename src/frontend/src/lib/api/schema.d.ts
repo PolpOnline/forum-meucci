@@ -175,6 +175,8 @@ export interface components {
 			/** Format: date-time */
 			date: string;
 			description?: string | null;
+			/** Format: int32 */
+			id: number;
 			name: string;
 			room?: string | null;
 			/**

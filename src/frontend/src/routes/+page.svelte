@@ -37,12 +37,7 @@
 					{formatItalianDate(event.date)}
 				</div>
 				<div class="mt-3">
-					<EventItem
-						round={event.round}
-						name={event.name}
-						description={event.description}
-						formattedDate={formatItalianDate(event.date)}
-					/>
+					<EventItem {event} formattedDate={formatItalianDate(event.date)} />
 				</div>
 			</div>
 		{/each}
