@@ -7,6 +7,7 @@
 	import EventSelectorForm from '$lib/components/EventSelectorForm.svelte';
 	import type { components } from '$lib/api/schema';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+
 	const {
 		trigger,
 		formattedDate,
@@ -49,9 +50,9 @@
 	async function queryEvents() {
 		const params = new URLSearchParams({ round: String(round) });
 
-		const response = await fetch(`/api/available_events?${params.toString()}`);
-
-		return (await response.json()) as AvailableEventResponse;
+		return fetch(`/api/available_events?${params.toString()}`).then(
+			(res) => res.json() as Promise<AvailableEventResponse>
+		);
 	}
 </script>
 
