@@ -2,16 +2,22 @@
 	// noinspection ES6UnusedImports
 	import * as Command from '$lib/components/ui/command/index.js';
 	// noinspection ES6UnusedImports
-	import { type AvailableEventItem, cn } from '$lib/utils.js';
+	import { type AvailableEvent, cn } from '$lib/utils.js';
 	import AvailableEventCard from '$lib/components/AvailableEventCard.svelte';
 	import { LucideCheck } from 'lucide-svelte';
 
-	const { availableEvents }: { round: number; availableEvents: AvailableEventItem[] } = $props();
+	const { availableEvents }: { round: number; availableEvents: AvailableEvent[] } = $props();
 
 	let selectedId = $state('');
 </script>
 
-<Command.Root>
+<Command.Root
+	filter={(value, search) => {
+		if (value === 'Assente') return 1;
+		if (value.toLowerCase().startsWith(search.toLowerCase())) return 0.95;
+		return 0;
+	}}
+>
 	<Command.Input placeholder="Cerca un evento..." />
 	<Command.List class="max-h-[600px]">
 		<Command.Empty>Nessun evento trovato</Command.Empty>
@@ -22,6 +28,7 @@
 					onSelect={() => {
 						selectedId = String(event.id);
 					}}
+					class={cn('my-2', event.name === 'Assente' ? '!custom-absent-saturated' : '')}
 				>
 					<LucideCheck
 						class={cn('mr-2 size-4', selectedId !== String(event.id) && 'text-transparent')}

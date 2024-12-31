@@ -133,10 +133,12 @@ export interface paths {
 		trace?: never;
 	};
 }
+
 export type webhooks = Record<string, never>;
+
 export interface components {
 	schemas: {
-		AvailableEventItem: {
+		AvailableEvent: {
 			/** Format: int64 */
 			available_seats?: number | null;
 			description: string;
@@ -148,7 +150,7 @@ export interface components {
 			total_seats: number;
 		};
 		AvailableEventResponse: {
-			events: components['schemas']['AvailableEventItem'][];
+			events: components['schemas']['AvailableEvent'][];
 		};
 		BasicSystemInfo: {
 			system_host_name: string;
@@ -175,7 +177,10 @@ export interface components {
 			description?: string | null;
 			name: string;
 			room?: string | null;
-			/** Format: int32 */
+			/**
+			 * Format: int32
+			 * @description The round of the event (0-indexed)
+			 */
 			round: number;
 		};
 		SelectedEventResponse: {
@@ -203,7 +208,9 @@ export interface components {
 	headers: never;
 	pathItems: never;
 }
+
 export type $defs = Record<string, never>;
+
 export interface operations {
 	google_oauth_callback_handler: {
 		parameters: {

@@ -16,9 +16,9 @@
 	class="relative flex w-full items-center justify-center rounded-xl border"
 	class:p-5={name}
 	class:border-dashed={!name}
-	class:custom-absent={name === 'absent'}
+	class:custom-absent={name === 'Assente'}
 >
-	{#if name === 'absent'}
+	{#if name === 'Assente'}
 		<div class="text-lg">Assente</div>
 	{:else if name}
 		<div class="flex flex-col items-center">
@@ -54,17 +54,3 @@
 		</EventSelectorDrawer>
 	{/if}
 </div>
-
-<style lang="postcss">
-	.custom-absent {
-		@apply border-destructive;
-
-		background: repeating-linear-gradient(
-			45deg,
-			hsl(var(--destructive) / 30%),
-			hsl(var(--destructive) / 30%) 10px,
-			hsl(var(--destructive) / 50%) 10px,
-			hsl(var(--destructive) / 50%) 20px
-		);
-	}
-</style>

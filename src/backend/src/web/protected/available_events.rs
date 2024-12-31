@@ -12,11 +12,11 @@ pub struct AvailableEventRequest {
 
 #[derive(Serialize, ToSchema)]
 pub struct AvailableEventResponse {
-    events: Vec<AvailableEventItem>,
+    events: Vec<AvailableEvent>,
 }
 
 #[derive(Serialize, ToSchema)]
-pub struct AvailableEventItem {
+pub struct AvailableEvent {
     id: i32,
     name: String,
     description: String,
@@ -49,7 +49,7 @@ pub(super) async fn available_events(
     };
 
     let events = match sqlx::query_as!(
-        AvailableEventItem,
+        AvailableEvent,
         // language=PostgreSQL
         r#"
         SELECT
@@ -72,7 +72,7 @@ pub(super) async fn available_events(
         req.round,
         user_section,
     ).fetch_all(&auth_session.backend.db).await {
-        Ok(r) => {r}
+        Ok(r) => r,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
