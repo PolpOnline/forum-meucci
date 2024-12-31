@@ -24,7 +24,5 @@ export async function GET({ request, fetch }) {
 		return new Response(`Failed to fetch: ${error}`, { status: response.status });
 	}
 
-	console.log(data);
-
 	return new Response(JSON.stringify(data), { status: response.status });
 }
