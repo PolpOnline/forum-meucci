@@ -17,9 +17,9 @@
 	class="relative flex w-full items-center justify-center rounded-xl border"
 	class:p-5={name}
 	class:border-dashed={!name}
-	class:custom-absent={name === 'Assente'}
+	class:custom-absent={name === 'absent'}
 >
-	{#if name === 'Assente'}
+	{#if name === 'absent'}
 		<div class="text-lg">Assente</div>
 	{:else if name}
 		<div class="flex flex-col items-center">
