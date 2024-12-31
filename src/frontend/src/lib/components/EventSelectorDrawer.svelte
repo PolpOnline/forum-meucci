@@ -78,8 +78,11 @@
 			{/await}
 		</div>
 		<Drawer.Footer class="grid grid-cols-2">
+			<Button class="col-span-2">Salva</Button>
+
 			<Drawer.Close class={buttonVariants({ variant: 'outline' })}>Annulla</Drawer.Close>
-			<Button>Salva</Button>
+
+			<Button class={buttonVariants({ variant: 'destructive' })}>Sono assente</Button>
 		</Drawer.Footer>
 	</Drawer.Content>
 </Drawer.Root>

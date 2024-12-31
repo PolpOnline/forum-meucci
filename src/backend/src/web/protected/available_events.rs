@@ -63,11 +63,13 @@ pub(super) async fn available_events(
         LEFT JOIN
             event_user ON event.id = event_user.event_id AND round_max_users.round = event_user.round
         WHERE
-            round_max_users.round = $1 AND $2 >= event.minimum_section
+            event.should_display IS true AND round_max_users.round = $1 AND $2 >= event.minimum_section
         GROUP BY
-            event.id, round_max_users.max_users
+            event.id, event.name, event.description, event.room, round_max_users.max_users
         HAVING
             (round_max_users.max_users - COUNT(event_user.user_id)) > 0
+        ORDER BY
+            LOWER(event.name)
         "#,
         req.round,
         user_section,

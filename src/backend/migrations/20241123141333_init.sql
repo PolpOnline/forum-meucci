@@ -1,10 +1,11 @@
 CREATE TABLE IF NOT EXISTS event
 (
     id              SERIAL PRIMARY KEY,
-    name            TEXT NOT NULL,
-    description     TEXT NOT NULL,
-    room            TEXT NOT NULL,
-    minimum_section INT  NOT NULL DEFAULT 1 CHECK ( minimum_section > 0 )
+    name            TEXT    NOT NULL,
+    description     TEXT    NOT NULL,
+    room            TEXT    NOT NULL,
+    minimum_section INT     NOT NULL DEFAULT 1 CHECK ( minimum_section > 0 ),
+    should_display  BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS "user"

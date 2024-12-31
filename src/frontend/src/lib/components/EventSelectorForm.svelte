@@ -14,13 +14,7 @@
 	let selectedId = $state(initialId);
 </script>
 
-<Command.Root
-	filter={(value, search) => {
-		if (value === 'Assente') return 1;
-		if (value.toLowerCase().startsWith(search.toLowerCase())) return 0.95;
-		return 0;
-	}}
->
+<Command.Root>
 	<Command.Input placeholder="Cerca un evento..." />
 	<Command.List class="max-h-[600px]">
 		<Command.Empty>Nessun evento trovato</Command.Empty>
@@ -31,7 +25,7 @@
 					onSelect={() => {
 						selectedId = event.id;
 					}}
-					class={cn('my-2', event.name === 'Assente' ? '!custom-absent-saturated' : '')}
+					class="my-2"
 				>
 					<LucideCheck class={cn('mr-2 size-4', selectedId !== event.id && 'text-transparent')} />
 					<AvailableEventCard {event} />
