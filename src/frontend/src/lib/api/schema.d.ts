@@ -116,6 +116,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/set_event': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch: operations['set_event'];
+		trace?: never;
+	};
 	'/sys_info': {
 		parameters: {
 			query?: never;
@@ -187,6 +203,18 @@ export interface components {
 		};
 		SelectedEventResponse: {
 			events: components['schemas']['SelectedEvent'][];
+		};
+		SetEventRequest: {
+			/**
+			 * Format: int32
+			 * @description The id of the event to set to, do not provide to set absent on that round
+			 */
+			event_id?: number | null;
+			/**
+			 * Format: int32
+			 * @description The round to set the event to
+			 */
+			round: number;
 		};
 		SwapInfo: {
 			free: string;
@@ -408,6 +436,42 @@ export interface operations {
 				content: {
 					'application/json': components['schemas']['SelectedEventResponse'];
 				};
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	set_event: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['SetEventRequest'];
+			};
+		};
+		responses: {
+			/** @description The event was set successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
 			};
 			/** @description Not logged in */
 			401: {

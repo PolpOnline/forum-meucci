@@ -8,6 +8,8 @@
 	import { fly } from 'svelte/transition';
 	import Loader from '$lib/components/Loader.svelte';
 	import { title } from '$lib/stores/title.store';
+	import Favicon from '$lib/images/favicon.svg';
+	import { Toaster } from '$lib/components/ui/sonner/index.js';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -28,7 +30,12 @@
 
 <svelte:head>
 	<title>{$title}</title>
+	<link rel="icon" type="image/svg+xml" href={Favicon} />
+	<!-- for Safari -->
+	<link rel="mask-icon" href={Favicon} color="#000000" />
 </svelte:head>
+
+<Toaster richColors position="top-center" />
 
 <div data-vaul-drawer-wrapper>
 	<Navbar loginStatus={data.loginStatus} />

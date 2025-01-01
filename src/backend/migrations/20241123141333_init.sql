@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS event_user
     event_id  INT       NOT NULL,
     user_id   INT       NOT NULL,
     joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    round     INT       NOT NULL CHECK ( round > 0 ),
+    round     INT       NOT NULL CHECK ( round >= 0 ),
     PRIMARY KEY (user_id, round),
     FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS round_max_users
 (
     round     INT NOT NULL,
     event_id  INT NOT NULL,
-    max_users INT NOT NULL CHECK ( max_users > 0 ),
+    max_users INT NOT NULL CHECK ( max_users >= 0 ),
     PRIMARY KEY (round, event_id),
     FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE
 );

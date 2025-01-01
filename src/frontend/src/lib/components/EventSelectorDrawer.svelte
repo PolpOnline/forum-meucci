@@ -7,6 +7,8 @@
 	import EventSelectorForm from '$lib/components/EventSelectorForm.svelte';
 	import type { components } from '$lib/api/schema';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import { invalidateAll } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
 
 	const {
 		trigger,
@@ -54,6 +56,28 @@
 			(res) => res.json() as Promise<AvailableEventResponse>
 		);
 	}
+
+	let selectedId = $state(initialId);
+
+	async function setEvent(round: number, event_id?: number) {
+		const res = await fetch(`/api/set_event`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ round, event_id })
+		});
+
+		if (res.ok) {
+			toast.success('Evento salvato');
+		} else {
+			toast.error("Errore durante il salvataggio dell'evento");
+		}
+
+		open = false;
+
+		await invalidateAll();
+	}
 </script>
 
 <Drawer.Root bind:open>
@@ -70,7 +94,7 @@
 					<LineMdLoadingLoop />
 				</div>
 			{:then availableEvents}
-				<EventSelectorForm {round} availableEvents={availableEvents.events} {initialId} />
+				<EventSelectorForm availableEvents={availableEvents.events} bind:selectedId />
 			{:catch error}
 				<div class="text-destructive-foreground">
 					<p>Errore: {error.message}</p>
@@ -78,11 +102,18 @@
 			{/await}
 		</div>
 		<Drawer.Footer class="grid grid-cols-2">
-			<Button class="col-span-2">Salva</Button>
+			<Button class="col-span-2" onclick={async () => await setEvent(round, selectedId)}>
+				Salva
+			</Button>
 
 			<Drawer.Close class={buttonVariants({ variant: 'outline' })}>Annulla</Drawer.Close>
 
-			<Button class={buttonVariants({ variant: 'destructive' })}>Sono assente</Button>
+			<Button
+				class={buttonVariants({ variant: 'destructive' })}
+				onclick={async () => await setEvent(round)}
+			>
+				Sono assente
+			</Button>
 		</Drawer.Footer>
 	</Drawer.Content>
 </Drawer.Root>

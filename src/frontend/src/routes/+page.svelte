@@ -6,7 +6,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let selectedEvents = data.selectedEvents!;
+	let selectedEvents = $derived(data.selectedEvents!);
 
 	function formatItalianDate(isoTimestamp: string): string {
 		const date = new Date(isoTimestamp);

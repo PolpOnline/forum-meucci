@@ -1,7 +1,7 @@
 import { client } from '$lib/api/api';
 
 export async function GET({ request, fetch }) {
-	// extract round from request
+	// extract round from request query params
 	const url = new URL(request.url);
 	const roundStr = url.searchParams.get('round');
 
@@ -20,7 +20,7 @@ export async function GET({ request, fetch }) {
 		}
 	});
 
-	if (!data) {
+	if (error) {
 		return new Response(`Failed to fetch: ${error}`, { status: response.status });
 	}
 

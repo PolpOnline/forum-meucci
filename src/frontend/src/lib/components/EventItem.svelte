@@ -10,7 +10,7 @@
 		formattedDate
 	}: { event: components['schemas']['SelectedEvent']; formattedDate: string } = $props();
 
-	const { id, name, description, round } = event;
+	const { id, name, description, round } = $derived(event);
 </script>
 
 <div

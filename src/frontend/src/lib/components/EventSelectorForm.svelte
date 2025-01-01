@@ -6,12 +6,10 @@
 	import AvailableEventCard from '$lib/components/AvailableEventCard.svelte';
 	import { LucideCheck } from 'lucide-svelte';
 
-	const {
+	let {
 		availableEvents,
-		initialId
-	}: { round: number; availableEvents: AvailableEvent[]; initialId?: number } = $props();
-
-	let selectedId = $state(initialId);
+		selectedId = $bindable()
+	}: { availableEvents: AvailableEvent[]; selectedId?: number } = $props();
 </script>
 
 <Command.Root>
