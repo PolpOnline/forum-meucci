@@ -4,17 +4,19 @@
 	import { buttonVariants } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 	import type { components } from '$lib/api/schema';
+	import LucideMapPin from '~icons/lucide/map-pin';
+	import { Badge } from '$lib/components/ui/badge/index.js';
 
 	const {
 		event,
 		formattedDate
 	}: { event: components['schemas']['SelectedEvent']; formattedDate: string } = $props();
 
-	const { id, name, description, round } = $derived(event);
+	const { id, name, description, round, room } = $derived(event);
 </script>
 
 <div
-	class="relative flex w-full items-center justify-center rounded-xl border"
+	class="relative flex w-full items-center rounded-xl border"
 	class:p-5={name}
 	class:border-dashed={!name}
 	class:custom-absent={name === 'absent'}
@@ -22,10 +24,16 @@
 	{#if name === 'absent'}
 		<div class="text-lg">Assente</div>
 	{:else if name}
-		<div class="flex flex-col items-center">
+		<div>
 			<div class="text-lg">{name}</div>
 			{#if description}
 				<div class="text-sm text-muted-foreground">{description}</div>
+			{/if}
+			{#if room}
+				<Badge class="pointer-events-none mt-1 " variant="secondary">
+					<LucideMapPin class="mr-1 h-4 w-4" />
+					<div class="text-sm">{room}</div>
+				</Badge>
 			{/if}
 		</div>
 	{:else}

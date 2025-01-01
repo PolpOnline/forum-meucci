@@ -5,8 +5,6 @@ const loginFailedReasons = {
 };
 
 export const load: PageServerLoad = async ({ url }) => {
-	console.log('url', url.searchParams.get('reason'));
-
 	const message =
 		loginFailedReasons[url.searchParams.get('reason') as keyof typeof loginFailedReasons] ||
 		'Unknown error';

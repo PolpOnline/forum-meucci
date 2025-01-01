@@ -75,15 +75,3 @@
 			hsl(var(--destructive) / 50%) 20px
 	);
 }
-
-.\!custom-absent-saturated {
-	@apply border-destructive !important;
-
-	background: repeating-linear-gradient(
-			45deg,
-			hsl(var(--destructive) / 50%),
-			hsl(var(--destructive) / 50%) 10px,
-			hsl(var(--destructive) / 70%) 10px,
-			hsl(var(--destructive) / 70%) 20px
-	) !important;
-}
