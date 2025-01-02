@@ -78,6 +78,9 @@
 
 		await invalidateAll();
 	}
+
+	let isSaving = $state(false);
+	let isAbsentSaving = $state(false);
 </script>
 
 <Drawer.Root bind:open>
@@ -102,17 +105,36 @@
 			{/await}
 		</div>
 		<Drawer.Footer class="grid grid-cols-2">
-			<Button class="col-span-2" onclick={async () => await setEvent(round, selectedId)}>
-				Salva
+			<Button
+				class="col-span-2"
+				onclick={async () => {
+					isSaving = true;
+					await setEvent(round, selectedId);
+					isSaving = false;
+				}}
+			>
+				{#if isSaving}
+					<LineMdLoadingLoop />
+				{:else}
+					Salva
+				{/if}
 			</Button>
 
 			<Drawer.Close class={buttonVariants({ variant: 'outline' })}>Annulla</Drawer.Close>
 
 			<Button
 				class={buttonVariants({ variant: 'destructive' })}
-				onclick={async () => await setEvent(round)}
+				onclick={async () => {
+					isAbsentSaving = true;
+					await setEvent(round);
+					isAbsentSaving = false;
+				}}
 			>
-				Sono assente
+				{#if isAbsentSaving}
+					<LineMdLoadingLoop />
+				{:else}
+					Sono assente
+				{/if}
 			</Button>
 		</Drawer.Footer>
 	</Drawer.Content>
