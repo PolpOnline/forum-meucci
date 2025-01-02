@@ -30,7 +30,7 @@
 				<div class="text-sm text-muted-foreground">{description}</div>
 			{/if}
 			{#if room}
-				<Badge class="pointer-events-none mt-1 " variant="secondary">
+				<Badge class="pointer-events-none mt-1" variant="secondary">
 					<LucideMapPin class="mr-1 h-4 w-4" />
 					<div class="text-sm">{room}</div>
 				</Badge>
