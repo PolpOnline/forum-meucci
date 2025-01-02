@@ -7,7 +7,9 @@ use crate::{app::openapi::USER_TAG, users::AuthSession};
 
 #[derive(Serialize, ToSchema)]
 pub struct User {
+    #[schema(example = "John Doe")]
     name: Option<String>,
+    #[schema(example = "john.doe@example.com")]
     email: String,
 }
 

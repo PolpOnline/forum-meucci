@@ -26,11 +26,16 @@ struct SelectedEventWithoutDate {
 
 #[derive(Serialize, ToSchema)]
 pub struct SelectedEvent {
+    #[schema(example = 1)]
     id: i32,
+    #[schema(example = 0, minimum = 0)]
     /// The round of the event (0-indexed)
     round: i32,
+    #[schema(example = "Event 1")]
     name: String,
+    #[schema(example = "This is the description of event 1")]
     description: Option<String>,
+    #[schema(example = "Room 1")]
     room: Option<String>,
     date: DateTime<Utc>,
 }

@@ -7,3 +7,4 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export type AvailableEvent = components['schemas']['AvailableEvent'];
+export type AvailableEventResponse = components['schemas']['AvailableEventResponse'];

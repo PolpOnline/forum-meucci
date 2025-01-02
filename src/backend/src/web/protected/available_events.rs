@@ -7,6 +7,8 @@ use crate::{app::openapi::EVENT_TAG, users::AuthSession};
 
 #[derive(Deserialize, IntoParams)]
 pub struct AvailableEventRequest {
+    /// The round of the event (0-indexed)
+    #[param(example = 0, minimum = 0)]
     round: i32,
 }
 
@@ -17,11 +19,17 @@ pub struct AvailableEventResponse {
 
 #[derive(Serialize, ToSchema)]
 pub struct AvailableEvent {
+    #[schema(example = 1)]
     id: i32,
+    #[schema(example = "Event 1")]
     name: String,
+    #[schema(example = "This is the description of event 1")]
     description: String,
+    #[schema(example = "Room 1")]
     room: String,
+    #[schema(example = 10)]
     available_seats: Option<i64>,
+    #[schema(example = 20)]
     total_seats: i64,
 }
 

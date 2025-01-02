@@ -149,20 +149,30 @@ export interface paths {
 		trace?: never;
 	};
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
 	schemas: {
 		AvailableEvent: {
-			/** Format: int64 */
+			/**
+			 * Format: int64
+			 * @example 10
+			 */
 			available_seats?: number | null;
+			/** @example This is the description of event 1 */
 			description: string;
-			/** Format: int32 */
+			/**
+			 * Format: int32
+			 * @example 1
+			 */
 			id: number;
+			/** @example Event 1 */
 			name: string;
+			/** @example Room 1 */
 			room: string;
-			/** Format: int64 */
+			/**
+			 * Format: int64
+			 * @example 20
+			 */
 			total_seats: number;
 		};
 		AvailableEventResponse: {
@@ -190,14 +200,21 @@ export interface components {
 		SelectedEvent: {
 			/** Format: date-time */
 			date: string;
+			/** @example This is the description of event 1 */
 			description?: string | null;
-			/** Format: int32 */
+			/**
+			 * Format: int32
+			 * @example 1
+			 */
 			id: number;
+			/** @example Event 1 */
 			name: string;
+			/** @example Room 1 */
 			room?: string | null;
 			/**
 			 * Format: int32
 			 * @description The round of the event (0-indexed)
+			 * @example 0
 			 */
 			round: number;
 		};
@@ -208,11 +225,13 @@ export interface components {
 			/**
 			 * Format: int32
 			 * @description The id of the event to set to, do not provide to set absent on that round
+			 * @example 1
 			 */
 			event_id?: number | null;
 			/**
 			 * Format: int32
 			 * @description The round to set the event to
+			 * @example 0
 			 */
 			round: number;
 		};
@@ -228,7 +247,9 @@ export interface components {
 			swap: components['schemas']['SwapInfo'];
 		};
 		User: {
+			/** @example john.doe@example.com */
 			email: string;
+			/** @example John Doe */
 			name?: string | null;
 		};
 	};
@@ -238,9 +259,7 @@ export interface components {
 	headers: never;
 	pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
 export interface operations {
 	google_oauth_callback_handler: {
 		parameters: {
@@ -339,6 +358,10 @@ export interface operations {
 	available_events: {
 		parameters: {
 			query: {
+				/**
+				 * @description The round of the event (0-indexed)
+				 * @example 0
+				 */
 				round: number;
 			};
 			header?: never;

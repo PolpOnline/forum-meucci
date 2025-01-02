@@ -5,10 +5,10 @@
 	import type { Snippet } from 'svelte';
 	import { title } from '$lib/stores/title.store';
 	import EventSelectorForm from '$lib/components/EventSelectorForm.svelte';
-	import type { components } from '$lib/api/schema';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import { invalidateAll } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
+	import type { AvailableEventResponse } from '$lib/utils';
 
 	const {
 		trigger,
@@ -23,8 +23,6 @@
 		class: string;
 		initialId?: number;
 	} = $props();
-
-	type AvailableEventResponse = components['schemas']['AvailableEventResponse'];
 
 	let open = $state(false);
 

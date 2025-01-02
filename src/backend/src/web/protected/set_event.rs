@@ -9,8 +9,10 @@ use crate::{app::openapi::EVENT_TAG, users::AuthSession};
 #[derive(Deserialize, ToSchema)]
 pub struct SetEventRequest {
     /// The id of the event to set to, do not provide to set absent on that round
+    #[schema(example = 1, minimum = 1)]
     event_id: Option<i32>,
     /// The round to set the event to
+    #[schema(example = 0, minimum = 0)]
     round: i32,
 }
 
