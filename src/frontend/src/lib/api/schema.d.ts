@@ -149,7 +149,9 @@ export interface paths {
 		trace?: never;
 	};
 }
+
 export type webhooks = Record<string, never>;
+
 export interface components {
 	schemas: {
 		AvailableEvent: {
@@ -198,6 +200,11 @@ export interface components {
 			used: string;
 		};
 		SelectedEvent: {
+			/**
+			 * Format: int64
+			 * @example 10
+			 */
+			available_seats?: number | null;
 			/** Format: date-time */
 			date: string;
 			/** @example This is the description of event 1 */
@@ -217,6 +224,11 @@ export interface components {
 			 * @example 0
 			 */
 			round: number;
+			/**
+			 * Format: int64
+			 * @example 20
+			 */
+			total_seats: number;
 		};
 		SelectedEventResponse: {
 			events: components['schemas']['SelectedEvent'][];
@@ -259,7 +271,9 @@ export interface components {
 	headers: never;
 	pathItems: never;
 }
+
 export type $defs = Record<string, never>;
+
 export interface operations {
 	google_oauth_callback_handler: {
 		parameters: {

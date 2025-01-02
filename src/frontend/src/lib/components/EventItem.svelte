@@ -6,13 +6,14 @@
 	import type { components } from '$lib/api/schema';
 	import LucideMapPin from '~icons/lucide/map-pin';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import LucideUser from '~icons/lucide/user';
 
 	const {
 		event,
 		formattedDate
 	}: { event: components['schemas']['SelectedEvent']; formattedDate: string } = $props();
 
-	const { id, name, description, round, room } = $derived(event);
+	const { id, name, description, round, room, available_seats, total_seats } = $derived(event);
 </script>
 
 <div
@@ -30,9 +31,15 @@
 				<div class="text-sm text-muted-foreground">{description}</div>
 			{/if}
 			{#if room}
-				<Badge class="pointer-events-none mt-1" variant="secondary">
+				<Badge class="pointer-events-none mt-2" variant="secondary">
 					<LucideMapPin class="mr-1 h-4 w-4" />
-					<div class="text-sm">{room}</div>
+					<div class="translate-y-[5%] text-sm">{room}</div>
+				</Badge>
+			{/if}
+			{#if available_seats && total_seats}
+				<Badge class="pointer-events-none mt-2" variant="secondary">
+					<LucideUser class="mr-1 h-4 w-4" />
+					<div class="translate-y-[5%] text-sm">{available_seats} / {total_seats}</div>
 				</Badge>
 			{/if}
 		</div>

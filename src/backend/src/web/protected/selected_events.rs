@@ -22,6 +22,8 @@ struct SelectedEventWithoutDate {
     name: String,
     description: Option<String>,
     room: Option<String>,
+    available_seats: Option<i64>,
+    total_seats: i64,
 }
 
 #[derive(Serialize, ToSchema)]
@@ -37,6 +39,10 @@ pub struct SelectedEvent {
     description: Option<String>,
     #[schema(example = "Room 1")]
     room: Option<String>,
+    #[schema(example = 10, minimum = 0)]
+    available_seats: Option<i64>,
+    #[schema(example = 20, minimum = 0)]
+    total_seats: i64,
     date: DateTime<Utc>,
 }
 
@@ -67,10 +73,14 @@ pub(super) async fn selected_events(auth_session: AuthSession) -> impl IntoRespo
                 event_user.round    AS round,
                 event.name          AS name,
                 event.description   AS description,
-                event.room          AS room
+                event.room          AS room,
+                (round_max_users.max_users -  COUNT(event_user.user_id)) AS available_seats,
+                round_max_users.max_users AS total_seats
          FROM event_user
-                  JOIN event ON event_user.event_id = event.id
+                JOIN event ON event_user.event_id = event.id
+                JOIN round_max_users ON event.id = round_max_users.event_id AND event_user.round = round_max_users.round
          WHERE event_user.user_id = $1
+         GROUP BY event.id, event_user.round, event.name, event.description, event.room, round_max_users.max_users
          ORDER BY event_user.round;
         "#,
         user_id
@@ -111,6 +121,8 @@ fn fill_gaps(
                 name: existing.name.clone(),
                 description: existing.description.clone(),
                 room: existing.room.clone(),
+                available_seats: existing.available_seats,
+                total_seats: existing.total_seats,
             });
         } else {
             filled_events.push(SelectedEventWithoutDate {
@@ -133,6 +145,8 @@ impl SelectedEvent {
             name: event.name,
             description: event.description,
             room: event.room,
+            available_seats: event.available_seats,
+            total_seats: event.total_seats,
             // intentionally crash if the round is not in the map
             date: *date_map.get(event.round as usize).unwrap(),
         }
