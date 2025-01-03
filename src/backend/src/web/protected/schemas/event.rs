@@ -55,7 +55,6 @@ impl Event {
             room: event.room,
             available_seats: event.available_seats,
             total_seats: event.total_seats,
-            // intentionally crash if the round is not in the map
             date: round_to_date(config, event.round)?,
         })
     }
