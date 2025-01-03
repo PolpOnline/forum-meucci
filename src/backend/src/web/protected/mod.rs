@@ -2,10 +2,10 @@ use utoipa_axum::{router::OpenApiRouter, routes};
 
 mod available_events;
 mod me;
+mod schemas;
 mod selected_events;
 mod set_event;
 mod user_type;
-mod schemas;
 
 pub fn router() -> OpenApiRouter {
     OpenApiRouter::new()

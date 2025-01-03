@@ -8,7 +8,8 @@ use crate::{app::openapi::EVENT_TAG, users::AuthSession};
 
 #[derive(Deserialize, ToSchema)]
 pub struct SetEventRequest {
-    /// The id of the event to set to, do not provide to set absent on that round
+    /// The id of the event to set to, do not provide to set absent on that
+    /// round
     #[schema(example = 1, minimum = 1)]
     event_id: Option<i32>,
     /// The round to set the event to
@@ -75,8 +76,8 @@ pub(super) async fn set_event(
         Ok(_) => {}
         Err(e) => {
             info!("Failed to set event: {}", e);
-            return StatusCode::INTERNAL_SERVER_ERROR.into_response()
-        },
+            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
     };
 
     StatusCode::OK.into_response()
