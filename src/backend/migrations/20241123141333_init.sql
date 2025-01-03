@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS event
+CREATE TABLE event
 (
     id              SERIAL PRIMARY KEY,
     name            TEXT    NOT NULL,
@@ -8,20 +8,22 @@ CREATE TABLE IF NOT EXISTS event
     should_display  BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE IF NOT EXISTS "user"
+CREATE TYPE user_type AS enum ('normal', 'host', 'admin');
+
+CREATE TABLE "user"
 (
     id               SERIAL PRIMARY KEY,
     name             TEXT,
-    email            TEXT    NOT NULL UNIQUE,
-    interactive_done BOOLEAN NOT NULL DEFAULT FALSE,
-    section          INT     NOT NULL DEFAULT 1 CHECK ( section > 0 ),
+    email            TEXT      NOT NULL UNIQUE,
+    interactive_done BOOLEAN   NOT NULL DEFAULT FALSE,
+    section          INT       NOT NULL DEFAULT 1 CHECK ( section > 0 ),
     class            TEXT,
-    admin            BOOLEAN NOT NULL DEFAULT FALSE
+    type             user_type NOT NULL DEFAULT 'normal'
 );
 
 CREATE INDEX ON "user" (email);
 
-CREATE TABLE IF NOT EXISTS event_user
+CREATE TABLE event_user
 (
     event_id  INT       NOT NULL,
     user_id   INT       NOT NULL,
@@ -32,7 +34,7 @@ CREATE TABLE IF NOT EXISTS event_user
     FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS round_max_users
+CREATE TABLE round_max_users
 (
     round     INT NOT NULL,
     event_id  INT NOT NULL,

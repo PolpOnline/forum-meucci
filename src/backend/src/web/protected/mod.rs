@@ -4,6 +4,8 @@ mod available_events;
 mod me;
 mod selected_events;
 mod set_event;
+mod user_type;
+mod schemas;
 
 pub fn router() -> OpenApiRouter {
     OpenApiRouter::new()
@@ -11,4 +13,5 @@ pub fn router() -> OpenApiRouter {
         .routes(routes!(available_events::available_events))
         .routes(routes!(selected_events::selected_events))
         .routes(routes!(set_event::set_event))
+        .routes(routes!(user_type::user_type))
 }

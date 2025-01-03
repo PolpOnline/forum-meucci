@@ -1,6 +1,7 @@
 use axum_login::AuthUser;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
+use utoipa::ToSchema;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct User {
@@ -13,13 +14,13 @@ pub struct User {
     pub r#type: UserType,
 }
 
-#[derive(Debug, Clone, Deserialize, sqlx::Type)]
+#[derive(Debug, Clone, Deserialize, Serialize, sqlx::Type, ToSchema, Eq, Hash, PartialEq, Copy)]
 #[sqlx(type_name = "user_type", rename_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
 pub enum UserType {
-    Normal,
-    Host,
-    Admin,
+    Normal = 0,
+    Host = 1,
+    Admin = 2,
 }
 
 impl User {
