@@ -5,7 +5,7 @@ use serde::Serialize;
 use utoipa::ToSchema;
 
 use crate::{
-    app::openapi::EVENT_TAG,
+    app::openapi::EVENTS_TAG,
     users::AuthSession,
     web::protected::schemas::event::{Event, EventWithoutDate},
 };
@@ -17,7 +17,7 @@ pub struct SelectedEventResponse {
 
 #[utoipa::path(
     get,
-    path = "/selected_events",
+    path = "/selected",
     responses(
         (status = OK, description = "Returns the selected events", body = SelectedEventResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
@@ -26,9 +26,9 @@ pub struct SelectedEventResponse {
     security(
         ("session" = [])
     ),
-    tag = EVENT_TAG,
+    tag = EVENTS_TAG,
 )]
-pub(super) async fn selected_events(auth_session: AuthSession) -> impl IntoResponse {
+pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
     let user_id = match auth_session.user {
         Some(user) => user.id,
         None => return StatusCode::UNAUTHORIZED.into_response(),

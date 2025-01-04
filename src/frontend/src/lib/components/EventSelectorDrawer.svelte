@@ -48,7 +48,7 @@
 	});
 
 	async function queryEvents() {
-		return fetch(`/api/available_events/${round}`).then(
+		return fetch(`/api/events/available/${round}`).then(
 			(res) => res.json() as Promise<AvailableEventResponse>
 		);
 	}
@@ -56,7 +56,7 @@
 	let selectedId = $state(initialId);
 
 	async function setEvent(round: number, event_id?: number) {
-		const res = await fetch(`/api/set_event`, {
+		const res = await fetch(`/api/events/set`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json'

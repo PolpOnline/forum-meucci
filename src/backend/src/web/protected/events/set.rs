@@ -4,7 +4,7 @@ use serde::Deserialize;
 use tracing::info;
 use utoipa::ToSchema;
 
-use crate::{app::openapi::EVENT_TAG, users::AuthSession};
+use crate::{app::openapi::EVENTS_TAG, users::AuthSession};
 
 #[derive(Deserialize, ToSchema)]
 pub struct SetEventRequest {
@@ -19,7 +19,7 @@ pub struct SetEventRequest {
 
 #[utoipa::path(
     patch,
-    path = "/set_event",
+    path = "/set",
     request_body = SetEventRequest,
     responses(
         (status = OK, description = "The event was set successfully"),
@@ -29,9 +29,9 @@ pub struct SetEventRequest {
     security(
         ("session" = [])
     ),
-    tag = EVENT_TAG,
+    tag = EVENTS_TAG,
 )]
-pub(super) async fn set_event(
+pub async fn set(
     auth_session: AuthSession,
     Json(req): Json<SetEventRequest>,
 ) -> impl IntoResponse {

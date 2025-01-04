@@ -3,7 +3,7 @@ import { client } from '$lib/api/api';
 export async function PATCH({ request, fetch }) {
 	const { round, event_id } = await request.json();
 
-	const { data, response, error } = await client.PATCH('/set_event', {
+	const { data, response, error } = await client.PATCH('/events/set', {
 		fetch,
 		body: { round, event_id }
 	});

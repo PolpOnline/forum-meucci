@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 import { client } from '$lib/api/api';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const { data } = await client.GET('/selected_events', { fetch });
+	const { data } = await client.GET('/events/selected', { fetch });
 
 	if (!data) {
 		return {

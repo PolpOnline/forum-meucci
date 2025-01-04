@@ -3,7 +3,7 @@ use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
-use crate::{app::openapi::EVENT_TAG, users::AuthSession};
+use crate::{app::openapi::EVENTS_TAG, users::AuthSession};
 
 #[derive(Deserialize, IntoParams)]
 pub struct AvailableEventRequest {
@@ -35,7 +35,7 @@ pub struct AvailableEvent {
 
 #[utoipa::path(
     get,
-    path = "/available_events/{round}",
+    path = "/available/{round}",
     params(AvailableEventRequest),
     responses(
         (status = OK, description = "Returns the available events", body = AvailableEventResponse),
@@ -45,9 +45,9 @@ pub struct AvailableEvent {
     security(
         ("session" = [])
     ),
-    tag = EVENT_TAG,
+    tag = EVENTS_TAG,
 )]
-pub(super) async fn available_events(
+pub async fn available(
     auth_session: AuthSession,
     Path(req): Path<AvailableEventRequest>,
 ) -> impl IntoResponse {
