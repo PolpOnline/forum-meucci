@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT event.id            AS id,\n               event.name          AS name,\n               event.description   AS description,\n               event.room          AS room\n        FROM event\n                 JOIN event_admin ON event.id = event_admin.event_id\n        WHERE event.should_display IS TRUE AND event_admin.user_id = $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "room",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "0aac48bfbdb1792affaa0ee0747203251fa360281fab45e91134b6a8399a7b74"
+}
