@@ -48,9 +48,7 @@
 	});
 
 	async function queryEvents() {
-		const params = new URLSearchParams({ round: String(round) });
-
-		return fetch(`/api/available_events?${params.toString()}`).then(
+		return fetch(`/api/available_events/${round}`).then(
 			(res) => res.json() as Promise<AvailableEventResponse>
 		);
 	}

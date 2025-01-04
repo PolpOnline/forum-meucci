@@ -52,7 +52,7 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/available_events': {
+	'/available_events/{round}': {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -252,7 +252,8 @@ export interface components {
 		SetEventRequest: {
 			/**
 			 * Format: int32
-			 * @description The id of the event to set to, do not provide to set absent on that round
+			 * @description The id of the event to set to, do not provide to set absent on that
+			 *     round
 			 * @example 1
 			 */
 			event_id?: number | null;
@@ -392,15 +393,15 @@ export interface operations {
 	};
 	available_events: {
 		parameters: {
-			query: {
+			query?: never;
+			header?: never;
+			path: {
 				/**
 				 * @description The round of the event (0-indexed)
 				 * @example 0
 				 */
 				round: number;
 			};
-			header?: never;
-			path?: never;
 			cookie?: never;
 		};
 		requestBody?: never;

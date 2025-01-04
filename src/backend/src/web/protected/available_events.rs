@@ -1,4 +1,4 @@
-use axum::{extract::Query, response::IntoResponse, Json};
+use axum::{extract::Path, response::IntoResponse, Json};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -35,7 +35,7 @@ pub struct AvailableEvent {
 
 #[utoipa::path(
     get,
-    path = "/available_events",
+    path = "/available_events/{round}",
     params(AvailableEventRequest),
     responses(
         (status = OK, description = "Returns the available events", body = AvailableEventResponse),
@@ -49,7 +49,7 @@ pub struct AvailableEvent {
 )]
 pub(super) async fn available_events(
     auth_session: AuthSession,
-    Query(req): Query<AvailableEventRequest>,
+    Path(req): Path<AvailableEventRequest>,
 ) -> impl IntoResponse {
     let user_section = match auth_session.user {
         Some(user) => user.section,
@@ -71,7 +71,7 @@ pub(super) async fn available_events(
         LEFT JOIN
             event_user ON event.id = event_user.event_id AND round_max_users.round = event_user.round
         WHERE
-            event.should_display IS true AND round_max_users.round = $1 AND $2 >= event.minimum_section
+            event.should_display IS TRUE AND round_max_users.round = $1 AND $2 >= event.minimum_section
         GROUP BY
             event.id, event.name, event.description, event.room, round_max_users.max_users
         HAVING
