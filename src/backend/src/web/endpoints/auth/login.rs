@@ -9,7 +9,7 @@ use crate::{app::openapi::AUTH_TAG, users::AuthSession};
     responses((status = 303, description = "Redirect to Google OAuth")),
     tag = AUTH_TAG
 )]
-pub(super) async fn google_login_handler(
+pub(in crate::web) async fn google_login_handler(
     auth_session: AuthSession,
     session: Session,
 ) -> impl IntoResponse {

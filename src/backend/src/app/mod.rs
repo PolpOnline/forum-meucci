@@ -29,7 +29,7 @@ use crate::{
     custom_login_required,
     middleware::set_cache_control::set_cache_control,
     users::LoginBackend,
-    web::{auth, protected, public},
+    web::endpoints::{auth, protected, public},
     BACKEND_URL,
 };
 

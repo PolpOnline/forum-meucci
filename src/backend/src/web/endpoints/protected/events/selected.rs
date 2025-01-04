@@ -7,7 +7,7 @@ use utoipa::ToSchema;
 use crate::{
     app::openapi::EVENTS_TAG,
     users::AuthSession,
-    web::protected::schemas::event::{Event, EventWithoutDate},
+    web::schemas::event::{Event, EventWithoutDate},
 };
 
 #[derive(Serialize, ToSchema)]

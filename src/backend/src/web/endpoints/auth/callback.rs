@@ -14,7 +14,7 @@ use crate::{
 };
 
 #[derive(Deserialize, IntoParams)]
-pub(super) struct AuthzResp {
+pub(in crate::web) struct AuthzResp {
     code: String,
     #[param(value_type = String)]
     state: CsrfToken,
@@ -22,7 +22,7 @@ pub(super) struct AuthzResp {
 
 #[derive(Deserialize)]
 #[serde(untagged)]
-pub(super) enum AuthParams {
+pub(in crate::web) enum AuthParams {
     Valid(AuthzResp),
     Invalid(#[allow(dead_code)] serde_json::Value),
 }
@@ -42,7 +42,7 @@ pub(super) enum AuthParams {
     ),
     tag = AUTH_TAG
 )]
-pub(super) async fn google_oauth_callback_handler(
+pub(in crate::web) async fn google_oauth_callback_handler(
     mut auth_session: AuthSession,
     session: Session,
     Query(params): Query<AuthParams>,

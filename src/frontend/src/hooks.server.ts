@@ -62,7 +62,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		? 'logged_in'
 		: ('logged_out' as LoginStatus);
 
-	if (requestedPath.startsWith('/auth') || requestedPath.startsWith('/public/')) {
+	if (requestedPath.startsWith('/auth') || requestedPath.startsWith('/system/')) {
 		return resolve(event, resolveOptions);
 	}
 
