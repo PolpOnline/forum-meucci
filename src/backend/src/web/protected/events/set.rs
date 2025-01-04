@@ -31,10 +31,7 @@ pub struct SetEventRequest {
     ),
     tag = EVENTS_TAG,
 )]
-pub async fn set(
-    auth_session: AuthSession,
-    Json(req): Json<SetEventRequest>,
-) -> impl IntoResponse {
+pub async fn set(auth_session: AuthSession, Json(req): Json<SetEventRequest>) -> impl IntoResponse {
     let user_id = match auth_session.user {
         Some(user) => user.id,
         None => return StatusCode::UNAUTHORIZED.into_response(),
