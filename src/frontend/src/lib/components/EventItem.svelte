@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LucidePencil from '~icons/lucide/pencil';
-	import EventSelectorDrawer from '$lib/components/EventSelectorDrawer.svelte';
+	import EventSelectorDrawer from '$lib/components/available_drawer/EventSelectorDrawer.svelte';
 	import { buttonVariants } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 	import type { components } from '$lib/api/schema';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AdminEvent from '$lib/components/AdminEvent.svelte';
+	import AdminEvent from './AdminEvent.svelte';
 
 	let { data } = $props();
 

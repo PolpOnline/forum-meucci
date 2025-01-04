@@ -1,10 +1,10 @@
 <script lang="ts">
 	// noinspection ES6UnusedImports
-	import * as Drawer from '$lib/components/ui/drawer/index.js';
+	import * as Drawer from '$lib/components/ui/drawer';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import type { Snippet } from 'svelte';
 	import { title } from '$lib/stores/title.store';
-	import EventSelectorForm from '$lib/components/EventSelectorForm.svelte';
+	import EventSelectorForm from '$lib/components/available_drawer/EventSelectorForm.svelte';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import { invalidateAll } from '$app/navigation';
 	import { toast } from 'svelte-sonner';

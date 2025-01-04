@@ -1,9 +1,9 @@
 <script lang="ts">
 	// noinspection ES6UnusedImports
-	import * as Command from '$lib/components/ui/command/index.js';
+	import * as Command from '$lib/components/ui/command';
 	// noinspection ES6UnusedImports
 	import { type AvailableEvent, cn } from '$lib/utils.js';
-	import AvailableEventCard from '$lib/components/AvailableEventCard.svelte';
+	import AvailableEventCard from '$lib/components/available_drawer/AvailableEventCard.svelte';
 	import { LucideCheck } from 'lucide-svelte';
 
 	let {

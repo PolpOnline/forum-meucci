@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import type { components } from '$lib/api/schema';
 	import LucideMapPin from '~icons/lucide/map-pin';
-	import { Badge } from '$lib/components/ui/badge/index.js';
+	import { Badge } from '$lib/components/ui/badge';
 	import LucideUsers from '~icons/lucide/users';
 
 	const { event }: { event: components['schemas']['AdminEvent'] } = $props();
