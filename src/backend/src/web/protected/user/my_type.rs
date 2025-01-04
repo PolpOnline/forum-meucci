@@ -13,7 +13,7 @@ pub struct UserTypeResponse {
 
 #[utoipa::path(
     get,
-    path = "/user_type",
+    path = "/my_type",
     responses(
         (status = OK, description = "Returns the user's type", body = UserTypeResponse),
         (status = UNAUTHORIZED, description = "Not logged in")
@@ -23,7 +23,7 @@ pub struct UserTypeResponse {
     ),
     tag = USER_TAG,
 )]
-pub(super) async fn user_type(auth_session: AuthSession) -> impl IntoResponse {
+pub async fn my_type(auth_session: AuthSession) -> impl IntoResponse {
     match auth_session.user {
         Some(user) => Json(UserTypeResponse {
             user_type: user.r#type,

@@ -26,7 +26,7 @@ pub struct User {
     tag = USER_TAG,
 
 )]
-pub(super) async fn me(auth_session: AuthSession) -> impl IntoResponse {
+pub(in crate::web::protected) async fn me(auth_session: AuthSession) -> impl IntoResponse {
     if let Some(user) = auth_session.user {
         return Json(User {
             name: user.name,
