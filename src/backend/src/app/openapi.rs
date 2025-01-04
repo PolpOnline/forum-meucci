@@ -7,6 +7,7 @@ pub const AUTH_TAG: &str = "Auth";
 pub const SYSTEM_TAG: &str = "System";
 pub const USER_TAG: &str = "User";
 pub const EVENTS_TAG: &str = "Events";
+pub const ADMIN_TAG: &str = "Admin";
 
 #[derive(OpenApi)]
 #[openapi(
@@ -14,7 +15,9 @@ pub const EVENTS_TAG: &str = "Events";
     tags(
         (name = AUTH_TAG, description = "Endpoints to authenticate users"),
         (name = SYSTEM_TAG, description = "Endpoints to monitor the system"),
-        (name = USER_TAG, description = "Endpoints related to users")
+        (name = USER_TAG, description = "Endpoints related to users"),
+        (name = EVENTS_TAG, description = "Endpoints related to events"),
+        (name = ADMIN_TAG, description = "Endpoints for host/administrators of the events")
     )
 )]
 pub(super) struct ApiDoc;

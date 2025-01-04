@@ -10,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"generate-openapi": "openapi-typescript http://localhost:3000/openapi.json -o ./src/lib/api/schema.d.ts"
+		"generate-openapi": "openapi-typescript http://localhost:3000/openapi.json -o ./src/lib/api/schema.d.ts && prettier --write ./src/lib/api/schema.d.ts"
 	},
 	"devDependencies": {
 		"@iconify-json/line-md": "^1.2.2",
@@ -51,6 +51,7 @@
 	},
 	"dependencies": {
 		"@types/set-cookie-parser": "^2.4.10",
+		"http-status-codes": "^2.3.0",
 		"set-cookie-parser": "^2.7.1",
 		"unplugin-icons": "^0.20.2"
 	}
