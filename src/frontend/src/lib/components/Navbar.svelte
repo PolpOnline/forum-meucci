@@ -17,7 +17,7 @@
 <nav class="grid h-20 grid-cols-12">
 	<div class="grid-span-2 col-span-2 flex items-center">
 		<a href="/">
-			<ItisMeucciLogo class="ml-3 h-20 w-20" />
+			<ItisMeucciLogo class="ml-3 h-20 w-20 max-w-full" />
 		</a>
 	</div>
 	<div class="col-span-8 flex items-center justify-center">
