@@ -20,6 +20,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/admin/presences/{event_id}/{round}': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['presences'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	'/admin/rounds/{event_id}': {
 		parameters: {
 			query?: never;
@@ -216,6 +232,13 @@ export interface components {
 		AdminEventResponse: {
 			events: components['schemas']['AdminEvent'][];
 		};
+		AdminPresenceResponse: {
+			/** @example Event 1 */
+			name: string;
+			presences: components['schemas']['Presence'][];
+			/** @example Room 1 */
+			room: string;
+		};
 		AdminRound: {
 			/**
 			 * Format: int64
@@ -318,6 +341,12 @@ export interface components {
 			total: string;
 			used: string;
 		};
+		Presence: {
+			/** @example 0 */
+			name: string;
+			/** @example 0 */
+			present: boolean;
+		};
 		SelectedEventResponse: {
 			events: components['schemas']['Event'][];
 		};
@@ -383,6 +412,58 @@ export interface operations {
 				};
 				content: {
 					'application/json': components['schemas']['AdminEventResponse'];
+				};
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Not an admin or host */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	presences: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/**
+				 * @description The ID of the event
+				 * @example 1
+				 */
+				event_id: number;
+				/**
+				 * @description The round number
+				 * @example 1
+				 */
+				round: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description List of the presences for a given event and round */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['AdminPresenceResponse'];
 				};
 			};
 			/** @description Not logged in */
