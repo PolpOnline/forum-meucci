@@ -7,18 +7,16 @@
 
 	let { data } = $props();
 
-	const { event_id, adminRounds, one } = $derived(data.data);
+	const { event_id, adminRounds } = $derived(data.data);
 	const { name, room, rounds } = $derived(adminRounds);
 </script>
 
 <main>
 	<div class="grid grid-cols-12">
 		<div class="col-span-2 flex items-center justify-center">
-			{#if !one}
-				<Button class="text-primary" href="/admin" size="icon" variant="outline">
-					<LucideArrowLeft />
-				</Button>
-			{/if}
+			<Button class="text-primary" href="/admin" size="icon" variant="outline">
+				<LucideArrowLeft />
+			</Button>
 		</div>
 		<h1 class="col-span-8 mt-5 text-center text-3xl font-bold">
 			{name}
