@@ -72,7 +72,7 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
 
     let events = match events {
         Ok(events) => events,
-        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
     Json(SelectedEventResponse { events }).into_response()

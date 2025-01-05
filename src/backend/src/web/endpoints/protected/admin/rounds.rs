@@ -96,7 +96,7 @@ pub async fn rounds(
         Ok(Some(r)) => r,
         // User does not have access to the event
         Ok(None) => return StatusCode::FORBIDDEN.into_response(),
-        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
     let rounds = match sqlx::query_as!(
@@ -119,7 +119,7 @@ pub async fn rounds(
     .await
     {
         Ok(r) => r,
-        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
     let rounds: Result<Vec<_>, _> = rounds
@@ -129,7 +129,7 @@ pub async fn rounds(
 
     let rounds = match rounds {
         Ok(r) => r,
-        Err(e) => return (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
     Json(AdminRoundResponse {
