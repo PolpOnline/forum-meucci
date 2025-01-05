@@ -1,0 +1,70 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                            UPDATE \"user\" SET name = $1 WHERE email = $2 RETURNING id, name, email, interactive_done, section, class, type AS \"type!: UserType\"\n                            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "email",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "interactive_done",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 4,
+        "name": "section",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "class",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 6,
+        "name": "type!: UserType",
+        "type_info": {
+          "Custom": {
+            "name": "user_type",
+            "kind": {
+              "Enum": [
+                "normal",
+                "host",
+                "admin"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false
+    ]
+  },
+  "hash": "b9a271aefdddbf76f275e12556e6353c73e5d0d6a91d7fc3c24ac15a2b33a864"
+}

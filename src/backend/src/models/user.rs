@@ -41,7 +41,23 @@ impl User {
         .await?;
 
         match user {
-            Some(user) => Ok(user),
+            Some(mut user) => {
+                if user.name.is_none() {
+                    user = sqlx::query_as!(
+                            User,
+                            // language=PostgreSQL
+                            r#"
+                            UPDATE "user" SET name = $1 WHERE email = $2 RETURNING id, name, email, interactive_done, section, class, type AS "type!: UserType"
+                            "#,
+                            name,
+                            email
+                    )
+                        .fetch_one(db)
+                        .await?;
+                }
+
+                Ok(user)
+            }
             None => {
                 let user = sqlx::query_as!(
                     User,
