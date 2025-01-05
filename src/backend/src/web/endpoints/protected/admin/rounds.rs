@@ -8,7 +8,10 @@ use crate::{
     app::{config::Config, openapi::ADMIN_TAG},
     models::user::UserType,
     users::AuthSession,
-    web::schemas::event::{round_to_date, RoundConversionError},
+    web::{
+        endpoints::protected::admin::shared::get_event,
+        schemas::event::{round_to_date, RoundConversionError},
+    },
 };
 
 #[derive(Deserialize, IntoParams)]
@@ -86,11 +89,7 @@ pub async fn rounds(
         return StatusCode::FORBIDDEN.into_response();
     }
 
-    let event = match user_type {
-        UserType::Admin => admin_event(&auth_session, req.event_id).await,
-        UserType::Host => host_event(&auth_session, user_id, req.event_id).await,
-        UserType::Normal => unreachable!(),
-    };
+    let event = get_event(&auth_session, user_type, user_id, req.event_id).await;
 
     let event = match event {
         Ok(Some(r)) => r,
@@ -138,58 +137,4 @@ pub async fn rounds(
         rounds,
     })
     .into_response()
-}
-
-struct EventInterrogation {
-    name: String,
-    room: String,
-}
-
-/// Get all events for an admin user (all events)
-async fn admin_event(
-    auth_session: &AuthSession,
-    event_id: i32,
-) -> Result<Option<EventInterrogation>, sqlx::Error> {
-    // Intentionally allow access to events that should not be displayed
-    let name = sqlx::query_as!(
-        EventInterrogation,
-        // language=PostgreSQL
-        r#"
-        SELECT name, room
-        FROM event
-        WHERE event.id = $1
-        "#,
-        event_id
-    )
-    .fetch_one(&auth_session.backend.db)
-    .await?;
-
-    Ok(Some(name))
-}
-
-/// Get all events for a host user (only events they are hosting, checking the
-/// event_admin table)
-async fn host_event(
-    auth_session: &AuthSession,
-    user_id: i32,
-    event_id: i32,
-) -> Result<Option<EventInterrogation>, sqlx::Error> {
-    // Disallow access to events that should not be displayed
-    // Get the name of the event while checking if the user has access to it
-    let name = sqlx::query_as!(
-        EventInterrogation,
-        // language=PostgreSQL
-        r#"
-        SELECT name, room
-        FROM event
-        JOIN event_admin ON event.id = event_admin.event_id
-        WHERE event_admin.user_id = $1 AND event.id = $2 AND event.should_display IS TRUE
-        "#,
-        user_id,
-        event_id
-    )
-    .fetch_optional(&auth_session.backend.db)
-    .await?;
-
-    Ok(name)
 }

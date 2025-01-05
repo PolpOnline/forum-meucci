@@ -68,6 +68,7 @@ async fn admin_events(auth_session: &AuthSession) -> Result<Vec<AdminEvent>, sql
                event.room          AS room
         FROM event
         WHERE event.should_display IS TRUE
+        ORDER BY event.name;
         "#
     )
     .fetch_all(&auth_session.backend.db)
@@ -93,6 +94,7 @@ async fn host_events(
         FROM event
                  JOIN event_admin ON event.id = event_admin.event_id
         WHERE event.should_display IS TRUE AND event_admin.user_id = $1
+        ORDER BY event.name;
         "#,
         user_id
     )
