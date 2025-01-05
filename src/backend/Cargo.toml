@@ -24,7 +24,7 @@ uuid = { version = "1.10", features = ["v4", "serde"] }
 axum_thiserror = "0.1"
 tower-http = { version = "0.6", features = ["trace", "compression-full", "decompression-full"] }
 tower-sessions-redis-store = { version = "0.15", features = ["enable-rustls"] }
-sysinfo = { version = "0.32", features = ["serde", "system"], default-features = false }
+sysinfo = { version = "0.33.1", features = ["serde", "system"], default-features = false }
 futures = "0.3"
 ahash = "0.8"
 reqwest = { version = "0.12", features = ["zstd", "rustls-tls", "brotli", "json"] }
