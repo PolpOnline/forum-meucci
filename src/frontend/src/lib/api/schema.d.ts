@@ -243,9 +243,7 @@ export interface paths {
 		trace?: never;
 	};
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
 	schemas: {
 		AdminEvent: {
@@ -270,6 +268,11 @@ export interface components {
 			presences: components['schemas']['Presence'][];
 			/** @example Room 1 */
 			room: string;
+			/**
+			 * Format: int32
+			 * @example 20
+			 */
+			total_seats: number;
 		};
 		AdminRound: {
 			/**
@@ -456,9 +459,7 @@ export interface components {
 	headers: never;
 	pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
 export interface operations {
 	events: {
 		parameters: {

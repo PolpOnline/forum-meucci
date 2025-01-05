@@ -24,6 +24,8 @@ pub struct AdminPresenceResponse {
     name: String,
     #[schema(example = "Room 1")]
     room: String,
+    #[schema(example = 20)]
+    total_seats: i32,
     presences: Vec<Presence>,
 }
 
@@ -106,9 +108,27 @@ pub async fn presences(
         })
         .collect();
 
+    let total_seats = match sqlx::query!(
+        // language=PostgreSQL
+        r#"
+        SELECT max_users
+        FROM round_max_users
+        WHERE event_id = $1 AND round = $2;
+        "#,
+        req.event_id,
+        req.round
+    )
+    .fetch_one(&auth_session.backend.db)
+    .await
+    {
+        Ok(r) => r.max_users,
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+    };
+
     Json(AdminPresenceResponse {
         name: event.name,
         room: event.room,
+        total_seats,
         presences,
     })
     .into_response()

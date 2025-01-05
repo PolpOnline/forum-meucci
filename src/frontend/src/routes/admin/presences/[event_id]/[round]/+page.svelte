@@ -12,12 +12,14 @@
 	import LineMdConfirm from '~icons/line-md/confirm';
 	import LineMdClose from '~icons/line-md/close';
 	import { Label } from '$lib/components/ui/label';
+	import LucideUsers from '~icons/lucide/users';
 
 	let { data } = $props();
 
 	// Use a state to be able to update the data reactively
 	const { event_id, round, adminPresences } = $state(data.data);
-	const { name, room, presences } = $state(adminPresences);
+	const { name, room, presences, total_seats } = $state(adminPresences);
+	const available_seats = total_seats - adminPresences.presences.length;
 
 	type SpinnerState = 'loading' | 'success' | 'error' | 'idle';
 
@@ -69,6 +71,10 @@
 			<Badge class="pointer-events-none mt-2" variant="secondary">
 				<LucideMapPin class="mr-1 h-4 w-4" />
 				<div class="translate-y-[5%] text-sm">{room}</div>
+			</Badge>
+			<Badge class="pointer-events-none mt-2" variant="secondary">
+				<LucideUsers class="mr-1 h-4 w-4" />
+				<div class="translate-y-[5%] text-sm">{available_seats} / {total_seats}</div>
 			</Badge>
 		</h1>
 		<div class="col-span-2"></div>
