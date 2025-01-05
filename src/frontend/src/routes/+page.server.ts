@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	const { data, response, error: errorMessage } = await client.GET('/events/selected', { fetch });
 
 	if (response.status === StatusCodes.UNAUTHORIZED) {
-		redirect(StatusCodes.MOVED_TEMPORARILY, '/login');
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');
 	}
 
 	if (errorMessage) {

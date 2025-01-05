@@ -1,7 +1,8 @@
 import { API_URL } from '$lib/api/api';
-import type { Handle, HandleFetch, ResolveOptions } from '@sveltejs/kit';
+import { type Handle, type HandleFetch, redirect, type ResolveOptions } from '@sveltejs/kit';
 import type { LoginStatus } from './app';
 import { default as setCookieParser } from 'set-cookie-parser';
+import { StatusCodes } from 'http-status-codes';
 
 // Cookie max age in seconds (400 days)
 export const COOKIE_ABSOLUTE_MAX_AGE = 34560000;
@@ -58,19 +59,16 @@ export const resolveOptions: ResolveOptions = {
 export const handle: Handle = async ({ event, resolve }) => {
 	const requestedPath = event.url.pathname;
 	// Auth check
-	event.locals.loginStatus = event.cookies.get('meucci_forum_id')
-		? 'logged_in'
-		: ('logged_out' as LoginStatus);
+	event.locals.loginStatus = (
+		event.cookies.get('meucci_forum_id') ? 'logged_in' : 'logged_out'
+	) as LoginStatus;
 
 	if (requestedPath.startsWith('/auth') || requestedPath.startsWith('/system/')) {
 		return resolve(event, resolveOptions);
 	}
 
 	if (event.locals.loginStatus === 'logged_out') {
-		return new Response(null, {
-			status: 302,
-			headers: { location: '/auth/login' }
-		});
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');
 	}
 
 	return resolve(event, resolveOptions);

@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}
 
 	if (response.status === StatusCodes.UNAUTHORIZED) {
-		redirect(StatusCodes.MOVED_TEMPORARILY, '/login');
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');
 	}
 
 	if (!data) {
