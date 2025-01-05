@@ -7,13 +7,9 @@
 </script>
 
 <main>
-	<div class="w-100 mx-auto mt-5 w-[95%] max-w-[800px]">
+	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
 		{#each adminEvents as event (event.id)}
-			<div class="my-4">
-				<div class="mt-3">
-					<AdminEvent {event} />
-				</div>
-			</div>
+			<AdminEvent {event} />
 		{/each}
 	</div>
 </main>

@@ -13,9 +13,9 @@
 </script>
 
 <main>
-	<div class="w-100 mx-auto mt-5 w-[95%] max-w-[800px]">
+	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
 		{#each selectedEvents as event (event.round)}
-			<div class="my-4" animate:flip>
+			<div animate:flip>
 				<div class="font-semibold">
 					{formatItalianDate(event.date)}
 				</div>

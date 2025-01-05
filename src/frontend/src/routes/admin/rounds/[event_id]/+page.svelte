@@ -30,13 +30,9 @@
 		</h1>
 		<div class="col-span-2"></div>
 	</div>
-	<div class="w-100 mx-auto mt-5 w-[95%] max-w-[800px]">
+	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
 		{#each rounds as round (round.round)}
-			<div class="my-4">
-				<div class="mt-3">
-					<AdminRound {round} {event_id} />
-				</div>
-			</div>
+			<AdminRound {round} {event_id} />
 		{/each}
 	</div>
 </main>
