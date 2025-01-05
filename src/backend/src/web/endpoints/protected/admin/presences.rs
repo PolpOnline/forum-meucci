@@ -77,7 +77,7 @@ pub async fn presences(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    let presences = match sqlx::query!(
+    let presences_fut = sqlx::query!(
         // language=PostgreSQL
         r#"
         SELECT "user".id,
@@ -91,9 +91,24 @@ pub async fn presences(
         req.event_id,
         req.round
     )
-    .fetch_all(&auth_session.backend.db)
-    .await
-    {
+    .fetch_all(&auth_session.backend.db);
+
+    let total_seats_fut = sqlx::query!(
+        // language=PostgreSQL
+        r#"
+        SELECT max_users
+        FROM round_max_users
+        WHERE event_id = $1 AND round = $2;
+        "#,
+        req.event_id,
+        req.round
+    )
+    .fetch_one(&auth_session.backend.db);
+
+    // Await queries together for improved performance
+    let (presences, total_seats) = futures::join!(presences_fut, total_seats_fut);
+
+    let presences = match presences {
         Ok(r) => r,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
@@ -108,19 +123,7 @@ pub async fn presences(
         })
         .collect();
 
-    let total_seats = match sqlx::query!(
-        // language=PostgreSQL
-        r#"
-        SELECT max_users
-        FROM round_max_users
-        WHERE event_id = $1 AND round = $2;
-        "#,
-        req.event_id,
-        req.round
-    )
-    .fetch_one(&auth_session.backend.db)
-    .await
-    {
+    let total_seats = match total_seats {
         Ok(r) => r.max_users,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
