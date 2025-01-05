@@ -3,7 +3,6 @@
 	import { cn } from '$lib/utils';
 	import type { components } from '$lib/api/schema';
 	import { Badge } from '$lib/components/ui/badge';
-	import LucideArrowRight from '~icons/lucide/arrow-right';
 	import LucideUsers from '~icons/lucide/users';
 	import { formatItalianDate } from '$lib/utils/dates';
 
@@ -31,6 +30,6 @@
 		)}
 		href="/admin/presences/{event_id}/{round}"
 	>
-		<LucideArrowRight />
+		<LucideUsers />
 	</Button>
 </div>

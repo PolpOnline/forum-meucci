@@ -18,6 +18,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
 	}
 
+	// Auto redirect to the first event if the length is 1
+	if (data.events.length === 1) {
+		redirect(StatusCodes.MOVED_TEMPORARILY, `/admin/rounds/${data.events[0]!.id}?one=true`);
+	}
+
 	return {
 		adminEvents: data.events
 	};

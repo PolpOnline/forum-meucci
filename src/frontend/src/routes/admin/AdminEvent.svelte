@@ -4,7 +4,7 @@
 	import type { components } from '$lib/api/schema';
 	import LucideMapPin from '~icons/lucide/map-pin';
 	import { Badge } from '$lib/components/ui/badge';
-	import LucideUsers from '~icons/lucide/users';
+	import LucideClock from '~icons/lucide/clock';
 
 	const { event }: { event: components['schemas']['AdminEvent'] } = $props();
 
@@ -37,6 +37,6 @@
 		)}
 		href="/admin/rounds/{id}"
 	>
-		<LucideUsers />
+		<LucideClock />
 	</Button>
 </div>
