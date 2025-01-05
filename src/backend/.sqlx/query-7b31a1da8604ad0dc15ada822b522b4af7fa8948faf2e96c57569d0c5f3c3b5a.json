@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT event_id\n        FROM event_admin\n        JOIN event ON event_admin.event_id = event.id\n        WHERE user_id = $1 AND event_id = $2 AND should_display IS TRUE\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "event_id",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "7b31a1da8604ad0dc15ada822b522b4af7fa8948faf2e96c57569d0c5f3c3b5a"
+}

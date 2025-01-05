@@ -55,6 +55,23 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/admin/set_presence': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/** Set Presence */
+		patch: operations['set_presence'];
+		trace?: never;
+	};
 	'/auth/callback': {
 		parameters: {
 			query?: never;
@@ -226,7 +243,9 @@ export interface paths {
 		trace?: never;
 	};
 }
+
 export type webhooks = Record<string, never>;
+
 export interface components {
 	schemas: {
 		AdminEvent: {
@@ -277,6 +296,31 @@ export interface components {
 			/** @example Room 1 */
 			room: string;
 			rounds: components['schemas']['AdminRound'][];
+		};
+		AdminSetPresenceRequest: {
+			/**
+			 * Format: int32
+			 * @description The ID of the event
+			 * @example 1
+			 */
+			event_id: number;
+			/**
+			 * @description Whether the user is present
+			 * @example true
+			 */
+			present: boolean;
+			/**
+			 * Format: int32
+			 * @description The round number
+			 * @example 1
+			 */
+			round: number;
+			/**
+			 * Format: int32
+			 * @description The ID of the user
+			 * @example 1
+			 */
+			user_id: number;
 		};
 		AvailableEvent: {
 			/**
@@ -355,9 +399,14 @@ export interface components {
 			used: string;
 		};
 		Presence: {
-			/** @example 0 */
+			/**
+			 * Format: int32
+			 * @example 1
+			 */
+			id: number;
+			/** @example John Doe */
 			name: string;
-			/** @example 0 */
+			/** @example false */
 			present: boolean;
 		};
 		SelectedEventResponse: {
@@ -407,7 +456,9 @@ export interface components {
 	headers: never;
 	pathItems: never;
 }
+
 export type $defs = Record<string, never>;
+
 export interface operations {
 	events: {
 		parameters: {
@@ -525,6 +576,49 @@ export interface operations {
 				content: {
 					'application/json': components['schemas']['AdminRoundResponse'];
 				};
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Not an admin or host */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	set_presence: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['AdminSetPresenceRequest'];
+			};
+		};
+		responses: {
+			/** @description Presence set */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
 			};
 			/** @description Not logged in */
 			401: {

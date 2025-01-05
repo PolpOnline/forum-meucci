@@ -7,6 +7,7 @@
 
 	let className: $$Props['class'] = undefined;
 	export let checked: $$Props['checked'] = undefined;
+	// noinspection ReservedWordAsName
 	export { className as class };
 </script>
 

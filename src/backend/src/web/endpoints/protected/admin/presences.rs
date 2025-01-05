@@ -29,9 +29,11 @@ pub struct AdminPresenceResponse {
 
 #[derive(Serialize, ToSchema)]
 pub struct Presence {
-    #[schema(example = 0, minimum = 0)]
+    #[schema(example = 1, minimum = 1)]
+    id: i32,
+    #[schema(example = "John Doe")]
     name: String,
-    #[schema(example = 0, minimum = 0)]
+    #[schema(example = false)]
     present: bool,
 }
 
@@ -76,7 +78,8 @@ pub async fn presences(
     let presences = match sqlx::query!(
         // language=PostgreSQL
         r#"
-        SELECT COALESCE("user".name, "user".email) AS name,
+        SELECT "user".id,
+               COALESCE("user".name, "user".email) AS name,
                event_user.joined_at IS NOT NULL AS present
         FROM event_user
                  JOIN "user" ON event_user.user_id = "user".id
@@ -96,8 +99,10 @@ pub async fn presences(
     let presences: Vec<_> = presences
         .into_iter()
         .map(|r| Presence {
-            name: r.name.unwrap(),
-            present: r.present.unwrap(),
+            // Both name and present won't be null, as the DB query ensures that
+            id: r.id,
+            name: r.name.unwrap_or_else(|| unreachable!()),
+            present: r.present.unwrap_or_else(|| unreachable!()),
         })
         .collect();
 

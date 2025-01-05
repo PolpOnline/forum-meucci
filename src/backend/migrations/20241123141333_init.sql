@@ -25,11 +25,12 @@ CREATE INDEX ON "user" (email);
 
 CREATE TABLE event_user
 (
-    event_id     INT       NOT NULL REFERENCES event (id) ON DELETE CASCADE,
-    user_id      INT       NOT NULL REFERENCES "user" (id) ON DELETE CASCADE,
-    scheduled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    joined_at    TIMESTAMP,
-    round        INT       NOT NULL CHECK ( round >= 0 ),
+    event_id       INT       NOT NULL REFERENCES event (id) ON DELETE CASCADE,
+    user_id        INT       NOT NULL REFERENCES "user" (id) ON DELETE CASCADE,
+    scheduled_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    joined_at      TIMESTAMP,
+    last_edited_by INT REFERENCES "user" (id),
+    round          INT       NOT NULL CHECK ( round >= 0 ),
     PRIMARY KEY (user_id, round)
 );
 
