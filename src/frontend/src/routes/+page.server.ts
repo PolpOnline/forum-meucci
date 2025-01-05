@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import { client } from '$lib/api/api';
-import { StatusCodes } from 'http-status-codes';
+import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import { error, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ fetch }) => {
@@ -11,11 +11,12 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}
 
 	if (errorMessage) {
-		error(StatusCodes.INTERNAL_SERVER_ERROR, `Failed to fetch: ${errorMessage}`);
+		console.error(errorMessage);
+		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
 	}
 
 	if (!data) {
-		error(StatusCodes.INTERNAL_SERVER_ERROR, 'Failed to fetch');
+		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
 	}
 
 	return {
