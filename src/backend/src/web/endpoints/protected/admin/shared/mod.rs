@@ -63,8 +63,8 @@ pub async fn get_event(
     event_id: i32,
 ) -> Result<Option<EventBasicInfo>, sqlx::Error> {
     match user_type {
-        UserType::Admin => get_admin_event(&auth_session, event_id).await,
-        UserType::Host => get_host_event(&auth_session, user_id, event_id).await,
+        UserType::Admin => get_admin_event(auth_session, event_id).await,
+        UserType::Host => get_host_event(auth_session, user_id, event_id).await,
         UserType::Normal => unreachable!(),
     }
 }
@@ -100,7 +100,7 @@ pub async fn user_has_access_to_event(
 ) -> Result<bool, sqlx::Error> {
     let has_access = match user_type {
         UserType::Admin => true,
-        UserType::Host => check_host_event(&auth_session, user_id, event_id).await?,
+        UserType::Host => check_host_event(auth_session, user_id, event_id).await?,
         UserType::Normal => unreachable!(),
     };
 
