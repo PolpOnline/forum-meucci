@@ -11,6 +11,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Events List */
 		get: operations['events'];
 		put?: never;
 		post?: never;
@@ -27,6 +28,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Presences List */
 		get: operations['presences'];
 		put?: never;
 		post?: never;
@@ -43,6 +45,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Rounds List */
 		get: operations['rounds'];
 		put?: never;
 		post?: never;
@@ -59,6 +62,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** OAuth2 callback endpoint */
 		get: operations['google_oauth_callback_handler'];
 		put?: never;
 		post?: never;
@@ -75,6 +79,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Login with Google OAuth */
 		get: operations['google_login_handler'];
 		put?: never;
 		post?: never;
@@ -91,6 +96,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Logout */
 		get: operations['logout_handler'];
 		put?: never;
 		post?: never;
@@ -107,6 +113,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Available Events */
 		get: operations['available'];
 		put?: never;
 		post?: never;
@@ -123,6 +130,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Selected Events */
 		get: operations['selected'];
 		put?: never;
 		post?: never;
@@ -145,6 +153,7 @@ export interface paths {
 		delete?: never;
 		options?: never;
 		head?: never;
+		/** Set Event */
 		patch: operations['set'];
 		trace?: never;
 	};
@@ -155,6 +164,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** Healthcheck */
 		get: operations['healthcheck'];
 		put?: never;
 		post?: never;
@@ -171,6 +181,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** System Info */
 		get: operations['sys_info'];
 		put?: never;
 		post?: never;
@@ -187,6 +198,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** User Info */
 		get: operations['me'];
 		put?: never;
 		post?: never;
@@ -203,6 +215,7 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/** User Type */
 		get: operations['my_type'];
 		put?: never;
 		post?: never;

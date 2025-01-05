@@ -30,6 +30,7 @@ pub(in crate::web) enum AuthParams {
 #[utoipa::path(
     get,
     path = "/callback",
+    summary = "OAuth2 callback endpoint",
     params(AuthzResp),
     responses(
         (status = 303, description = "Redirect to Auth Success page, with a message in the reason query param", headers(

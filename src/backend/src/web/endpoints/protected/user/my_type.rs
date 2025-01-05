@@ -14,6 +14,7 @@ pub struct UserTypeResponse {
 #[utoipa::path(
     get,
     path = "/my_type",
+    summary = "User Type",
     responses(
         (status = OK, description = "Returns the user's type", body = UserTypeResponse),
         (status = UNAUTHORIZED, description = "Not logged in")

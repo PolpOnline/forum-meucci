@@ -20,6 +20,7 @@ pub struct SetEventRequest {
 #[utoipa::path(
     patch,
     path = "/set",
+    summary = "Set Event",
     request_body = SetEventRequest,
     responses(
         (status = OK, description = "The event was set successfully"),

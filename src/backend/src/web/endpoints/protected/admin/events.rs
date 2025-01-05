@@ -25,6 +25,7 @@ pub struct AdminEvent {
 #[utoipa::path(
     get,
     path = "/events",
+    summary = "Events List",
     responses(
         (status = OK, description = "List of the events the user has access to, if admin all events, if host only those they are hosting", body = AdminEventResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),

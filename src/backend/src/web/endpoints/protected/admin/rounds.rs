@@ -64,6 +64,7 @@ pub struct AdminRoundWithoutDate {
 #[utoipa::path(
     get,
     path = "/rounds/{event_id}",
+    summary = "Rounds List",
     params(AdminRoundRequest),
     responses(
         (status = OK, description = "List of the rounds for an event the user has access to", body = AdminRoundResponse),

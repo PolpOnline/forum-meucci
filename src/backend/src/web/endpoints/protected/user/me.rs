@@ -16,6 +16,7 @@ pub struct User {
 #[utoipa::path(
     get,
     path = "/me",
+    summary = "User Info",
     responses(
         (status = OK, description = "Returns the user's info", body = User),
         (status = UNAUTHORIZED, description = "Not logged in")

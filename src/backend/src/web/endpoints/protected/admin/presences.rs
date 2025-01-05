@@ -38,6 +38,7 @@ pub struct Presence {
 #[utoipa::path(
     get,
     path = "/presences/{event_id}/{round}",
+    summary = "Presences List",
     params(AdminPresenceRequest),
     responses(
         (status = OK, description = "List of the presences for a given event and round", body = AdminPresenceResponse),

@@ -6,6 +6,7 @@ use crate::{app::openapi::AUTH_TAG, users::AuthSession};
 #[utoipa::path(
     get,
     path = "/login",
+    summary = "Login with Google OAuth",
     responses((status = 303, description = "Redirect to Google OAuth")),
     tag = AUTH_TAG
 )]

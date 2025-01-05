@@ -18,6 +18,7 @@ pub struct SelectedEventResponse {
 #[utoipa::path(
     get,
     path = "/selected",
+    summary = "Selected Events",
     responses(
         (status = OK, description = "Returns the selected events", body = SelectedEventResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),

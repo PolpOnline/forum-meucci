@@ -104,6 +104,7 @@ impl SystemInfoResponse {
 #[utoipa::path(
     get,
     path = "/sys_info",
+    summary = "System Info",
     responses(
             (status = 200, description = "System info", body = SystemInfoResponse),
     ),

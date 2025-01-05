@@ -36,6 +36,7 @@ pub struct AvailableEvent {
 #[utoipa::path(
     get,
     path = "/available/{round}",
+    summary = "Available Events",
     params(AvailableEventRequest),
     responses(
         (status = OK, description = "Returns the available events", body = AvailableEventResponse),
