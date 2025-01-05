@@ -10,7 +10,7 @@
 	<div class="text-sm text-muted-foreground">{event.description}</div>
 	<div class="text-sm text-muted-foreground">{event.room}</div>
 	<div class="absolute right-2 top-2 flex items-center text-sm text-muted-foreground">
-		{event.available_seats} / {event.total_seats}
+		{event.used_seats} / {event.total_seats}
 		<LucideUsers class="ml-1 inline" />
 	</div>
 </div>

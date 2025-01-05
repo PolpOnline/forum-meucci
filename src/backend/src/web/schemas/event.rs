@@ -12,7 +12,7 @@ pub struct EventWithoutDate {
     pub name: String,
     pub description: Option<String>,
     pub room: Option<String>,
-    pub available_seats: Option<i64>,
+    pub used_seats: Option<i64>,
     pub total_seats: i64,
 }
 
@@ -30,7 +30,7 @@ pub struct Event {
     #[schema(example = "Room 1")]
     pub room: Option<String>,
     #[schema(example = 10, minimum = 0)]
-    pub available_seats: Option<i64>,
+    pub used_seats: Option<i64>,
     #[schema(example = 20, minimum = 0)]
     pub total_seats: i64,
     pub date: DateTime<Utc>,
@@ -53,7 +53,7 @@ impl Event {
             name: event.name,
             description: event.description,
             room: event.room,
-            available_seats: event.available_seats,
+            used_seats: event.used_seats,
             total_seats: event.total_seats,
             date: round_to_date(config, event.round)?,
         })

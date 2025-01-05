@@ -11,7 +11,7 @@
 	const { event, formattedDate }: { event: components['schemas']['Event']; formattedDate: string } =
 		$props();
 
-	const { id, name, description, round, room, available_seats, total_seats } = $derived(event);
+	const { id, name, description, round, room, used_seats, total_seats } = $derived(event);
 </script>
 
 <div
@@ -34,10 +34,10 @@
 					<div class="translate-y-[5%] text-sm">{room}</div>
 				</Badge>
 			{/if}
-			{#if available_seats && total_seats}
+			{#if used_seats && total_seats}
 				<Badge class="pointer-events-none mt-2" variant="secondary">
 					<LucideUsers class="mr-1 h-4 w-4" />
-					<div class="translate-y-[5%] text-sm">{available_seats} / {total_seats}</div>
+					<div class="translate-y-[5%] text-sm">{used_seats} / {total_seats}</div>
 				</Badge>
 			{/if}
 		</div>

@@ -19,7 +19,7 @@
 	// Use a state to be able to update the data reactively
 	const { event_id, round, adminPresences } = $state(data.data);
 	const { name, room, presences, total_seats } = $state(adminPresences);
-	const available_seats = total_seats - adminPresences.presences.length;
+	const used_seats = adminPresences.presences.length;
 
 	type SpinnerState = 'loading' | 'success' | 'error' | 'idle';
 
@@ -74,7 +74,7 @@
 			</Badge>
 			<Badge class="pointer-events-none mt-2" variant="secondary">
 				<LucideUsers class="mr-1 h-4 w-4" />
-				<div class="translate-y-[5%] text-sm">{available_seats} / {total_seats}</div>
+				<div class="translate-y-[5%] text-sm">{used_seats} / {total_seats}</div>
 			</Badge>
 		</h1>
 		<div class="col-span-2"></div>

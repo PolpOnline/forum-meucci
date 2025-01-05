@@ -36,7 +36,7 @@ pub struct AdminRound {
     round: i32,
     date: DateTime<Utc>,
     #[schema(example = 10)]
-    available_seats: Option<i64>,
+    used_seats: Option<i64>,
     #[schema(example = 20)]
     total_seats: i64,
 }
@@ -49,7 +49,7 @@ impl AdminRound {
         Ok(AdminRound {
             round: event.round,
             date: round_to_date(config, event.round)?,
-            available_seats: event.available_seats,
+            used_seats: event.used_seats,
             total_seats: event.total_seats,
         })
     }
@@ -57,7 +57,7 @@ impl AdminRound {
 
 pub struct AdminRoundWithoutDate {
     round: i32,
-    available_seats: Option<i64>,
+    used_seats: Option<i64>,
     total_seats: i64,
 }
 
@@ -104,14 +104,14 @@ pub async fn rounds(
         // language=PostgreSQL
         r#"
         SELECT round_max_users.round,
-              (round_max_users.max_users - COUNT(event_user.user_id)) AS available_seats,
-               round_max_users.max_users                              AS total_seats
+               COUNT(event_user.user_id) AS used_seats,
+               round_max_users.max_users AS total_seats
         FROM round_max_users
-            LEFT JOIN event_user
-                ON round_max_users.event_id = event_user.event_id
-                    AND round_max_users.round = event_user.round
+                 LEFT JOIN event_user
+                           ON round_max_users.event_id = event_user.event_id
+                               AND round_max_users.round = event_user.round
         WHERE round_max_users.event_id = $1
-        GROUP BY round_max_users.round, round_max_users.max_users;
+        GROUP BY round_max_users.round, round_max_users.max_users
         "#,
         req.event_id
     )

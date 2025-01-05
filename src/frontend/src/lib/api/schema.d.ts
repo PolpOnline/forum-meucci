@@ -275,11 +275,6 @@ export interface components {
 			total_seats: number;
 		};
 		AdminRound: {
-			/**
-			 * Format: int64
-			 * @example 10
-			 */
-			available_seats?: number | null;
 			/** Format: date-time */
 			date: string;
 			/**
@@ -292,6 +287,11 @@ export interface components {
 			 * @example 20
 			 */
 			total_seats: number;
+			/**
+			 * Format: int64
+			 * @example 10
+			 */
+			used_seats?: number | null;
 		};
 		AdminRoundResponse: {
 			/** @example Event 1 */
@@ -326,11 +326,6 @@ export interface components {
 			user_id: number;
 		};
 		AvailableEvent: {
-			/**
-			 * Format: int64
-			 * @example 10
-			 */
-			available_seats?: number | null;
 			/** @example This is the description of event 1 */
 			description: string;
 			/**
@@ -347,6 +342,11 @@ export interface components {
 			 * @example 20
 			 */
 			total_seats: number;
+			/**
+			 * Format: int64
+			 * @example 10
+			 */
+			used_seats?: number | null;
 		};
 		AvailableEventResponse: {
 			events: components['schemas']['AvailableEvent'][];
@@ -366,11 +366,6 @@ export interface components {
 			vendor_id: string;
 		};
 		Event: {
-			/**
-			 * Format: int64
-			 * @example 10
-			 */
-			available_seats?: number | null;
 			/** Format: date-time */
 			date: string;
 			/** @example This is the description of event 1 */
@@ -395,6 +390,11 @@ export interface components {
 			 * @example 20
 			 */
 			total_seats: number;
+			/**
+			 * Format: int64
+			 * @example 10
+			 */
+			used_seats?: number | null;
 		};
 		MemInfo: {
 			free: string;
