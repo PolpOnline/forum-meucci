@@ -20,6 +20,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/admin/rounds/{event_id}': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations['rounds'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	'/auth/callback': {
 		parameters: {
 			query?: never;
@@ -200,6 +216,32 @@ export interface components {
 		AdminEventResponse: {
 			events: components['schemas']['AdminEvent'][];
 		};
+		AdminRound: {
+			/**
+			 * Format: int64
+			 * @example 10
+			 */
+			available_seats?: number | null;
+			/** Format: date-time */
+			date: string;
+			/**
+			 * Format: int32
+			 * @example 0
+			 */
+			round: number;
+			/**
+			 * Format: int64
+			 * @example 20
+			 */
+			total_seats: number;
+		};
+		AdminRoundResponse: {
+			/** @example Event 1 */
+			name: string;
+			/** @example Room 1 */
+			room: string;
+			rounds: components['schemas']['AdminRound'][];
+		};
 		AvailableEvent: {
 			/**
 			 * Format: int64
@@ -341,6 +383,53 @@ export interface operations {
 				};
 				content: {
 					'application/json': components['schemas']['AdminEventResponse'];
+				};
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Not an admin or host */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	rounds: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/**
+				 * @description The ID of the event
+				 * @example 1
+				 */
+				event_id: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description List of the rounds for an event the user has access to */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['AdminRoundResponse'];
 				};
 			};
 			/** @description Not logged in */

@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 async-trait = "0.1"
-axum = { version = "0.7", features = ["http2"] }
+axum = { version = "0.7", features = ["http2", "macros"] }
 axum-login = "0.16"
 http = "1.0"
 hyper = "1.0"

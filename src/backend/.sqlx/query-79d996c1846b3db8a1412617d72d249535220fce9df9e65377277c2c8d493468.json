@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT round_max_users.round,\n              (round_max_users.max_users - COUNT(event_user.user_id)) AS available_seats,\n               round_max_users.max_users                              AS total_seats\n        FROM round_max_users\n            LEFT JOIN event_user\n                ON round_max_users.event_id = event_user.event_id\n                    AND round_max_users.round = event_user.round\n        WHERE round_max_users.event_id = $1\n        GROUP BY round_max_users.round, round_max_users.max_users;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "round",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "available_seats",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "total_seats",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      null,
+      false
+    ]
+  },
+  "hash": "79d996c1846b3db8a1412617d72d249535220fce9df9e65377277c2c8d493468"
+}

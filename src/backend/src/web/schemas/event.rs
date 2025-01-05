@@ -37,7 +37,7 @@ pub struct Event {
 }
 
 #[derive(Error, Debug)]
-pub enum EventConversionError {
+pub enum RoundConversionError {
     #[error("Round `{0}` is not mapped to date")]
     RoundNotInDateMap(i32),
 }
@@ -46,7 +46,7 @@ impl Event {
     pub fn from_without_date(
         event: EventWithoutDate,
         config: &Config,
-    ) -> Result<Self, EventConversionError> {
+    ) -> Result<Self, RoundConversionError> {
         Ok(Event {
             id: event.id,
             round: event.round,
@@ -60,11 +60,11 @@ impl Event {
     }
 }
 
-fn round_to_date(config: &Config, round: i32) -> Result<DateTime<Utc>, EventConversionError> {
+pub fn round_to_date(config: &Config, round: i32) -> Result<DateTime<Utc>, RoundConversionError> {
     let date_map = &config.date_map;
 
     match date_map.get(round as usize) {
         Some(date) => Ok(*date),
-        None => Err(EventConversionError::RoundNotInDateMap(round)),
+        None => Err(RoundConversionError::RoundNotInDateMap(round)),
     }
 }
