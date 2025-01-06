@@ -31,13 +31,13 @@
 			{#if room}
 				<Badge class="pointer-events-none mt-2" variant="secondary">
 					<LucideMapPin class="mr-1 h-4 w-4" />
-					<div class="translate-y-[5%] text-sm">{room}</div>
+					<div class="text-sm">{room}</div>
 				</Badge>
 			{/if}
 			{#if used_seats && total_seats}
 				<Badge class="pointer-events-none mt-2" variant="secondary">
 					<LucideUsers class="mr-1 h-4 w-4" />
-					<div class="translate-y-[5%] text-sm">{used_seats} / {total_seats}</div>
+					<div class="text-sm">{used_seats} / {total_seats}</div>
 				</Badge>
 			{/if}
 		</div>

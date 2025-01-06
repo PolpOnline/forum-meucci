@@ -23,7 +23,7 @@
 			<br />
 			<Badge class="pointer-events-none mt-2" variant="secondary">
 				<LucideMapPin class="mr-1 h-4 w-4" />
-				<div class="translate-y-[5%] text-sm">{room}</div>
+				<div class="text-sm">{room}</div>
 			</Badge>
 		</h1>
 		<div class="col-span-2"></div>
