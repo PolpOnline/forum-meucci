@@ -83,26 +83,24 @@ fn fill_gaps(events: Vec<EventWithoutDate>, num_rounds: usize) -> Vec<EventWitho
     let round_map: AHashMap<i32, &EventWithoutDate> =
         events.iter().map(|event| (event.round, event)).collect();
 
-    let mut filled_events = Vec::with_capacity(num_rounds);
-    // Iterate from 0 up to num_rounds - 1
-    for round in 0..num_rounds as i32 {
-        if let Some(existing) = round_map.get(&round) {
-            filled_events.push(EventWithoutDate {
-                id: existing.id,
-                round: existing.round,
-                name: existing.name.clone(),
-                description: existing.description.clone(),
-                room: existing.room.clone(),
-                used_seats: existing.used_seats,
-                total_seats: existing.total_seats,
-            });
-        } else {
-            filled_events.push(EventWithoutDate {
-                round,
-                ..Default::default()
-            });
-        }
-    }
-
-    filled_events
+    (0..num_rounds as i32)
+        .map(|round| {
+            if let Some(existing) = round_map.get(&round) {
+                EventWithoutDate {
+                    id: existing.id,
+                    round: existing.round,
+                    name: existing.name.clone(),
+                    description: existing.description.clone(),
+                    room: existing.room.clone(),
+                    used_seats: existing.used_seats,
+                    total_seats: existing.total_seats,
+                }
+            } else {
+                EventWithoutDate {
+                    round,
+                    ..Default::default()
+                }
+            }
+        })
+        .collect()
 }
