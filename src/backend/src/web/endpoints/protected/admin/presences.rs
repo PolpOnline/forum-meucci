@@ -77,12 +77,13 @@ pub async fn presences(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    let presences_fut = sqlx::query!(
+    let presences_fut = sqlx::query_as!(
+        Presence,
         // language=PostgreSQL
         r#"
         SELECT "user".id,
-               COALESCE("user".name, "user".email) AS name,
-               event_user.joined_at IS NOT NULL AS present
+               COALESCE("user".name, "user".email) AS "name!: String",
+               event_user.joined_at IS NOT NULL AS "present!: bool"
         FROM event_user
                  JOIN "user" ON event_user.user_id = "user".id
         WHERE event_user.event_id = $1 AND event_user.round = $2
@@ -110,16 +111,6 @@ pub async fn presences(
         Ok((presences, total_seats)) => (presences, total_seats.max_users),
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
-
-    let presences: Vec<_> = presences
-        .into_iter()
-        .map(|r| Presence {
-            // Both name and present won't be null, as the DB query ensures that
-            id: r.id,
-            name: r.name.unwrap_or_else(|| unreachable!()),
-            present: r.present.unwrap_or_else(|| unreachable!()),
-        })
-        .collect();
 
     Json(AdminPresenceResponse {
         name: event.name,
