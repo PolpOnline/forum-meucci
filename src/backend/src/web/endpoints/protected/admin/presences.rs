@@ -106,10 +106,8 @@ pub async fn presences(
     .fetch_one(&auth_session.backend.db);
 
     // Await queries together for improved performance
-    let (presences, total_seats) = futures::join!(presences_fut, total_seats_fut);
-
-    let presences = match presences {
-        Ok(r) => r,
+    let (presences, total_seats) = match futures::try_join!(presences_fut, total_seats_fut) {
+        Ok((presences, total_seats)) => (presences, total_seats.max_users),
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
@@ -122,11 +120,6 @@ pub async fn presences(
             present: r.present.unwrap_or_else(|| unreachable!()),
         })
         .collect();
-
-    let total_seats = match total_seats {
-        Ok(r) => r.max_users,
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
-    };
 
     Json(AdminPresenceResponse {
         name: event.name,
