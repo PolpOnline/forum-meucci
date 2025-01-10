@@ -26,12 +26,12 @@
       {
         "ordinal": 4,
         "name": "section",
-        "type_info": "Int4"
+        "type_info": "Text"
       },
       {
         "ordinal": 5,
         "name": "class",
-        "type_info": "Text"
+        "type_info": "Int4"
       },
       {
         "ordinal": 6,
@@ -60,8 +60,8 @@
       true,
       false,
       false,
-      false,
       true,
+      false,
       false
     ]
   },
