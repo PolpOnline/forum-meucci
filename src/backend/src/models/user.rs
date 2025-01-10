@@ -9,8 +9,8 @@ pub struct User {
     pub name: Option<String>,
     pub email: String,
     pub interactive_done: bool,
-    pub section: i32,
-    pub class: Option<String>,
+    pub section: Option<String>,
+    pub class: i32,
     pub r#type: UserType,
 }
 

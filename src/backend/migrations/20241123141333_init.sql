@@ -1,11 +1,11 @@
 CREATE TABLE event
 (
-    id              SERIAL PRIMARY KEY,
-    name            TEXT    NOT NULL,
-    description     TEXT    NOT NULL,
-    room            TEXT    NOT NULL,
-    minimum_section INT     NOT NULL DEFAULT 1 CHECK ( minimum_section > 0 ),
-    should_display  BOOLEAN NOT NULL DEFAULT TRUE
+    id             SERIAL PRIMARY KEY,
+    name           TEXT    NOT NULL,
+    description    TEXT    NOT NULL,
+    room           TEXT    NOT NULL,
+    minimum_class  INT     NOT NULL DEFAULT 1 CHECK ( minimum_class > 0 ),
+    should_display BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TYPE user_type AS enum ('normal', 'host', 'admin');
@@ -16,8 +16,8 @@ CREATE TABLE "user"
     name             TEXT,
     email            TEXT      NOT NULL UNIQUE,
     interactive_done BOOLEAN   NOT NULL DEFAULT FALSE,
-    section          INT       NOT NULL DEFAULT 1 CHECK ( section > 0 ),
-    class            TEXT,
+    class            INT       NOT NULL DEFAULT 1 CHECK ( class > 0 ),
+    section          TEXT,
     type             user_type NOT NULL DEFAULT 'normal'
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE event_user
 CREATE TABLE round_max_users
 (
     round     INT NOT NULL,
-    event_id INT NOT NULL REFERENCES event (id) ON DELETE CASCADE,
+    event_id  INT NOT NULL REFERENCES event (id) ON DELETE CASCADE,
     max_users INT NOT NULL CHECK ( max_users >= 0 ),
     PRIMARY KEY (round, event_id)
 );

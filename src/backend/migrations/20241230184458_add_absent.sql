@@ -5,7 +5,7 @@ $$
         DECLARE max_int CONSTANT INTEGER := 2147483647;
     BEGIN
         INSERT INTO event
-            (name, description, room, minimum_section, should_display)
+            (name, description, room, minimum_class, should_display)
         VALUES ('absent', '', '', max_int, FALSE) -- Absent should not be shown in the list of events
         RETURNING id INTO event_id;
 

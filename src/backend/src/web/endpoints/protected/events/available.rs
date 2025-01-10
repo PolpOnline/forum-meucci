@@ -52,8 +52,8 @@ pub async fn available(
     auth_session: AuthSession,
     Path(req): Path<AvailableEventRequest>,
 ) -> impl IntoResponse {
-    let user_section = match auth_session.user {
-        Some(user) => user.section,
+    let user_class = match auth_session.user {
+        Some(user) => user.class,
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
@@ -74,13 +74,13 @@ pub async fn available(
              event_user ON event.id = event_user.event_id AND round_max_users.round = event_user.round
         WHERE event.should_display IS TRUE
           AND round_max_users.round = $1
-          AND $2 >= event.minimum_section
+          AND $2 >= event.minimum_class
         GROUP BY event.id, event.name, event.description, event.room, round_max_users.max_users
         HAVING (round_max_users.max_users - COUNT(event_user.user_id)) > 0
         ORDER BY LOWER(event.name)
         "#,
         req.round,
-        user_section,
+        user_class,
     ).fetch_all(&auth_session.backend.db).await {
         Ok(r) => r,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
