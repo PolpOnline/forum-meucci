@@ -7,11 +7,14 @@
 	import LucideMapPin from '~icons/lucide/map-pin';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import LucideUsers from '~icons/lucide/users';
+	import LucideUserRoundCheck from '~icons/lucide/user-round-check';
+	import LucideUserRoundX from '~icons/lucide/user-round-x';
 
 	const { event, formattedDate }: { event: components['schemas']['Event']; formattedDate: string } =
 		$props();
 
-	const { id, name, description, round, room, used_seats, total_seats } = $derived(event);
+	const { id, name, description, round, room, used_seats, total_seats, present, date } =
+		$derived(event);
 </script>
 
 <div
@@ -28,18 +31,32 @@
 			{#if description}
 				<div class="text-sm text-muted-foreground">{description}</div>
 			{/if}
-			{#if room}
+			<div class="space-x-1">
 				<Badge class="pointer-events-none mt-2" variant="secondary">
 					<LucideMapPin class="mr-1 h-4 w-4" />
 					<div class="text-sm">{room}</div>
 				</Badge>
-			{/if}
-			{#if used_seats && total_seats}
 				<Badge class="pointer-events-none mt-2" variant="secondary">
 					<LucideUsers class="mr-1 h-4 w-4" />
 					<div class="text-sm">{used_seats} / {total_seats}</div>
 				</Badge>
-			{/if}
+				{#if present}
+					<Badge class="pointer-events-none mt-2 border-green-600 text-green-600" variant="outline">
+						<LucideUserRoundCheck class="mr-1 h-4 w-4" />
+						<div class="text-sm">Presente</div>
+					</Badge>
+				{:else if new Date(date) < new Date()}
+					<Badge class="pointer-events-none mt-2 border-red-600 text-red-600" variant="outline">
+						<LucideUserRoundX class="mr-1 h-4 w-4" />
+						<div class="text-sm">Assente</div>
+					</Badge>
+				{:else}
+					<Badge class="pointer-events-none mt-2" variant="outline">
+						<LucideUserRoundX class="mr-1 h-4 w-4" />
+						<div class="text-sm">Non iniziato</div>
+					</Badge>
+				{/if}
+			</div>
 		</div>
 	{:else}
 		<EventSelectorDrawer

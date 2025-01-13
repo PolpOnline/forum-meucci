@@ -11,9 +11,10 @@ pub struct EventWithoutDate {
     pub round: i32,
     pub name: String,
     pub description: Option<String>,
-    pub room: Option<String>,
-    pub used_seats: Option<i64>,
+    pub room: String,
+    pub used_seats: i64,
     pub total_seats: i64,
+    pub present: bool,
 }
 
 #[derive(Serialize, ToSchema)]
@@ -28,11 +29,13 @@ pub struct Event {
     #[schema(example = "This is the description of event 1")]
     pub description: Option<String>,
     #[schema(example = "Room 1")]
-    pub room: Option<String>,
+    pub room: String,
     #[schema(example = 10, minimum = 0)]
-    pub used_seats: Option<i64>,
+    pub used_seats: i64,
     #[schema(example = 20, minimum = 0)]
     pub total_seats: i64,
+    #[schema(example = true)]
+    pub present: bool,
     pub date: DateTime<Utc>,
 }
 
@@ -55,6 +58,7 @@ impl Event {
             room: event.room,
             used_seats: event.used_seats,
             total_seats: event.total_seats,
+            present: event.present,
             date: round_to_date(config, event.round)?,
         })
     }

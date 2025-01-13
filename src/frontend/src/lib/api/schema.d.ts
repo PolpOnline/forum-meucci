@@ -377,8 +377,10 @@ export interface components {
 			id: number;
 			/** @example Event 1 */
 			name: string;
+			/** @example true */
+			present: boolean;
 			/** @example Room 1 */
-			room?: string | null;
+			room: string;
 			/**
 			 * Format: int32
 			 * @description The round of the event (0-indexed)
@@ -394,7 +396,7 @@ export interface components {
 			 * Format: int64
 			 * @example 10
 			 */
-			used_seats?: number | null;
+			used_seats: number;
 		};
 		MemInfo: {
 			free: string;

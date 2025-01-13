@@ -39,18 +39,20 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
         EventWithoutDate,
         // language=PostgreSQL
         r#"
-        SELECT event.id                  AS id,
-               event_user.round          AS round,
-               event.name                AS name,
-               event.description         AS description,
-               event.room                AS room,
-               COUNT(event_user.user_id) AS used_seats,
-               round_max_users.max_users AS total_seats
+        SELECT event.id                         AS id,
+               event_user.round                 AS round,
+               event.name                       AS name,
+               event.description                AS description,
+               event.room                       AS "room!: String",
+               COUNT(event_user.user_id)        AS "used_seats!: i64",
+               round_max_users.max_users        AS total_seats,
+               event_user.joined_at IS NOT NULL AS "present!: bool"
         FROM event_user
                  JOIN event ON event_user.event_id = event.id
                  JOIN round_max_users ON event.id = round_max_users.event_id AND event_user.round = round_max_users.round
         WHERE event_user.user_id = $1
-        GROUP BY event.id, event_user.round, event.name, event.description, event.room, round_max_users.max_users
+        GROUP BY event.id, event_user.round, event.name, event.description, event.room, round_max_users.max_users,
+                 event_user.joined_at
         ORDER BY event_user.round;
         "#,
         user_id
@@ -94,6 +96,7 @@ fn fill_gaps(events: Vec<EventWithoutDate>, num_rounds: usize) -> Vec<EventWitho
                     room: existing.room.clone(),
                     used_seats: existing.used_seats,
                     total_seats: existing.total_seats,
+                    present: existing.present,
                 }
             } else {
                 EventWithoutDate {
