@@ -24,6 +24,9 @@ jobs:
         id: image_name
         run: echo "IMAGE_NAME=ghcr.io/$(echo "${{ github.repository }}-backend" | tr '[:upper:]' '[:lower:]')" > "$GITHUB_ENV"
 
+      - name: Set up Docker CLI
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and push Docker images
         id: push
         uses: docker/build-push-action@v6.10.0
@@ -60,6 +63,9 @@ jobs:
       - name: Create image name
         id: image_name
         run: echo "IMAGE_NAME=ghcr.io/$(echo "${{ github.repository }}-frontend" | tr '[:upper:]' '[:lower:]')" > "$GITHUB_ENV"
+
+      - name: Set up Docker CLI
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker images
         id: push
