@@ -29,6 +29,8 @@ jobs:
         uses: docker/build-push-action@v6.10.0
         with:
           context: './src/backend'
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -64,6 +66,8 @@ jobs:
         uses: docker/build-push-action@v6.10.0
         with:
           context: './src/frontend'
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
