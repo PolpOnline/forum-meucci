@@ -1,5 +1,5 @@
 [phases.build]
-nixPkgs = ['...', 'mold', 'glibc']
+nixPkgs = ['...', 'mold']
 cmds = ['mkdir -p bin', 'RUSTFLAGS="-C link-arg=-fuse-ld=mold" cargo build --release', 'cp target/release/forum_meucci bin/']
 
 [start]
