@@ -101,8 +101,6 @@ impl App {
             .layer(auth_layer)
             .layer(middleware::from_fn(set_cache_control))
             .layer(TraceLayer::new_for_http())
-            .layer(CompressionLayer::new())
-            .layer(DecompressionLayer::new())
             .split_for_parts();
 
         let router = {
@@ -113,6 +111,10 @@ impl App {
                 .route("/openapi.json", get(move || async { axum::Json(api_json) }))
                 .merge(Scalar::with_url("/scalar", api))
         };
+
+        let router = router
+            .layer(CompressionLayer::new())
+            .layer(DecompressionLayer::new());
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
