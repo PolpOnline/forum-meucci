@@ -42,13 +42,14 @@ pub struct App {
 
 impl App {
     pub async fn new() -> color_eyre::Result<Self> {
-        let db = Self::setup_db().await?;
-        let redis_fred = Self::setup_redis_fred().await?;
-
         let backend_url = BACKEND_URL.clone();
         let redirect_uri = format!("{}/auth/callback", backend_url);
 
-        let google_oauth_client = build_google_oauth_client(redirect_uri).await;
+        let (db, redis_fred, google_oauth_client) = tokio::try_join!(
+            Self::setup_db(),
+            Self::setup_redis_fred(),
+            build_google_oauth_client(redirect_uri)
+        )?;
 
         Ok(Self {
             db,

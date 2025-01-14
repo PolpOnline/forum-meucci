@@ -36,7 +36,7 @@ type GoogleProviderMetadata = ProviderMetadata<
     CoreSubjectIdentifierType,
 >;
 
-pub async fn build_google_oauth_client(redirect_uri: String) -> CoreClient {
+pub async fn build_google_oauth_client(redirect_uri: String) -> color_eyre::Result<CoreClient> {
     let client_id = std::env::var("GOOGLE_CLIENT_ID").expect("Missing GOOGLE_CLIENT_ID!");
     let client_id = ClientId::new(client_id.to_string());
     let client_secret =
@@ -54,9 +54,12 @@ pub async fn build_google_oauth_client(redirect_uri: String) -> CoreClient {
         .revocation_endpoint
         .clone();
 
-    CoreClient::from_provider_metadata(provider_metadata, client_id, Some(client_secret))
-        .set_redirect_uri(RedirectUrl::new(redirect_uri).expect("Invalid redirect URL"))
-        .set_revocation_uri(
-            RevocationUrl::new(revocation_endpoint).expect("Invalid revocation endpoint URL"),
-        )
+    let client =
+        CoreClient::from_provider_metadata(provider_metadata, client_id, Some(client_secret))
+            .set_redirect_uri(RedirectUrl::new(redirect_uri).expect("Invalid redirect URL"))
+            .set_revocation_uri(
+                RevocationUrl::new(revocation_endpoint).expect("Invalid revocation endpoint URL"),
+            );
+
+    Ok(client)
 }
