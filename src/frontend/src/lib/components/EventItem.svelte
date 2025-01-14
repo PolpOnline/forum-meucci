@@ -9,6 +9,7 @@
 	import LucideUsers from '~icons/lucide/users';
 	import LucideUserRoundCheck from '~icons/lucide/user-round-check';
 	import LucideUserRoundX from '~icons/lucide/user-round-x';
+	import LucideUserRoundMinus from '~icons/lucide/user-round-minus';
 
 	const { event, formattedDate }: { event: components['schemas']['Event']; formattedDate: string } =
 		$props();
@@ -52,7 +53,7 @@
 					</Badge>
 				{:else}
 					<Badge class="pointer-events-none mt-2" variant="outline">
-						<LucideUserRoundX class="mr-1 h-4 w-4" />
+						<LucideUserRoundMinus class="mr-1 h-4 w-4" />
 						<div class="text-sm">Non iniziato</div>
 					</Badge>
 				{/if}
