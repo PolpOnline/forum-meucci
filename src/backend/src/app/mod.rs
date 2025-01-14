@@ -14,7 +14,9 @@ use http::StatusCode;
 use openidconnect::core::CoreClient;
 use sqlx::PgPool;
 use tower_http::{
-    compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
+    compression::CompressionLayer,
+    decompression::{DecompressionLayer, RequestDecompressionLayer},
+    trace::TraceLayer,
 };
 use tower_sessions::cookie::{Key, SameSite};
 use tower_sessions_redis_store::{fred::prelude::Pool as FredPool, RedisStore};
@@ -114,6 +116,7 @@ impl App {
 
         let router = router
             .layer(CompressionLayer::new())
+            .layer(RequestDecompressionLayer::new())
             .layer(DecompressionLayer::new());
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
