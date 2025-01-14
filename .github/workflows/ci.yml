@@ -24,25 +24,19 @@ jobs:
         id: image_name
         run: echo "IMAGE_NAME=ghcr.io/$(echo "${{ github.repository }}-backend" | tr '[:upper:]' '[:lower:]')" > "$GITHUB_ENV"
 
-      # create a unique tag for each build for debugging
-      - name: Set Docker tag
-        id: date
-        run: echo "DATE_STAMP=$(date +%s)" > "$GITHUB_ENV"
-
       - name: Build and push Docker images
-        uses: iloveitaly/github-action-nixpacks@main
+        id: push
+        uses: docker/build-push-action@v6.10.0
         with:
-          context: './src/backend'
+          context: .
           push: true
-          cache: true
-          cache_tag: ${{ env.IMAGE_NAME }}:latest
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ github.ref == 'refs/heads/main' && format('{0}:latest', env.IMAGE_NAME) || '' }}
+            ${{ env.IMAGE_NAME }}:latest
 
-#      - name: Deploy to Coolify
-#        run: |
-#          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_BACKEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
+  #      - name: Deploy to Coolify
+  #        run: |
+  #          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_BACKEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
 
   frontend:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -66,15 +60,14 @@ jobs:
         run: echo "IMAGE_NAME=ghcr.io/$(echo "${{ github.repository }}-frontend" | tr '[:upper:]' '[:lower:]')" > "$GITHUB_ENV"
 
       - name: Build and push Docker images
-        uses: iloveitaly/github-action-nixpacks@main
+        id: push
+        uses: docker/build-push-action@v6.10.0
         with:
-          context: './src/frontend'
+          context: .
           push: true
-          cache: true
-          cache_tag: ${{ env.IMAGE_NAME }}:latest
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ github.ref == 'refs/heads/main' && format('{0}:latest', env.IMAGE_NAME) || '' }}
+            ${{ env.IMAGE_NAME }}:latest
 
 #      - name: Deploy to Coolify
 #        run: |

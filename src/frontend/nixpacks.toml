@@ -1,5 +1,0 @@
-[variables]
-NIXPACKS_NODE_VERSION = '22'
-
-[start]
-cmd = 'node build'
