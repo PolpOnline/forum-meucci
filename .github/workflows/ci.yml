@@ -28,7 +28,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v6.10.0
         with:
-          context: .
+          context: './src/backend'
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -63,7 +63,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v6.10.0
         with:
-          context: .
+          context: './src/frontend'
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
