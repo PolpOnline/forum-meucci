@@ -80,12 +80,24 @@
 		<div class="col-span-2"></div>
 	</div>
 	<Table.Root class="mx-auto mt-5 w-[95%] max-w-[800px]">
+		<Table.Header>
+			<Table.Row>
+				<Table.Head>Nome</Table.Head>
+				<Table.Head class="text-center">Classe</Table.Head>
+				<Table.Head class="text-right">Presente?</Table.Head>
+			</Table.Row>
+		</Table.Header>
 		<Table.Body>
 			{#each presences as presence, i (presence.name)}
 				<Table.Row class="rounded-xl">
 					<Table.Cell class="">
 						<Label for={'p' + i}>
 							{presence.name}
+						</Label>
+					</Table.Cell>
+					<Table.Cell class="text-center">
+						<Label for={'p' + i}>
+							{presence.class}{presence.section}
 						</Label>
 					</Table.Cell>
 					<Table.Cell class="flex items-center justify-end">

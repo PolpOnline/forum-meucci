@@ -35,6 +35,10 @@ pub struct Presence {
     id: i32,
     #[schema(example = "John Doe")]
     name: String,
+    #[schema(example = "A")]
+    section: Option<String>,
+    #[schema(example = "1")]
+    class: i32,
     #[schema(example = false)]
     present: bool,
 }
@@ -82,11 +86,14 @@ pub async fn presences(
         // language=PostgreSQL
         r#"
         SELECT "user".id,
+               "user".section,
+               "user".class,
                COALESCE("user".name, "user".email) AS "name!: String",
-               event_user.joined_at IS NOT NULL AS "present!: bool"
+               event_user.joined_at IS NOT NULL    AS "present!: bool"
         FROM event_user
                  JOIN "user" ON event_user.user_id = "user".id
-        WHERE event_user.event_id = $1 AND event_user.round = $2
+        WHERE event_user.event_id = $1
+          AND event_user.round = $2
         ORDER BY name;
         "#,
         req.event_id,

@@ -1,0 +1,47 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT \"user\".id,\n               \"user\".section,\n               \"user\".class,\n               COALESCE(\"user\".name, \"user\".email) AS \"name!: String\",\n               event_user.joined_at IS NOT NULL    AS \"present!: bool\"\n        FROM event_user\n                 JOIN \"user\" ON event_user.user_id = \"user\".id\n        WHERE event_user.event_id = $1\n          AND event_user.round = $2\n        ORDER BY name;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "section",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "class",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "name!: String",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "present!: bool",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      true,
+      false,
+      null,
+      null
+    ]
+  },
+  "hash": "f3be9d43971850c8c2ce4f8b1a7ef100507630ef6e5431848da39627d6f57403"
+}

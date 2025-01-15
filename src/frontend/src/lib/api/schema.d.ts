@@ -408,11 +408,18 @@ export interface components {
 			 * Format: int32
 			 * @example 1
 			 */
+			class: number;
+			/**
+			 * Format: int32
+			 * @example 1
+			 */
 			id: number;
 			/** @example John Doe */
 			name: string;
 			/** @example false */
 			present: boolean;
+			/** @example A */
+			section?: string | null;
 		};
 		SelectedEventResponse: {
 			events: components['schemas']['Event'][];
