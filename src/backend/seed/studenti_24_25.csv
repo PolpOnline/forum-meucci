@@ -1,4 +1,4 @@
-Cognome,Nome,Email,Classe,Sezione
+lastName,firstName,email,class,section
 CERDA LLANOS,MATHEUS ABRAHAN ISAIAS,cerda.matheus@itismeucci.com,5,ALG
 CIARLEGLIO,SALVATORE,ciarleglio.salvatore@itismeucci.com,3,AMM
 GIANASSI,GABRIELE,gianassi.gabriele@itismeucci.com,3,ENMM
@@ -63,7 +63,7 @@ PAOLI,ALEJANDRO,paoli.alejandro@itismeucci.com,2,IEE
 BRACCINI,THOMAS,braccini.thomas@itismeucci.com,3,AEC
 GIANNONI,EMANUELE,giannoni.emanuele@itismeucci.com,3,AAT
 LANDI,MARCO,landi.marco@itismeucci.com,3,AMM
-BOGANI,THOMAS BRUNO,boganithomas@gmail.com,3,AIA
+BOGANI,THOMAS BRUNO,bogani.thomas@itismeucci.com,3,AIA
 ASADULLAH,SAMIULLAH,asadullah.samiullah@itismeucci.com,2,GIT
 PANCRAZI,RAOUL HUNOR,pancrazi.raoul@itismeucci.com,3,AEC
 CHELONI,ANDREA,cheloni.andrea@itismeucci.com,3,ALG
@@ -421,7 +421,7 @@ LEONI,ANDREA,leoni.andrea@itismeucci.com,4,BLG
 KERCHOUN,MARWAN,kerchoun.marwan@itismeucci.com,4,ETAT
 FERRETTI,FABIANO,ferretti.fabiano@itismeucci.com,5,ENMM
 MARINO,GABRIEL,marino.gabriel@itismeucci.com,5,ALG
-NATI,MATTIA,mattianati2006@gmail.com,5,ENMM
+NATI,MATTIA,nati.mattia@itismeucci.com,5,ENMM
 PRATESI,GIACOMO,pratesi.giacomo@itismeucci.com,5,AAT
 VANNI,LAPO,vanni.lapo@itismeucci.com,5,BIA
 MANCINI,LAPO TOMMASO,mancini.lapo@itismeucci.com,5,ECET
@@ -442,7 +442,7 @@ DOBRE,GIOELE,dobre.gioele@itismeucci.com,5,AMM
 CHIMENZA,ANTONIO,chimenza.antonio@itismeucci.com,5,ENMM
 FABBRI,TOMMASO,fabbri.tommaso1@itismeucci.com,5,BLG
 LALLI,EMANUELE,lalli.emanuele@itismeucci.com,5,AAT
-WARNAKULASURIYA MAHAMUHANDIRAMGE,LAKRUWAN  PEIRIS,lakruwanpeiris.14@gmail.com,4,BIA
+WARNAKULASURIYA MAHAMUHANDIRAMGE,LAKRUWAN  PEIRIS,warnakulasuriyamahamuhandiramge.lakruwan@itismeucci.com,4,BIA
 PRENGA,SAMUELE,prenga.samuele@itismeucci.com,4,ETAT
 MANCINI,LORENZO,mancini.lorenzo@itismeucci.com,5,ALG
 MANTINI,IVAN,mantini.ivan@itismeucci.com,5,ENMM
@@ -497,7 +497,7 @@ GALVANO,FRANCESCO,galvano.francesco1@itismeucci.com,4,AMM
 FERRUCCI,ALESSIO,ferrucci.alessio@itismeucci.com,4,BLG
 PANDOLFINI,NICCOLO,pandolfini.niccolo@itismeucci.com,5,AMM
 GIUSTINI,LAPO,giustini.lapo@itismeucci.com,5,AIA
-ROSELLI,DAMIANO,damiano.roselli2006@gmail.com,4,AEN
+ROSELLI,DAMIANO,roselli.damiano@itismeucci.com,4,AEN
 TELLO VILLAFANE,VIKRAM GERMAN,tellovillafane.vikram@itismeucci.com,3,ENMM
 SANTI,MATTIA,Santi.mattia@itismeucci.com,5,ENMM
 BIAGIOLI,DAMIANO,biagioli.damiano@itismeucci.com,5,AMM
@@ -526,7 +526,7 @@ TORRE,ALESSANDRO,torre.alessandro@itismeucci.com,5,AAT
 VALDEZ VIDAL,JOSE GIANPAOLO,valdezvidal.jose@itismeucci.com,4,CIA
 MANNELLI,TOMMASO,mannelli.tommaso@itismeucci.com,5,ENMM
 FALUGIANI,NICCOLO,falugiani.niccolo@itismeucci.com,5,AMM
-LARREA YACHE,DYLAN SERGIO,larreadylan14@gmail.com,5,BIA
+LARREA YACHE,DYLAN SERGIO,larreayache.dylan@itismeucci.com,5,BIA
 GUZI,RUSHAN,guzi.rushan@itismeucci.com,4,ETAT
 CHIRINOS ARREDONDO,CARLA,chirinosarredondo.carla@itismeucci.com,3,AIA
 CHARAF,MARWAN,charaf.marwan@itismeucci.com,3,BIA
@@ -1051,8 +1051,8 @@ ELMELIGY,SARA MOHAMED ELSAYED GOMAA,elmeligy.sara@itismeucci.com,2,EIT
 AHAMMED,FOYZ,ahammed.foiz@itismeucci.com,3,DIA
 KOLILA,DANIEL,kolila.daniel@itismeucci.com,1,EIT
 PARDINI,ENGEL,pardini.engel@itismeucci.com,2,CMME
-JAYAKODI ARACHCHILAGE,NETHMI DAHAMSA JAYAKODI,nimeshajagidage@icloude.com,2,DIT
+JAYAKODI ARACHCHILAGE,NETHMI DAHAMSA JAYAKODI,jayacodi.nethmi@itismeucci.com,2,DIT
 VARVARA,ALESSIA,varvara.alessia@itismeucci.com,3,BLG
-TRAORE,HAWA,laestone21@gmail.com,2,IEE
-TRAORE,MOHAMED,laestone21@gmail.com,2,IEE
+TRAORE,HAWA,traore.hawa@itismeucci.com,2,IEE
+TRAORE,MOHAMED,traore.mohamed@itismeucci.com,2,IEE
 CONTI,ANDREA,conti.andrea@itismeucci.com,1,FIT
