@@ -13,12 +13,13 @@
 	import LineMdClose from '~icons/line-md/close';
 	import { Label } from '$lib/components/ui/label';
 	import LucideUsers from '~icons/lucide/users';
+	import { formatItalianDate } from '$lib/utils/dates.js';
 
 	let { data } = $props();
 
 	// Use a state to be able to update the data reactively
 	const { event_id, round, adminPresences } = $state(data.data);
-	const { name, room, presences, total_seats } = $state(adminPresences);
+	const { name, room, date, presences, total_seats } = $state(adminPresences);
 	const used_seats = adminPresences.presences.length;
 
 	type SpinnerState = 'loading' | 'success' | 'error' | 'idle';
@@ -65,9 +66,13 @@
 				<LucideArrowLeft />
 			</Button>
 		</div>
-		<h1 class="col-span-8 mt-5 text-center text-3xl font-bold">
-			{name}
-			<br />
+		<div class="col-span-8 mt-5 text-center text-3xl font-bold">
+			<h1>
+				{name}
+			</h1>
+			<h2 class="text-lg text-gray-500">
+				{formatItalianDate(date)}
+			</h2>
 			<Badge class="pointer-events-none mt-2" variant="secondary">
 				<LucideMapPin class="mr-1 h-4 w-4" />
 				<div class="text-sm">{room}</div>
@@ -76,7 +81,7 @@
 				<LucideUsers class="mr-1 h-4 w-4" />
 				<div class="text-sm">{used_seats} / {total_seats}</div>
 			</Badge>
-		</h1>
+		</div>
 		<div class="col-span-2"></div>
 	</div>
 	<Table.Root class="mx-auto mt-5 w-[95%] max-w-[800px]">

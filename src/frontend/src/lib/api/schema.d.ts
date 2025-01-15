@@ -263,6 +263,8 @@ export interface components {
 			events: components['schemas']['AdminEvent'][];
 		};
 		AdminPresenceResponse: {
+			/** Format: date-time */
+			date: string;
 			/** @example Event 1 */
 			name: string;
 			presences: components['schemas']['Presence'][];

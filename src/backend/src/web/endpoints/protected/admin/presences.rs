@@ -1,11 +1,14 @@
 use axum::{extract::Path, response::IntoResponse, Json};
+use chrono::{DateTime, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
 use crate::{
-    app::openapi::ADMIN_TAG, models::user::UserType, users::AuthSession,
-    web::endpoints::protected::admin::shared::get_event,
+    app::openapi::ADMIN_TAG,
+    models::user::UserType,
+    users::AuthSession,
+    web::{endpoints::protected::admin::shared::get_event, schemas::event::round_to_date},
 };
 
 #[derive(Deserialize, IntoParams)]
@@ -26,6 +29,7 @@ pub struct AdminPresenceResponse {
     room: String,
     #[schema(example = 20)]
     total_seats: i32,
+    date: DateTime<Utc>,
     presences: Vec<Presence>,
 }
 
@@ -119,9 +123,15 @@ pub async fn presences(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
+    let date = match round_to_date(&auth_session.backend.config, req.round) {
+        Ok(date) => date,
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+    };
+
     Json(AdminPresenceResponse {
         name: event.name,
         room: event.room,
+        date,
         total_seats,
         presences,
     })
