@@ -1,3 +1,4 @@
+pub mod cli;
 pub mod config;
 mod db;
 pub mod openapi;
@@ -36,7 +37,7 @@ use crate::{
 };
 
 pub struct App {
-    db: PgPool,
+    pub db: PgPool,
     redis_fred: FredPool,
     google_oauth_client: CoreClient,
     config: Config,

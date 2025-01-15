@@ -1,13 +1,18 @@
 use std::sync::LazyLock;
 
+use app::cli::Command;
+use clap::Parser;
 use color_eyre::Result;
 use dotenvy::dotenv;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
 
+use crate::app::cli::Args;
+
 pub mod app;
 pub mod auth;
+pub mod fixtures;
 pub mod middleware;
 pub mod models;
 pub mod users;
@@ -44,5 +49,22 @@ async fn main() -> Result<()> {
         info!("System: Development mode");
     }
 
-    App::new().await?.serve().await
+    #[cfg(debug_assertions)]
+    {
+        let args = Args::parse();
+
+        let app = App::new().await?;
+
+        match args.command {
+            None => app.serve().await,
+            Some(Command::SeedUser) => fixtures::user::seed(app.db).await,
+            Some(Command::SeedEvent) => fixtures::event::seed(app.db).await,
+        }
+    }
+
+    // Run the app in production without the CLI
+    #[cfg(not(debug_assertions))]
+    {
+        App::new().await?.serve().await
+    }
 }
