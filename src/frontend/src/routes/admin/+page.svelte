@@ -21,7 +21,9 @@
 	<h1 class="mt-5 text-center text-3xl font-bold">I tuoi eventi</h1>
 
 	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
-		<Input placeholder="Cerca un evento..." class="w-full" bind:value={filterKey} />
+		{#if adminEvents.length > 1}
+			<Input placeholder="Cerca un evento..." class="w-full" bind:value={filterKey} />
+		{/if}
 
 		{#each filteredEvents as event (event.id)}
 			<AdminEvent {event} />
