@@ -1,14 +1,10 @@
 use std::sync::LazyLock;
 
-use app::cli::Command;
-use clap::Parser;
 use color_eyre::Result;
 use dotenvy::dotenv;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
-
-use crate::app::cli::Args;
 
 pub mod app;
 pub mod auth;
@@ -51,6 +47,9 @@ async fn main() -> Result<()> {
 
     #[cfg(debug_assertions)]
     {
+        use app::cli::{Args, Command};
+        use clap::Parser;
+
         let args = Args::parse();
 
         let app = App::new().await?;
