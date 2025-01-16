@@ -105,6 +105,16 @@ pub async fn seed(db: PgPool) -> Result<()> {
             )
             .execute(&mut *txn)
             .await?;
+
+            sqlx::query!(
+                // language=PostgreSQL
+                r#"
+                UPDATE "user" SET type = 'host' WHERE id = $1
+                "#,
+                event_admin.id
+            )
+            .execute(&mut *txn)
+            .await?;
         }
 
         // Add the maximum users per round
