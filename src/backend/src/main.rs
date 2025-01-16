@@ -58,6 +58,10 @@ async fn main() -> Result<()> {
             None => app.serve().await,
             Some(Command::SeedUser) => fixtures::user::seed(app.db).await,
             Some(Command::SeedActivity) => fixtures::activity::seed(app.db).await,
+            Some(Command::SeedAll) => {
+                fixtures::user::seed(app.db.clone()).await?;
+                fixtures::activity::seed(app.db).await
+            }
         }
     }
 

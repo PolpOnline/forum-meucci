@@ -1,6 +1,7 @@
 mod space_deserialize;
 
 use color_eyre::{eyre::eyre, Result};
+use indicatif::ProgressBar;
 use serde::Deserialize;
 use space_deserialize::space_deserialize;
 use sqlx::PgPool;
@@ -43,10 +44,16 @@ pub async fn seed(db: PgPool) -> Result<()> {
         ));
     }
 
+    info!("Seeding the activity table...");
+
+    let bar = ProgressBar::new(data.len() as u64);
+
     // Start a transaction
     let mut txn = db.begin().await?;
 
     for activity_data in data {
+        bar.inc(1);
+
         // Get the host ids without a transaction because only one txn can be active at
         // a time
         let host_ids_fut = sqlx::query!(
@@ -115,14 +122,11 @@ pub async fn seed(db: PgPool) -> Result<()> {
             .execute(&mut *txn)
             .await?;
         }
-
-        info!(
-            "Inserting activity: {} (id: {})",
-            activity_data.nome, event_id.id
-        );
     }
 
-    info!("Committing transaction");
+    bar.finish_and_clear();
+    info!("Activity table seeded");
+
     txn.commit().await?;
 
     Ok(())

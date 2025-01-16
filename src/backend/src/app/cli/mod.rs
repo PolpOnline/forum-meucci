@@ -16,4 +16,6 @@ pub enum Command {
     /// Seed the activity table
     #[command(name = "seed-activity")]
     SeedActivity,
+    #[command(name = "seed-all")]
+    SeedAll,
 }
