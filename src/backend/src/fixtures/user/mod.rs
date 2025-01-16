@@ -19,7 +19,7 @@ pub async fn seed(db: PgPool) -> Result<()> {
     let data = rdr
         .deserialize()
         .map(|result| {
-            let record: UserData = result?;
+            let record = result?;
             Ok(record)
         })
         .collect::<Result<Vec<UserData>>>()?;
