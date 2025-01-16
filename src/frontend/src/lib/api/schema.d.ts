@@ -420,6 +420,8 @@ export interface components {
 			name: string;
 			/** @example false */
 			present: boolean;
+			/** @example false */
+			randomized: boolean;
 			/** @example A */
 			section?: string | null;
 		};

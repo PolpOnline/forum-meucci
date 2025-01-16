@@ -25,12 +25,13 @@ CREATE INDEX ON "user" (email);
 
 CREATE TABLE activity_user
 (
-    activity_id INT NOT NULL REFERENCES activity (id) ON DELETE CASCADE,
+    activity_id INT     NOT NULL REFERENCES activity (id) ON DELETE CASCADE,
     user_id        INT       NOT NULL REFERENCES "user" (id) ON DELETE CASCADE,
     scheduled_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     joined_at      TIMESTAMP,
     last_edited_by INT REFERENCES "user" (id),
     round          INT       NOT NULL CHECK ( round >= 0 ),
+    randomized  BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (user_id, round)
 );
 

@@ -14,6 +14,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import LucideUsers from '~icons/lucide/users';
 	import { formatItalianDate } from '$lib/utils/dates.js';
+	import LucideDice5 from '~icons/lucide/dice-5';
 
 	let { data } = $props();
 
@@ -95,10 +96,13 @@
 		<Table.Body>
 			{#each presences as presence, i (presence.name)}
 				<Table.Row class="rounded-xl">
-					<Table.Cell class="">
+					<Table.Cell>
 						<Label for={'p' + i}>
 							{presence.name}
 						</Label>
+						{#if presence.randomized}
+							<LucideDice5 class="ml-1 inline h-4 w-4 text-muted-foreground" />
+						{/if}
 					</Table.Cell>
 					<Table.Cell class="text-center">
 						<Label for={'p' + i}>

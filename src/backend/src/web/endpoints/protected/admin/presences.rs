@@ -45,6 +45,8 @@ pub struct Presence {
     class: i32,
     #[schema(example = false)]
     present: bool,
+    #[schema(example = false)]
+    randomized: bool,
 }
 
 #[utoipa::path(
@@ -93,7 +95,8 @@ pub async fn presences(
                "user".section,
                "user".class,
                COALESCE("user".name, "user".email) AS "name!: String",
-               activity_user.joined_at IS NOT NULL    AS "present!: bool"
+               activity_user.joined_at IS NOT NULL AS "present!: bool",
+               activity_user.randomized
         FROM activity_user
                  JOIN "user" ON activity_user.user_id = "user".id
         WHERE activity_user.activity_id = $1
