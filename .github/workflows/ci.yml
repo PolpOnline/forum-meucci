@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   backend:
-    if: github.event_name != 'pull_request' || github.activity.pull_request.head.repo.full_name != github.activity.pull_request.base.repo.full_name
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,7 +31,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v6.10.0
         with:
-          context: './src/backend'
+          context: "./src/backend"
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: true
@@ -44,7 +44,7 @@ jobs:
   #          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_BACKEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
 
   frontend:
-    if: github.event_name != 'pull_request' || github.activity.pull_request.head.repo.full_name != github.activity.pull_request.base.repo.full_name
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -71,7 +71,7 @@ jobs:
         id: push
         uses: docker/build-push-action@v6.10.0
         with:
-          context: './src/frontend'
+          context: "./src/frontend"
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: true
