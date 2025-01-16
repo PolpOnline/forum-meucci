@@ -14,9 +14,11 @@ struct UserData {
 }
 
 pub async fn seed(db: PgPool) -> Result<()> {
+    info!("Seeding the user table...");
+
     let mut rdr = csv::Reader::from_path("./src/fixtures/user/studenti_24_25.csv")?;
 
-    let data = rdr
+    let users = rdr
         .deserialize()
         .map(|result| {
             let record = result?;
@@ -24,28 +26,22 @@ pub async fn seed(db: PgPool) -> Result<()> {
         })
         .collect::<Result<Vec<UserData>>>()?;
 
-    info!("Seeding the user table...");
-
     let mut query_builder: QueryBuilder<Postgres> = QueryBuilder::new(
         r#"
         INSERT INTO "user" (name, email, class, section)
         "#,
     );
 
-    query_builder.push_values(data, |mut b, user_data| {
-        b.push_bind(format!("{} {}", user_data.first_name, user_data.last_name))
-            .push_bind(user_data.email)
-            .push_bind(user_data.class)
-            .push_bind(user_data.section);
+    query_builder.push_values(users, |mut b, user| {
+        b.push_bind(format!("{} {}", user.first_name, user.last_name))
+            .push_bind(user.email)
+            .push_bind(user.class)
+            .push_bind(user.section);
     });
 
-    let mut txn = db.begin().await?;
-
-    query_builder.build().execute(&mut *txn).await?;
+    query_builder.build().execute(&db).await?;
 
     info!("User table seeded");
-
-    txn.commit().await?;
 
     Ok(())
 }

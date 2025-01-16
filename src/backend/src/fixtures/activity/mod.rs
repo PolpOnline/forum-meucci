@@ -20,6 +20,8 @@ struct ActivityData {
 }
 
 pub async fn seed(db: PgPool) -> Result<()> {
+    info!("Seeding the activity table...");
+
     let mut rdr =
         csv::Reader::from_path("./src/fixtures/activity/Attività_Forum_24_25_template.csv")?;
 
@@ -43,8 +45,6 @@ pub async fn seed(db: PgPool) -> Result<()> {
             rounds
         ));
     }
-
-    info!("Seeding the activity table...");
 
     let bar = ProgressBar::new(data.len() as u64);
 
