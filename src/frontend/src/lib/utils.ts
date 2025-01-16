@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export type AvailableEvent = components['schemas']['AvailableEvent'];
-export type AvailableEventResponse = components['schemas']['AvailableEventResponse'];
+export type AvailableActivity = components['schemas']['AvailableActivity'];
+export type AvailableActivityResponse = components['schemas']['AvailableActivityResponse'];

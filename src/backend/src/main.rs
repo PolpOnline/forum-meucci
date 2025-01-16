@@ -57,7 +57,7 @@ async fn main() -> Result<()> {
         match args.command {
             None => app.serve().await,
             Some(Command::SeedUser) => fixtures::user::seed(app.db).await,
-            Some(Command::SeedEvent) => fixtures::event::seed(app.db).await,
+            Some(Command::SeedActivity) => fixtures::activity::seed(app.db).await,
         }
     }
 

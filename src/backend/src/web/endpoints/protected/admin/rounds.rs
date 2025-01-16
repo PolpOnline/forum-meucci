@@ -9,21 +9,21 @@ use crate::{
     models::user::UserType,
     users::AuthSession,
     web::{
-        endpoints::protected::admin::shared::get_event,
-        schemas::event::{round_to_date, RoundConversionError},
+        endpoints::protected::admin::shared::get_activity,
+        schemas::activity::{round_to_date, RoundConversionError},
     },
 };
 
 #[derive(Deserialize, IntoParams)]
 pub struct AdminRoundRequest {
-    /// The ID of the event
+    /// The ID of the activity
     #[param(example = 1)]
-    event_id: i32,
+    activity_id: i32,
 }
 
 #[derive(Serialize, ToSchema)]
 pub struct AdminRoundResponse {
-    #[schema(example = "Event 1")]
+    #[schema(example = "Activity 1")]
     name: String,
     #[schema(example = "Room 1")]
     room: String,
@@ -43,14 +43,14 @@ pub struct AdminRound {
 
 impl AdminRound {
     fn from_without_date(
-        event: AdminRoundWithoutDate,
+        activity: AdminRoundWithoutDate,
         config: &Config,
     ) -> Result<Self, RoundConversionError> {
         Ok(AdminRound {
-            round: event.round,
-            date: round_to_date(config, event.round)?,
-            used_seats: event.used_seats,
-            total_seats: event.total_seats,
+            round: activity.round,
+            date: round_to_date(config, activity.round)?,
+            used_seats: activity.used_seats,
+            total_seats: activity.total_seats,
         })
     }
 }
@@ -63,11 +63,11 @@ pub struct AdminRoundWithoutDate {
 
 #[utoipa::path(
     get,
-    path = "/rounds/{event_id}",
+    path = "/rounds/{activity_id}",
     summary = "Rounds List",
     params(AdminRoundRequest),
     responses(
-        (status = OK, description = "List of the rounds for an event the user has access to", body = AdminRoundResponse),
+        (status = OK, description = "List of the rounds for an activity the user has access to", body = AdminRoundResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = FORBIDDEN, description = "Not an admin or host"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
@@ -90,11 +90,11 @@ pub async fn rounds(
         return StatusCode::FORBIDDEN.into_response();
     }
 
-    let event = get_event(&auth_session, user_type, user_id, req.event_id).await;
+    let activity = get_activity(&auth_session, user_type, user_id, req.activity_id).await;
 
-    let event = match event {
+    let activity = match activity {
         Ok(Some(r)) => r,
-        // User does not have access to the event
+        // User does not have access to the activity
         Ok(None) => return StatusCode::FORBIDDEN.into_response(),
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
@@ -104,16 +104,16 @@ pub async fn rounds(
         // language=PostgreSQL
         r#"
         SELECT round_max_users.round,
-               COUNT(event_user.user_id) AS used_seats,
+               COUNT(activity_user.user_id) AS used_seats,
                round_max_users.max_users AS total_seats
         FROM round_max_users
-                 LEFT JOIN event_user
-                           ON round_max_users.event_id = event_user.event_id
-                               AND round_max_users.round = event_user.round
-        WHERE round_max_users.event_id = $1
+                 LEFT JOIN activity_user
+                           ON round_max_users.activity_id = activity_user.activity_id
+                               AND round_max_users.round = activity_user.round
+        WHERE round_max_users.activity_id = $1
         GROUP BY round_max_users.round, round_max_users.max_users
         "#,
-        req.event_id
+        req.activity_id
     )
     .fetch_all(&auth_session.backend.db)
     .await
@@ -124,7 +124,7 @@ pub async fn rounds(
 
     let rounds: Result<Vec<_>, _> = rounds
         .into_iter()
-        .map(|event| AdminRound::from_without_date(event, &auth_session.backend.config))
+        .map(|activity| AdminRound::from_without_date(activity, &auth_session.backend.config))
         .collect();
 
     let rounds = match rounds {
@@ -133,8 +133,8 @@ pub async fn rounds(
     };
 
     Json(AdminRoundResponse {
-        name: event.name,
-        room: event.room,
+        name: activity.name,
+        room: activity.room,
         rounds,
     })
     .into_response()

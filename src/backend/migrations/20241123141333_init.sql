@@ -1,4 +1,4 @@
-CREATE TABLE event
+CREATE TABLE activity
 (
     id             SERIAL PRIMARY KEY,
     name           TEXT    NOT NULL,
@@ -23,9 +23,9 @@ CREATE TABLE "user"
 
 CREATE INDEX ON "user" (email);
 
-CREATE TABLE event_user
+CREATE TABLE activity_user
 (
-    event_id       INT       NOT NULL REFERENCES event (id) ON DELETE CASCADE,
+    activity_id INT NOT NULL REFERENCES activity (id) ON DELETE CASCADE,
     user_id        INT       NOT NULL REFERENCES "user" (id) ON DELETE CASCADE,
     scheduled_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     joined_at      TIMESTAMP,
@@ -34,10 +34,16 @@ CREATE TABLE event_user
     PRIMARY KEY (user_id, round)
 );
 
+CREATE TABLE activity_admin
+(
+    activity_id INT NOT NULL REFERENCES activity (id),
+    user_id     INT NOT NULL REFERENCES "user" (id)
+);
+
 CREATE TABLE round_max_users
 (
-    round     INT NOT NULL,
-    event_id  INT NOT NULL REFERENCES event (id) ON DELETE CASCADE,
-    max_users INT NOT NULL CHECK ( max_users >= 0 ),
-    PRIMARY KEY (round, event_id)
+    round       INT NOT NULL,
+    activity_id INT NOT NULL REFERENCES activity (id) ON DELETE CASCADE,
+    max_users   INT NOT NULL CHECK ( max_users >= 0 ),
+    PRIMARY KEY (round, activity_id)
 );

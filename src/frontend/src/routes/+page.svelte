@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EventItem from '$lib/components/EventItem.svelte';
+	import ActivityItem from '$lib/components/ActivityItem.svelte';
 	import { title } from '$lib/stores/title.store';
 	import type { PageData } from './$types';
 	import { flip } from 'svelte/animate';
@@ -7,20 +7,20 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let selectedEvents = $derived(data.selectedEvents!);
+	let selectedActivities = $derived(data.selectedActivities!);
 
 	title.set('Forum Meucci');
 </script>
 
 <main>
 	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
-		{#each selectedEvents as event (event.round)}
+		{#each selectedActivities as activity (activity.round)}
 			<div animate:flip>
 				<div class="font-semibold">
-					{formatItalianDate(event.date)}
+					{formatItalianDate(activity.date)}
 				</div>
 				<div class="mt-3">
-					<EventItem {event} formattedDate={formatItalianDate(event.date)} />
+					<ActivityItem {activity} formattedDate={formatItalianDate(activity.date)} />
 				</div>
 			</div>
 		{/each}

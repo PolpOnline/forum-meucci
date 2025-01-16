@@ -1,0 +1,29 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT name, room\n        FROM activity\n        JOIN activity_admin ON activity.id = activity_admin.activity_id\n        WHERE activity_admin.user_id = $1 AND activity.id = $2 AND activity.should_display IS TRUE\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "room",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "6bf5ae7f2bbe7ebf2f916c961ac7e0ee97b9943efc9233c6c8fc5ae691bb4523"
+}

@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO activity_user (activity_id, user_id, round)\n            VALUES ($1, $2, $3)\n            ON CONFLICT (user_id, round) DO UPDATE SET activity_id = EXCLUDED.activity_id;\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "4f1888d29e3b79f7d3780f91d6f70484d9e0a158dfadb878efaaa514eecd0afa"
+}

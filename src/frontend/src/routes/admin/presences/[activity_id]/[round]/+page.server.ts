@@ -3,8 +3,14 @@ import { client } from '$lib/api/api';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import { error, redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ fetch }) => {
-	const { data, response } = await client.GET('/admin/activities', { fetch });
+export const load: PageServerLoad = async ({ fetch, params }) => {
+	const activity_id = Number(params.activity_id);
+	const round = Number(params.round);
+
+	const { data, response } = await client.GET('/admin/presences/{activity_id}/{round}', {
+		fetch,
+		params: { path: { activity_id, round } }
+	});
 
 	if (response.status === StatusCodes.FORBIDDEN) {
 		error(StatusCodes.FORBIDDEN, getReasonPhrase(StatusCodes.FORBIDDEN));
@@ -19,6 +25,10 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}
 
 	return {
-		adminActivities: data.activities
+		data: {
+			adminPresences: data,
+			activity_id,
+			round
+		}
 	};
 };

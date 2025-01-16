@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   backend:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    if: github.event_name != 'pull_request' || github.activity.pull_request.head.repo.full_name != github.activity.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -44,7 +44,7 @@ jobs:
   #          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_BACKEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
 
   frontend:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    if: github.event_name != 'pull_request' || github.activity.pull_request.head.repo.full_name != github.activity.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     permissions:
       contents: read

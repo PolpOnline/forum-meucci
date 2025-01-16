@@ -5,14 +5,14 @@ use utoipa::ToSchema;
 
 use crate::{
     app::openapi::ADMIN_TAG, models::user::UserType, users::AuthSession,
-    web::endpoints::protected::admin::shared::user_has_access_to_event,
+    web::endpoints::protected::admin::shared::user_has_access_to_activity,
 };
 
 #[derive(Deserialize, ToSchema)]
 pub struct AdminSetPresenceRequest {
-    /// The ID of the event
+    /// The ID of the activity
     #[schema(example = 1)]
-    event_id: i32,
+    activity_id: i32,
     /// The round number
     #[schema(example = 1)]
     round: i32,
@@ -53,7 +53,7 @@ pub async fn set_presence(
         return StatusCode::FORBIDDEN.into_response();
     }
 
-    match user_has_access_to_event(&auth_session, user_type, user_id, req.event_id).await {
+    match user_has_access_to_activity(&auth_session, user_type, user_id, req.activity_id).await {
         Ok(true) => {}
         Ok(false) => return StatusCode::FORBIDDEN.into_response(),
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -62,16 +62,16 @@ pub async fn set_presence(
     match sqlx::query!(
         // language=PostgreSQL
         r#"
-        UPDATE event_user
+        UPDATE activity_user
         SET joined_at      = CASE WHEN $1 IS TRUE THEN CURRENT_TIMESTAMP END,
             last_edited_by = $2
-        WHERE event_id = $3
+        WHERE activity_id = $3
           AND user_id = $4
           AND round = $5
         "#,
         req.present,
         user_id,
-        req.event_id,
+        req.activity_id,
         req.user_id,
         req.round,
     )

@@ -4,7 +4,11 @@ import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import { error, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const { data, response, error: errorMessage } = await client.GET('/events/selected', { fetch });
+	const {
+		data,
+		response,
+		error: errorMessage
+	} = await client.GET('/activities/selected', { fetch });
 
 	if (response.status === StatusCodes.UNAUTHORIZED) {
 		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');
@@ -20,6 +24,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}
 
 	return {
-		selectedEvents: data.events
+		selectedActivities: data.activities
 	};
 };

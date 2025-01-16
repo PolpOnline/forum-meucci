@@ -4,15 +4,15 @@
  */
 
 export interface paths {
-	'/admin/events': {
+	'/activities/available/{round}': {
 		parameters: {
 			query?: never;
 			header?: never;
 			path?: never;
 			cookie?: never;
 		};
-		/** Events List */
-		get: operations['events'];
+		/** Available Activities */
+		get: operations['available'];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -21,7 +21,58 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/admin/presences/{event_id}/{round}': {
+	'/activities/selected': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** Selected Activities */
+		get: operations['selected'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/activities/set': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/** Set Activity */
+		patch: operations['set'];
+		trace?: never;
+	};
+	'/admin/activities': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** Activities List */
+		get: operations['activities'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/admin/presences/{activity_id}/{round}': {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -38,7 +89,7 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/admin/rounds/{event_id}': {
+	'/admin/rounds/{activity_id}': {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -123,57 +174,6 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/events/available/{round}': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/** Available Events */
-		get: operations['available'];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	'/events/selected': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/** Selected Events */
-		get: operations['selected'];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	'/events/set': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		/** Set Event */
-		patch: operations['set'];
-		trace?: never;
-	};
 	'/healthcheck': {
 		parameters: {
 			query?: never;
@@ -246,26 +246,59 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
 	schemas: {
-		AdminEvent: {
-			/** @example This is the description of event 1 */
+		Activity: {
+			/** Format: date-time */
+			date: string;
+			/** @example This is the description of activity 1 */
+			description?: string | null;
+			/**
+			 * Format: int32
+			 * @example 1
+			 */
+			id: number;
+			/** @example Activity 1 */
+			name: string;
+			/** @example true */
+			present: boolean;
+			/** @example Room 1 */
+			room: string;
+			/**
+			 * Format: int32
+			 * @description The round of the activity (0-indexed)
+			 * @example 0
+			 */
+			round: number;
+			/**
+			 * Format: int64
+			 * @example 20
+			 */
+			total_seats: number;
+			/**
+			 * Format: int64
+			 * @example 10
+			 */
+			used_seats: number;
+		};
+		AdminActivity: {
+			/** @example This is the description of activity 1 */
 			description: string;
 			/**
 			 * Format: int32
 			 * @example 1
 			 */
 			id: number;
-			/** @example Event 1 */
+			/** @example Activity 1 */
 			name: string;
 			/** @example Room 1 */
 			room: string;
 		};
-		AdminEventResponse: {
-			events: components['schemas']['AdminEvent'][];
+		AdminActivityResponse: {
+			activities: components['schemas']['AdminActivity'][];
 		};
 		AdminPresenceResponse: {
 			/** Format: date-time */
 			date: string;
-			/** @example Event 1 */
+			/** @example Activity 1 */
 			name: string;
 			presences: components['schemas']['Presence'][];
 			/** @example Room 1 */
@@ -296,7 +329,7 @@ export interface components {
 			used_seats?: number | null;
 		};
 		AdminRoundResponse: {
-			/** @example Event 1 */
+			/** @example Activity 1 */
 			name: string;
 			/** @example Room 1 */
 			room: string;
@@ -305,10 +338,10 @@ export interface components {
 		AdminSetPresenceRequest: {
 			/**
 			 * Format: int32
-			 * @description The ID of the event
+			 * @description The ID of the activity
 			 * @example 1
 			 */
-			event_id: number;
+			activity_id: number;
 			/**
 			 * @description Whether the user is present
 			 * @example true
@@ -327,15 +360,15 @@ export interface components {
 			 */
 			user_id: number;
 		};
-		AvailableEvent: {
-			/** @example This is the description of event 1 */
+		AvailableActivity: {
+			/** @example This is the description of the first activity */
 			description: string;
 			/**
 			 * Format: int32
 			 * @example 1
 			 */
 			id: number;
-			/** @example Event 1 */
+			/** @example Activity 1 */
 			name: string;
 			/** @example Room 1 */
 			room: string;
@@ -350,8 +383,8 @@ export interface components {
 			 */
 			used_seats?: number | null;
 		};
-		AvailableEventResponse: {
-			events: components['schemas']['AvailableEvent'][];
+		AvailableActivityResponse: {
+			activities: components['schemas']['AvailableActivity'][];
 		};
 		BasicSystemInfo: {
 			system_host_name: string;
@@ -366,39 +399,6 @@ export interface components {
 			/** Format: float */
 			usage: number;
 			vendor_id: string;
-		};
-		Event: {
-			/** Format: date-time */
-			date: string;
-			/** @example This is the description of event 1 */
-			description?: string | null;
-			/**
-			 * Format: int32
-			 * @example 1
-			 */
-			id: number;
-			/** @example Event 1 */
-			name: string;
-			/** @example true */
-			present: boolean;
-			/** @example Room 1 */
-			room: string;
-			/**
-			 * Format: int32
-			 * @description The round of the event (0-indexed)
-			 * @example 0
-			 */
-			round: number;
-			/**
-			 * Format: int64
-			 * @example 20
-			 */
-			total_seats: number;
-			/**
-			 * Format: int64
-			 * @example 10
-			 */
-			used_seats: number;
 		};
 		MemInfo: {
 			free: string;
@@ -423,20 +423,20 @@ export interface components {
 			/** @example A */
 			section?: string | null;
 		};
-		SelectedEventResponse: {
-			events: components['schemas']['Event'][];
+		SelectedActivityResponse: {
+			activities: components['schemas']['Activity'][];
 		};
-		SetEventRequest: {
+		SetActivityRequest: {
 			/**
 			 * Format: int32
-			 * @description The id of the event to set to, do not provide to set absent on that
+			 * @description The id of the activity to set to, do not provide to set absent on that
 			 *     round
 			 * @example 1
 			 */
-			event_id?: number | null;
+			activity_id?: number | null;
 			/**
 			 * Format: int32
-			 * @description The round to set the event to
+			 * @description The round to set the activity to
 			 * @example 0
 			 */
 			round: number;
@@ -472,7 +472,47 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-	events: {
+	available: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				/**
+				 * @description The round of the activity (0-indexed)
+				 * @example 0
+				 */
+				round: number;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Returns the available activities */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['AvailableActivityResponse'];
+				};
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	selected: {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -481,13 +521,83 @@ export interface operations {
 		};
 		requestBody?: never;
 		responses: {
-			/** @description List of the events the user has access to, if admin all events, if host only those they are hosting */
+			/** @description Returns the selected activities */
 			200: {
 				headers: {
 					[name: string]: unknown;
 				};
 				content: {
-					'application/json': components['schemas']['AdminEventResponse'];
+					'application/json': components['schemas']['SelectedActivityResponse'];
+				};
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	set: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['SetActivityRequest'];
+			};
+		};
+		responses: {
+			/** @description The activity was set successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	activities: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description List of the activities the user has access to, if admin all activities, if host only those they are hosting */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['AdminActivityResponse'];
 				};
 			};
 			/** @description Not logged in */
@@ -519,10 +629,10 @@ export interface operations {
 			header?: never;
 			path: {
 				/**
-				 * @description The ID of the event
+				 * @description The ID of the activity
 				 * @example 1
 				 */
-				event_id: number;
+				activity_id: number;
 				/**
 				 * @description The round number
 				 * @example 1
@@ -533,7 +643,7 @@ export interface operations {
 		};
 		requestBody?: never;
 		responses: {
-			/** @description List of the presences for a given event and round */
+			/** @description List of the presences for a given activity and round */
 			200: {
 				headers: {
 					[name: string]: unknown;
@@ -571,16 +681,16 @@ export interface operations {
 			header?: never;
 			path: {
 				/**
-				 * @description The ID of the event
+				 * @description The ID of the activity
 				 * @example 1
 				 */
-				event_id: number;
+				activity_id: number;
 			};
 			cookie?: never;
 		};
 		requestBody?: never;
 		responses: {
-			/** @description List of the rounds for an event the user has access to */
+			/** @description List of the rounds for an activity the user has access to */
 			200: {
 				headers: {
 					[name: string]: unknown;
@@ -741,116 +851,6 @@ export interface operations {
 				content?: never;
 			};
 			/** @description Failed to logout user, user may be not logged in */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	available: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				/**
-				 * @description The round of the event (0-indexed)
-				 * @example 0
-				 */
-				round: number;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Returns the available events */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['AvailableEventResponse'];
-				};
-			};
-			/** @description Not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	selected: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Returns the selected events */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['SelectedEventResponse'];
-				};
-			};
-			/** @description Not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	set: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				'application/json': components['schemas']['SetEventRequest'];
-			};
-		};
-		responses: {
-			/** @description The event was set successfully */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Internal server error */
 			500: {
 				headers: {
 					[name: string]: unknown;

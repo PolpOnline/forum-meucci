@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT activity_id\n        FROM activity_admin\n        JOIN activity ON activity_admin.activity_id = activity.id\n        WHERE user_id = $1 AND activity_id = $2 AND should_display IS TRUE\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "activity_id",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "2e784ad9456fc75694fe0e940640b84d34ac5d89e3c7b5174d0c42cf1c478a8c"
+}

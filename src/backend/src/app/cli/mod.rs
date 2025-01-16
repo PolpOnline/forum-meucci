@@ -13,7 +13,7 @@ pub enum Command {
     /// Seed the user table
     #[command(name = "seed-user")]
     SeedUser,
-    /// Seed the event table
-    #[command(name = "seed-event")]
-    SeedEvent,
+    /// Seed the activity table
+    #[command(name = "seed-activity")]
+    SeedActivity,
 }

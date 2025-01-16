@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE activity_user\n        SET joined_at      = CASE WHEN $1 IS TRUE THEN CURRENT_TIMESTAMP END,\n            last_edited_by = $2\n        WHERE activity_id = $3\n          AND user_id = $4\n          AND round = $5\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Bool",
+        "Int4",
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "c9db4fd226b6a033cb56c31f2f384e7c02ec796ddc002882d2831879a417843a"
+}
