@@ -1,7 +1,6 @@
-use color_eyre::{eyre::eyre, Result};
-use indicatif::ProgressBar;
+use color_eyre::Result;
 use serde::Deserialize;
-use sqlx::PgPool;
+use sqlx::{PgPool, Postgres, QueryBuilder};
 use tracing::info;
 
 #[derive(Debug, Deserialize)]
@@ -27,39 +26,23 @@ pub async fn seed(db: PgPool) -> Result<()> {
 
     info!("Seeding the user table...");
 
-    let bar = ProgressBar::new(data.len() as u64);
+    let mut query_builder: QueryBuilder<Postgres> = QueryBuilder::new(
+        r#"
+        INSERT INTO "user" (name, email, class, section)
+        "#,
+    );
+
+    query_builder.push_values(data, |mut b, user_data| {
+        b.push_bind(format!("{} {}", user_data.first_name, user_data.last_name))
+            .push_bind(user_data.email)
+            .push_bind(user_data.class)
+            .push_bind(user_data.section);
+    });
 
     let mut txn = db.begin().await?;
 
-    for user_data in data {
-        bar.inc(1);
+    query_builder.build().execute(&mut *txn).await?;
 
-        match sqlx::query!(
-            // language=PostgreSQL
-            r#"
-            INSERT INTO "user" (name, email, class, section)
-            VALUES ($1, $2, $3, $4)
-            "#,
-            format!("{} {}", user_data.first_name, user_data.last_name),
-            user_data.email,
-            user_data.class,
-            user_data.section
-        )
-        .execute(&mut *txn)
-        .await
-        {
-            Ok(_) => (),
-            Err(e) => {
-                return Err(eyre!(
-                    "Error inserting user: {:?} (email: {})",
-                    e,
-                    user_data.email
-                ));
-            }
-        }
-    }
-
-    bar.finish_and_clear();
     info!("User table seeded");
 
     txn.commit().await?;
