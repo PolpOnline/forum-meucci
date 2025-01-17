@@ -89,7 +89,6 @@ pub async fn presences(
 
     let presences_fut = sqlx::query_as!(
         Presence,
-        // language=PostgreSQL
         r#"
         SELECT "user".id,
                "user".section,
@@ -109,7 +108,6 @@ pub async fn presences(
     .fetch_all(&auth_session.backend.db);
 
     let total_seats_fut = sqlx::query!(
-        // language=PostgreSQL
         r#"
         SELECT max_users
         FROM round_max_users

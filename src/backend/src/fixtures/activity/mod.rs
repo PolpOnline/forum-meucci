@@ -57,7 +57,6 @@ pub async fn seed(db: PgPool) -> Result<()> {
         // Get the host ids without a transaction because only one txn can be active at
         // a time
         let host_ids_fut = sqlx::query!(
-            // language=PostgreSQL
             r#"
             SELECT id
             FROM "user"
@@ -69,7 +68,6 @@ pub async fn seed(db: PgPool) -> Result<()> {
 
         // Insert the activity basic information
         let event_id_fut = sqlx::query!(
-            // language=PostgreSQL
             r#"
             INSERT INTO activity (name, description, room, minimum_class)
             VALUES ($1, $2, $3, $4)
@@ -95,7 +93,6 @@ pub async fn seed(db: PgPool) -> Result<()> {
         // Add hosts to the activity
         for event_admin in host_ids {
             sqlx::query!(
-                // language=PostgreSQL
                 r#"
                 INSERT INTO activity_admin (activity_id, user_id)
                 VALUES ($1, $2)
@@ -107,7 +104,6 @@ pub async fn seed(db: PgPool) -> Result<()> {
             .await?;
 
             sqlx::query!(
-                // language=PostgreSQL
                 r#"
                 UPDATE "user" SET type = 'host' WHERE id = $1
                 "#,
@@ -120,7 +116,6 @@ pub async fn seed(db: PgPool) -> Result<()> {
         // Add the maximum users per round
         for (idx, max_users) in activity_data.massimo_utenti_round.into_iter().enumerate() {
             sqlx::query!(
-                // language=PostgreSQL
                 r#"
                 INSERT INTO round_max_users (round, activity_id, max_users)
                 VALUES ($1, $2, $3)

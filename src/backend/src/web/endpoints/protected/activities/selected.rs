@@ -37,7 +37,6 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
 
     let activities = match sqlx::query_as!(
         ActivityWithoutDate,
-        // language=PostgreSQL
         r#"
         SELECT activity.id                         AS id,
                activity_user.round                 AS round,

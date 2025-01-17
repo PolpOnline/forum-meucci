@@ -13,7 +13,6 @@ pub async fn get_admin_activity(
     // Intentionally allow access to activities that should not be displayed
     let name = sqlx::query_as!(
         ActivityBasicInfo,
-        // language=PostgreSQL
         r#"
         SELECT name, room
         FROM activity
@@ -38,7 +37,6 @@ pub async fn get_host_activity(
     // Get the name of the activity while checking if the user has access to it
     let name = sqlx::query_as!(
         ActivityBasicInfo,
-        // language=PostgreSQL
         r#"
         SELECT name, room
         FROM activity
@@ -76,7 +74,6 @@ pub async fn check_host_activity(
     activity_id: i32,
 ) -> Result<bool, sqlx::Error> {
     let matches = sqlx::query!(
-        // language=PostgreSQL
         r#"
         SELECT activity_id
         FROM activity_admin

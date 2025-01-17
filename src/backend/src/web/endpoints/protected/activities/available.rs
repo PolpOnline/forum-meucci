@@ -59,7 +59,6 @@ pub async fn available(
 
     let activities = match sqlx::query_as!(
         AvailableActivity,
-        // language=PostgreSQL
         r#"
         SELECT activity.id,
                activity.name,

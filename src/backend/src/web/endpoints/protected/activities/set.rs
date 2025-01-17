@@ -46,7 +46,6 @@ pub async fn set(
         None => {
             // Query the absent activity
             match sqlx::query!(
-                // language=PostgreSQL
                 r#"
                     SELECT id FROM activity WHERE name = 'absent'
                 "#,
@@ -61,7 +60,6 @@ pub async fn set(
     };
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
             INSERT INTO activity_user (activity_id, user_id, round)
             VALUES ($1, $2, $3)

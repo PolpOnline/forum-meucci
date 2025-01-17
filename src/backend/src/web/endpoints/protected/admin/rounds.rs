@@ -101,7 +101,6 @@ pub async fn rounds(
 
     let rounds = match sqlx::query_as!(
         AdminRoundWithoutDate,
-        // language=PostgreSQL
         r#"
         SELECT round_max_users.round,
                COUNT(activity_user.user_id) AS used_seats,

@@ -61,7 +61,6 @@ pub(super) async fn activities(auth_session: AuthSession) -> impl IntoResponse {
 async fn admin_activities(auth_session: &AuthSession) -> Result<Vec<AdminActivity>, sqlx::Error> {
     let activities = sqlx::query_as!(
         AdminActivity,
-        // language=PostgreSQL
         r#"
         SELECT activity.id            AS id,
                activity.name          AS name,
@@ -86,7 +85,6 @@ async fn host_activities(
 ) -> Result<Vec<AdminActivity>, sqlx::Error> {
     let activities = sqlx::query_as!(
         AdminActivity,
-        // language=PostgreSQL
         r#"
         SELECT activity.id            AS id,
                activity.name          AS name,

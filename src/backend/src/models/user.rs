@@ -31,7 +31,6 @@ impl User {
     ) -> Result<Self, sqlx::Error> {
         let user = sqlx::query_as!(
             User,
-            // language=PostgreSQL
             r#"
             SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType" FROM "user" WHERE email = $1
             "#,
@@ -45,7 +44,6 @@ impl User {
                 if user.name.is_none() {
                     user = sqlx::query_as!(
                             User,
-                            // language=PostgreSQL
                             r#"
                             UPDATE "user" SET name = $1 WHERE email = $2 RETURNING id, name, email, interactive_done, section, class, type AS "type!: UserType"
                             "#,
@@ -61,7 +59,6 @@ impl User {
             None => {
                 let user = sqlx::query_as!(
                     User,
-                    // language=PostgreSQL
                     r#"
                     INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING  id, name, email, interactive_done, section, class, type AS "type!: UserType"
                     "#,
@@ -79,7 +76,6 @@ impl User {
     pub async fn get_user_by_id(db: &PgPool, id: &i32) -> Result<Option<Self>, sqlx::Error> {
         let user = sqlx::query_as!(
             User,
-            // language=PostgreSQL
             r#"
             SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType"
             FROM "user"

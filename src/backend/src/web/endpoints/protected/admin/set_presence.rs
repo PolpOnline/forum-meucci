@@ -60,7 +60,6 @@ pub async fn set_presence(
     }
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         UPDATE activity_user
         SET joined_at      = CASE WHEN $1 IS TRUE THEN CURRENT_TIMESTAMP END,
