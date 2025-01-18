@@ -9,20 +9,14 @@
 
 	let { data }: { data: PageData } = $props();
 
-	// Add a key to each element based on round and id
-	const selectedActivities = $derived(
-		data.selectedActivities!.map((activity) => ({
-			...activity,
-			key: `${activity.round}-${activity.id}`
-		}))
-	);
+	const selectedActivities = $derived(data.selectedActivities!);
 
 	title.set('Forum Meucci');
 </script>
 
 <main>
 	<div class="mx-auto mt-5 grid w-[95%] max-w-[800px] space-y-6">
-		{#each selectedActivities as activity (activity.key)}
+		{#each selectedActivities as activity (`${activity.round}-${activity.id}`)}
 			<div animate:flip class="custom-grid-element" style="--row: {activity.round + 1}">
 				<!-- Little hack to make the dates not overlap -->
 				<div class="ml-1 font-bold" out:hide={{ duration: 1, delay: 0 }}>
