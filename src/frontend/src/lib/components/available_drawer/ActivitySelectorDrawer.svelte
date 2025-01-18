@@ -9,6 +9,8 @@
 	import { invalidateAll } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 	import type { AvailableActivityResponse } from '$lib/utils';
+	import { StatusCodes } from 'http-status-codes';
+	import { activityFullDialogOpen } from '$lib/stores/dialogs.store';
 
 	const {
 		trigger,
@@ -56,6 +58,12 @@
 	let selectedId = $state(initialId);
 
 	async function setActivity(round: number, activity_id?: number) {
+		if (activity_id === initialId) {
+			toast.info('Attività non modificata');
+			open = false;
+			return;
+		}
+
 		const res = await fetch(`/api/activities/set`, {
 			method: 'PATCH',
 			headers: {
@@ -66,6 +74,14 @@
 
 		if (res.ok) {
 			toast.success('Attività salvata');
+		} else if (res.status === StatusCodes.GONE) {
+			toast.error('Attività non più disponibile', {
+				duration: 5000,
+				action: {
+					label: 'Info',
+					onClick: () => activityFullDialogOpen.set(true)
+				}
+			});
 		} else {
 			toast.error("Errore durante il salvataggio dell'attività");
 		}

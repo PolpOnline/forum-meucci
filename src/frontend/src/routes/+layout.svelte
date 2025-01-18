@@ -12,6 +12,7 @@
 	import Favicon from '$lib/images/favicon.svg';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	import { links } from 'unplugin-fonts/head';
+	import ActivityFullDialog from '$lib/components/dialogs/ActivityFullDialog.svelte';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -41,6 +42,8 @@
 </svelte:head>
 
 <Toaster richColors position="top-center" />
+
+<ActivityFullDialog />
 
 <div data-vaul-drawer-wrapper>
 	<Navbar loginStatus={data.loginStatus} />

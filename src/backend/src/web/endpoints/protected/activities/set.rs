@@ -24,6 +24,7 @@ pub struct SetActivityRequest {
     request_body = SetActivityRequest,
     responses(
         (status = OK, description = "The activity was set successfully"),
+        (status = GONE, description = "The activity is full"),
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
     ),
@@ -42,7 +43,34 @@ pub async fn set(
     };
 
     let activity_id = match req.activity_id {
-        Some(activity_id) => activity_id,
+        Some(activity_id) => {
+            // Check if the activity has enough capacity
+            match sqlx::query!(
+                r#"
+                SELECT round_max_users.max_users    AS total_seats,
+                       COUNT(activity_user.user_id) AS "used_seats!: i32"
+                FROM round_max_users
+                         LEFT JOIN activity_user ON round_max_users.activity_id = activity_user.activity_id AND
+                                                    round_max_users.round = activity_user.round
+                WHERE round_max_users.activity_id = $1
+                  AND round_max_users.round = $2
+                GROUP BY round_max_users.max_users;
+                "#,
+                activity_id,
+                req.round,
+            ).fetch_one(&auth_session.backend.db).await {
+                Ok(row) => {
+                    if row.used_seats >= row.total_seats {
+                        return StatusCode::GONE.into_response();
+                    }
+                }
+                Err(_) => {
+                    return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+                }
+            }
+
+            activity_id
+        }
         None => {
             // Query the absent activity
             match sqlx::query!(

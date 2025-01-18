@@ -575,6 +575,13 @@ export interface operations {
 				};
 				content?: never;
 			};
+			/** @description The activity is full */
+			410: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Internal server error */
 			500: {
 				headers: {
