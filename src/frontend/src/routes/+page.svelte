@@ -13,13 +13,13 @@
 </script>
 
 <main>
-	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
+	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-6">
 		{#each selectedActivities as activity (activity.round)}
 			<div animate:flip>
-				<div class="font-bold">
+				<div class="ml-1 font-bold">
 					{formatItalianDate(activity.date)}
 				</div>
-				<div class="mt-3">
+				<div class="mt-2">
 					<ActivityItem {activity} formattedDate={formatItalianDate(activity.date)} />
 				</div>
 			</div>
