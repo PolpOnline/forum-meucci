@@ -20,7 +20,7 @@
 			<ItisMeucciLogo class="ml-3 h-20 w-20 max-w-full" />
 		</a>
 	</div>
-	<div class="col-span-8 flex items-center justify-center">
+	<div class="col-span-8 flex items-center justify-center font-black">
 		<a href="/" class="text-3xl"> Forum Meucci </a>
 	</div>
 	<div class="col-span-2 mr-3 flex items-center gap-1 justify-self-end">

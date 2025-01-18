@@ -16,7 +16,7 @@
 	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
 		{#each selectedActivities as activity (activity.round)}
 			<div animate:flip>
-				<div class="font-semibold">
+				<div class="font-bold">
 					{formatItalianDate(activity.date)}
 				</div>
 				<div class="mt-3">
