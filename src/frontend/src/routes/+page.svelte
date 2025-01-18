@@ -17,17 +17,18 @@
 <main>
 	<div class="mx-auto mt-5 grid w-[95%] max-w-[800px] space-y-6">
 		{#each selectedActivities as activity (`${activity.round}-${activity.id}`)}
+			{@const formattedDate = formatItalianDate(activity.date)}
 			<div animate:flip class="custom-grid-element" style="--row: {activity.round + 1}">
 				<!-- Little hack to make the dates not overlap -->
 				<div class="ml-1 font-bold" out:hide={{ duration: 1, delay: 0 }}>
-					{formatItalianDate(activity.date)}
+					{formattedDate}
 				</div>
 				<div
 					class="mt-2"
 					in:fly={{ x: '-100%', delay: 500, duration: 500 }}
 					out:fly={{ x: '100%', duration: 500 }}
 				>
-					<ActivityItem {activity} formattedDate={formatItalianDate(activity.date)} />
+					<ActivityItem {activity} {formattedDate} />
 				</div>
 			</div>
 		{/each}
