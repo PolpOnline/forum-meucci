@@ -11,6 +11,7 @@
 	import type { AvailableActivityResponse } from '$lib/utils';
 	import { StatusCodes } from 'http-status-codes';
 	import { activityFullDialogOpen } from '$lib/stores/dialogs.store';
+	import { slide, type SlideParams } from 'svelte/transition';
 
 	const {
 		trigger,
@@ -93,9 +94,19 @@
 
 	let isSaving = $state(false);
 	let isAbsentSaving = $state(false);
+
+	let isOpening = $state(false);
+
+	const slideParams: SlideParams = $derived({
+		duration: isOpening ? 0 : 300
+	});
 </script>
 
-<Drawer.Root bind:open>
+<Drawer.Root
+	bind:open
+	onAnimationEnd={() => (isOpening = false)}
+	onOpenChange={() => (isOpening = true)}
+>
 	<Drawer.Trigger class={className}>
 		{@render trigger()}
 	</Drawer.Trigger>
@@ -105,14 +116,16 @@
 		</Drawer.Header>
 		<div class="mx-auto w-[95%]">
 			{#await getAvailableActivities()}
-				<div class="flex justify-center">
+				<div class="flex justify-center text-4xl">
 					<LineMdLoadingLoop />
 				</div>
 			{:then availableActivities}
-				<ActivitySelectorForm
-					availableActivities={availableActivities.activities}
-					bind:selectedId
-				/>
+				<div transition:slide={slideParams}>
+					<ActivitySelectorForm
+						availableActivities={availableActivities.activities}
+						bind:selectedId
+					/>
+				</div>
 			{:catch error}
 				<div class="text-destructive-foreground">
 					<p>Errore: {error.message}</p>
