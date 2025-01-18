@@ -2,7 +2,6 @@ use std::sync::LazyLock;
 
 use color_eyre::Result;
 use dotenvy::dotenv;
-use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
 
@@ -14,7 +13,6 @@ pub mod models;
 pub mod users;
 pub mod web;
 
-pub static PRODUCTION: LazyLock<bool> = LazyLock::new(|| std::env::var("PRODUCTION").is_ok());
 pub static SITE_URL: LazyLock<String> =
     LazyLock::new(|| std::env::var("SITE_URL").unwrap_or_else(|_| "http://localhost:5173".into()));
 pub static BACKEND_URL: LazyLock<String> = LazyLock::new(|| {
@@ -38,12 +36,6 @@ async fn main() -> Result<()> {
         .try_init()?;
 
     dotenv().unwrap_or_default();
-
-    if *PRODUCTION {
-        info!("System: Production mode");
-    } else {
-        info!("System: Development mode");
-    }
 
     #[cfg(debug_assertions)]
     {
