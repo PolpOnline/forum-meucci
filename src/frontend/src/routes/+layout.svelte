@@ -41,7 +41,7 @@
 	{/each}
 </svelte:head>
 
-<Toaster richColors position="top-center" />
+<Toaster position="top-center" richColors theme="dark" />
 
 <ActivityFullDialog />
 
