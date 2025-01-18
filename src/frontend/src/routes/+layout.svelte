@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import 'unfonts.css';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { LayoutData } from './$types';
 	import type { Snippet } from 'svelte';
@@ -10,6 +11,7 @@
 	import { title } from '$lib/stores/title.store';
 	import Favicon from '$lib/images/favicon.svg';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
+	import { links } from 'unplugin-fonts/head';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -33,6 +35,9 @@
 	<link rel="icon" type="image/svg+xml" href={Favicon} />
 	<!-- for Safari -->
 	<link rel="mask-icon" href={Favicon} color="#000000" />
+	{#each links as link}
+		<link {...link?.attrs || {}} />
+	{/each}
 </svelte:head>
 
 <Toaster richColors position="top-center" />
