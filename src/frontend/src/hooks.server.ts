@@ -40,7 +40,8 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	// Forward the set-cookie header to the client
 	setCookies.forEach((cookie) => {
 		event.cookies.set(cookie.name, cookie.value, {
-			sameSite: 'strict',
+			domain: cookie.domain,
+			sameSite: 'lax',
 			path: '/',
 			maxAge: cookie.maxAge || COOKIE_ABSOLUTE_MAX_AGE,
 			httpOnly: true,
