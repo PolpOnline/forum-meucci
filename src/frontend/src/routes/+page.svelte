@@ -4,25 +4,45 @@
 	import type { PageData } from './$types';
 	import { flip } from 'svelte/animate';
 	import { formatItalianDate } from '$lib/utils/dates';
+	import { fly } from 'svelte/transition';
+	import { hide } from '$lib/animations/hide';
 
 	let { data }: { data: PageData } = $props();
 
-	let selectedActivities = $derived(data.selectedActivities!);
+	// Add a key to each element based on round and id
+	const selectedActivities = $derived(
+		data.selectedActivities!.map((activity) => ({
+			...activity,
+			key: `${activity.round}-${activity.id}`
+		}))
+	);
 
 	title.set('Forum Meucci');
 </script>
 
 <main>
-	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-6">
-		{#each selectedActivities as activity (activity.round)}
-			<div animate:flip>
-				<div class="ml-1 font-bold">
+	<div class="mx-auto mt-5 grid w-[95%] max-w-[800px] space-y-6">
+		{#each selectedActivities as activity (activity.key)}
+			<div animate:flip class="custom-grid-element" style="--row: {activity.round + 1}">
+				<!-- Little hack to make the dates not overlap -->
+				<div class="ml-1 font-bold" out:hide={{ duration: 1, delay: 0 }}>
 					{formatItalianDate(activity.date)}
 				</div>
-				<div class="mt-2">
+				<div
+					class="mt-2"
+					in:fly={{ x: '-100%', delay: 500, duration: 500 }}
+					out:fly={{ x: '100%', duration: 500 }}
+				>
 					<ActivityItem {activity} formattedDate={formatItalianDate(activity.date)} />
 				</div>
 			</div>
 		{/each}
 	</div>
 </main>
+
+<style>
+	.custom-grid-element {
+		grid-row: var(--row);
+		grid-column: 1;
+	}
+</style>
