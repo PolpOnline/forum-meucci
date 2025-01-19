@@ -55,23 +55,6 @@ export interface paths {
 		patch: operations['set'];
 		trace?: never;
 	};
-	'/activities/start_date': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/** Start Date */
-		get: operations['bookings_start_date'];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
 	'/admin/activities': {
 		parameters: {
 			query?: never;
@@ -183,6 +166,23 @@ export interface paths {
 		};
 		/** Logout */
 		get: operations['logout_handler'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/bookings_start_date': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** Bookings Start Date */
+		get: operations['bookings_start_date'];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -612,40 +612,6 @@ export interface operations {
 			};
 		};
 	};
-	bookings_start_date: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Returns the start date of the bookings */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['BookingsStartDateResponse'];
-				};
-			};
-			/** @description Not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
 	activities: {
 		parameters: {
 			query?: never;
@@ -920,6 +886,26 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content?: never;
+			};
+		};
+	};
+	bookings_start_date: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Returns the start date of the bookings */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['BookingsStartDateResponse'];
+				};
 			};
 		};
 	};
