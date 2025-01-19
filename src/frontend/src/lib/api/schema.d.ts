@@ -55,6 +55,23 @@ export interface paths {
 		patch: operations['set'];
 		trace?: never;
 	};
+	'/activities/start_date': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** Start Date */
+		get: operations['bookings_start_date'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	'/admin/activities': {
 		parameters: {
 			query?: never;
@@ -392,6 +409,10 @@ export interface components {
 			system_name: string;
 			system_os_version: string;
 		};
+		BookingsStartDateResponse: {
+			/** Format: date-time */
+			bookings_start_date: string;
+		};
 		CpuInfo: {
 			brand: string;
 			frequency: string;
@@ -577,6 +598,40 @@ export interface operations {
 			};
 			/** @description The activity is full */
 			410: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	bookings_start_date: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Returns the start date of the bookings */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['BookingsStartDateResponse'];
+				};
+			};
+			/** @description Not logged in */
+			401: {
 				headers: {
 					[name: string]: unknown;
 				};

@@ -5,6 +5,7 @@ use serde::Deserialize;
 pub struct Config {
     /// A vec with the index as the round and the date of the round as the value
     pub(crate) date_map: Vec<DateTime<Utc>>,
+    pub(crate) bookings_start_date: DateTime<Utc>,
 }
 
 impl Config {
