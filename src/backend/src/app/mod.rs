@@ -14,6 +14,7 @@ use axum_login::{
 use http::StatusCode;
 use openidconnect::core::CoreClient;
 use sqlx::PgPool;
+use tower::ServiceBuilder;
 use tower_http::{
     compression::CompressionLayer,
     decompression::{DecompressionLayer, RequestDecompressionLayer},
@@ -101,9 +102,12 @@ impl App {
             ))
             .nest("/auth", auth::router())
             .merge(public::router())
-            .layer(auth_layer)
-            .layer(middleware::from_fn(set_cache_control))
-            .layer(TraceLayer::new_for_http())
+            .layer(
+                ServiceBuilder::new()
+                    .layer(auth_layer)
+                    .layer(middleware::from_fn(set_cache_control))
+                    .layer(TraceLayer::new_for_http()),
+            )
             .split_for_parts();
 
         let router = {
@@ -115,10 +119,12 @@ impl App {
                 .merge(Scalar::with_url("/scalar", api))
         };
 
-        let router = router
-            .layer(CompressionLayer::new())
-            .layer(RequestDecompressionLayer::new())
-            .layer(DecompressionLayer::new());
+        let router = router.layer(
+            ServiceBuilder::new()
+                .layer(DecompressionLayer::new())
+                .layer(RequestDecompressionLayer::new())
+                .layer(CompressionLayer::new()),
+        );
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
