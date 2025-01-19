@@ -17,6 +17,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');
 	}
 
+	// Too Early
+	if (response.status === 425) {
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/countdown');
+	}
+
 	if (errorMessage) {
 		console.error(errorMessage);
 		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));

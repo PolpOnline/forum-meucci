@@ -22,7 +22,8 @@ pub struct SelectedActivityResponse {
     responses(
         (status = OK, description = "Returns the selected activities", body = SelectedActivityResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
+        (status = 425, description = "Bookings have not started yet"),
     ),
     security(
         ("session" = [])

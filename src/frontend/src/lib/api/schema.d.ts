@@ -526,6 +526,13 @@ export interface operations {
 				};
 				content?: never;
 			};
+			/** @description Bookings have not started yet */
+			425: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
 			/** @description Internal server error */
 			500: {
 				headers: {
@@ -555,6 +562,13 @@ export interface operations {
 			};
 			/** @description Not logged in */
 			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Bookings have not started yet */
+			425: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -598,6 +612,13 @@ export interface operations {
 			};
 			/** @description The activity is full */
 			410: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Bookings have not started yet */
+			425: {
 				headers: {
 					[name: string]: unknown;
 				};

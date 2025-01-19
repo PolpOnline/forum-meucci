@@ -41,7 +41,8 @@ pub struct AvailableActivity {
     responses(
         (status = OK, description = "Returns the available activities", body = AvailableActivityResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
+        (status = 425, description = "Bookings have not started yet"),
     ),
     security(
         ("session" = [])

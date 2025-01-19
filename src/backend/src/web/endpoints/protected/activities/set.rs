@@ -26,7 +26,8 @@ pub struct SetActivityRequest {
         (status = OK, description = "The activity was set successfully"),
         (status = GONE, description = "The activity is full"),
         (status = UNAUTHORIZED, description = "Not logged in"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
+        (status = 425, description = "Bookings have not started yet"),
     ),
     security(
         ("session" = [])
