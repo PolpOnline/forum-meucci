@@ -23,6 +23,10 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
 	}
 
+	if (new Date() > new Date(data.bookings_start_date)) {
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/');
+	}
+
 	return {
 		startDate: data.bookings_start_date
 	};
