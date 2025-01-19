@@ -414,6 +414,8 @@ export interface components {
 		};
 		SelectedActivityResponse: {
 			activities: components['schemas']['Activity'][];
+			/** Format: date-time */
+			bookings_end_date: string;
 		};
 		SetActivityRequest: {
 			/**
@@ -476,6 +478,13 @@ export interface operations {
 			};
 			/** @description Not logged in */
 			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Bookings have ended */
+			410: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -580,6 +589,13 @@ export interface operations {
 				content?: never;
 			};
 			/** @description The activity is full */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Bookings have ended */
 			410: {
 				headers: {
 					[name: string]: unknown;

@@ -36,6 +36,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}
 
 	return {
+		bookingsEndDate: data.bookings_end_date,
 		selectedActivities: data.activities
 	};
 };

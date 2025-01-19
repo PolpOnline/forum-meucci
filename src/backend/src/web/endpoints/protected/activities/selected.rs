@@ -1,5 +1,6 @@
 use ahash::AHashMap;
 use axum::{response::IntoResponse, Json};
+use chrono::{DateTime, Utc};
 use http::StatusCode;
 use serde::Serialize;
 use utoipa::ToSchema;
@@ -13,6 +14,7 @@ use crate::{
 
 #[derive(Serialize, ToSchema)]
 pub struct SelectedActivityResponse {
+    bookings_end_date: DateTime<Utc>,
     activities: Vec<Activity>,
 }
 
@@ -86,7 +88,13 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    Json(SelectedActivityResponse { activities }).into_response()
+    let bookings_end_date = auth_session.backend.config.bookings_end_date;
+
+    Json(SelectedActivityResponse {
+        activities,
+        bookings_end_date,
+    })
+    .into_response()
 }
 
 fn fill_gaps(activities: Vec<ActivityWithoutDate>, num_rounds: usize) -> Vec<ActivityWithoutDate> {

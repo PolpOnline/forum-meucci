@@ -75,7 +75,7 @@
 
 		if (res.ok) {
 			toast.success('Attività salvata');
-		} else if (res.status === StatusCodes.GONE) {
+		} else if (res.status === StatusCodes.CONFLICT) {
 			toast.error('Attività non più disponibile', {
 				duration: 5000,
 				action: {

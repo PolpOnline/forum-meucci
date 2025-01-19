@@ -5,7 +5,12 @@ use serde::Deserialize;
 pub struct Config {
     /// A vec with the index as the round and the date of the round as the value
     pub(crate) date_map: Vec<DateTime<Utc>>,
+    /// The date on which it is possible to start booking for the activities
+    /// (the site opens to the public basically)
     pub(crate) bookings_start_date: DateTime<Utc>,
+    /// The date on which it is no longer possible to book for the activities,
+    /// the activities remain visible, but the booking is disabled
+    pub(crate) bookings_end_date: DateTime<Utc>,
 }
 
 impl Config {

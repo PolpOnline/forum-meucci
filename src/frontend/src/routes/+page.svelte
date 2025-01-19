@@ -10,6 +10,7 @@
 	let { data }: { data: PageData } = $props();
 
 	const selectedActivities = $derived(data.selectedActivities!);
+	const bookingsEndDate = $derived(new Date(data.bookingsEndDate));
 
 	title.set('Forum Meucci');
 </script>
@@ -28,7 +29,7 @@
 					in:fly={{ x: '-100%', delay: 500, duration: 500 }}
 					out:fly={{ x: '100%', duration: 500 }}
 				>
-					<ActivityItem {activity} {formattedDate} />
+					<ActivityItem {activity} {formattedDate} {bookingsEndDate} />
 				</div>
 			</div>
 		{/each}

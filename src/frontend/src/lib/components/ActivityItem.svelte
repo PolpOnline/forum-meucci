@@ -12,8 +12,15 @@
 
 	const {
 		activity,
-		formattedDate
-	}: { activity: components['schemas']['Activity']; formattedDate: string } = $props();
+		formattedDate,
+		bookingsEndDate
+	}: {
+		activity: components['schemas']['Activity'];
+		formattedDate: string;
+		bookingsEndDate: Date;
+	} = $props();
+
+	const canEdit = new Date(bookingsEndDate) > new Date();
 
 	const { id, name, description, round, room, used_seats, total_seats, present, date } =
 		$derived(activity);
@@ -70,7 +77,7 @@
 		</ActivitySelectorDrawer>
 	{/if}
 
-	{#if name}
+	{#if name && canEdit}
 		<ActivitySelectorDrawer
 			{formattedDate}
 			{round}
