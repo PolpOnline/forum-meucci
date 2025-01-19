@@ -3,14 +3,14 @@ use http::StatusCode;
 
 use crate::users::AuthSession;
 
-pub async fn end_bookings_routing(
+pub async fn end_registrations_routing(
     auth_session: AuthSession,
     request: Request,
     next: Next,
 ) -> impl IntoResponse {
     let now = chrono::Utc::now();
 
-    if now > auth_session.backend.config.bookings_end_date {
+    if now > auth_session.backend.config.registrations_end_date {
         return StatusCode::GONE.into_response();
     }
 

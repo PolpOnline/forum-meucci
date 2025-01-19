@@ -1,7 +1,7 @@
 use axum::middleware;
 use utoipa_axum::{router::OpenApiRouter, routes};
 
-use crate::middleware::end_bookings_routing::end_bookings_routing;
+use crate::middleware::end_registrations_routing::end_registrations_routing;
 
 mod available;
 mod selected;
@@ -11,6 +11,6 @@ pub fn router() -> OpenApiRouter {
     OpenApiRouter::new()
         .routes(routes!(set::set))
         .routes(routes!(available::available))
-        .layer(middleware::from_fn(end_bookings_routing))
+        .layer(middleware::from_fn(end_registrations_routing))
         .routes(routes!(selected::selected))
 }

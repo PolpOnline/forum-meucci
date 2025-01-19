@@ -42,8 +42,8 @@ pub struct AvailableActivity {
         (status = OK, description = "Returns the available activities", body = AvailableActivityResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
-        (status = 425, description = "Bookings have not started yet"),
-        (status = GONE, description = "Bookings have ended"),
+        (status = 425, description = "Registrations have not started yet"),
+        (status = GONE, description = "Registrations have ended"),
     ),
     security(
         ("session" = [])

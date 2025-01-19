@@ -9,7 +9,7 @@ pub async fn start_date_routing(
     next: Next,
 ) -> impl IntoResponse {
     let now = chrono::Utc::now();
-    if now < auth_session.backend.config.bookings_start_date {
+    if now < auth_session.backend.config.registrations_start_date {
         return StatusCode::TOO_EARLY.into_response();
     }
 

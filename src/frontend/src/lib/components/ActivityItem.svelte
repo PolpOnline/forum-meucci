@@ -13,14 +13,14 @@
 	const {
 		activity,
 		formattedDate,
-		bookingsEndDate
+		registrationsEndDate
 	}: {
 		activity: components['schemas']['Activity'];
 		formattedDate: string;
-		bookingsEndDate: Date;
+		registrationsEndDate: Date;
 	} = $props();
 
-	const canEdit = new Date(bookingsEndDate) > new Date();
+	const canEdit = new Date(registrationsEndDate) > new Date();
 
 	const { id, name, description, round, room, used_seats, total_seats, present, date } =
 		$derived(activity);

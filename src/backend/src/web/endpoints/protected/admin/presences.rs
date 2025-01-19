@@ -59,7 +59,7 @@ pub struct Presence {
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = FORBIDDEN, description = "Not an admin or host"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
-        (status = 425, description = "Bookings have not started yet"),
+        (status = 425, description = "Registrations have not started yet"),
     ),
     security(
         ("session" = [])

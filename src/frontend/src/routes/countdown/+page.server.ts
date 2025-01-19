@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		data,
 		response,
 		error: errorMessage
-	} = await client.GET('/bookings_start_date', { fetch });
+	} = await client.GET('/registrations_start_date', { fetch });
 
 	if (response.status === StatusCodes.UNAUTHORIZED) {
 		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');
@@ -23,11 +23,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
 	}
 
-	if (new Date() > new Date(data.bookings_start_date)) {
+	if (new Date() > new Date(data.registrations_start_date)) {
 		redirect(StatusCodes.MOVED_TEMPORARILY, '/');
 	}
 
 	return {
-		startDate: data.bookings_start_date
+		startDate: data.registrations_start_date
 	};
 };

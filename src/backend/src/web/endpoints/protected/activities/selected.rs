@@ -14,7 +14,7 @@ use crate::{
 
 #[derive(Serialize, ToSchema)]
 pub struct SelectedActivityResponse {
-    bookings_end_date: DateTime<Utc>,
+    registrations_end_date: DateTime<Utc>,
     activities: Vec<Activity>,
 }
 
@@ -27,8 +27,8 @@ pub struct SelectedActivityResponse {
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
         (status = FORBIDDEN, description = "You are an admin"),
-        (status = 425, description = "Bookings have not started yet"),
-        (status = GONE, description = "Bookings have ended"),
+        (status = 425, description = "Registrations have not started yet"),
+        (status = GONE, description = "Registrations have ended"),
     ),
     security(
         ("session" = [])
@@ -88,11 +88,11 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    let bookings_end_date = auth_session.backend.config.bookings_end_date;
+    let registrations_end_date = auth_session.backend.config.registrations_end_date;
 
     Json(SelectedActivityResponse {
         activities,
-        bookings_end_date,
+        registrations_end_date,
     })
     .into_response()
 }

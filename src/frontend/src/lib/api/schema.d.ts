@@ -174,23 +174,6 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/bookings_start_date': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/** Bookings Start Date */
-		get: operations['bookings_start_date'];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
 	'/healthcheck': {
 		parameters: {
 			query?: never;
@@ -200,6 +183,23 @@ export interface paths {
 		};
 		/** Healthcheck */
 		get: operations['healthcheck'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/registrations_start_date': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** Registrations Start Date */
+		get: operations['registrations_start_date'];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -375,10 +375,6 @@ export interface components {
 			system_name: string;
 			system_os_version: string;
 		};
-		BookingsStartDateResponse: {
-			/** Format: date-time */
-			bookings_start_date: string;
-		};
 		CpuInfo: {
 			brand: string;
 			frequency: string;
@@ -412,10 +408,14 @@ export interface components {
 			/** @example A */
 			section?: string | null;
 		};
+		RegistrationsStartDateResponse: {
+			/** Format: date-time */
+			registrations_start_date: string;
+		};
 		SelectedActivityResponse: {
 			activities: components['schemas']['Activity'][];
 			/** Format: date-time */
-			bookings_end_date: string;
+			registrations_end_date: string;
 		};
 		SetActivityRequest: {
 			/**
@@ -483,14 +483,14 @@ export interface operations {
 				};
 				content?: never;
 			};
-			/** @description Bookings have ended */
+			/** @description Registrations have ended */
 			410: {
 				headers: {
 					[name: string]: unknown;
 				};
 				content?: never;
 			};
-			/** @description Bookings have not started yet */
+			/** @description Registrations have not started yet */
 			425: {
 				headers: {
 					[name: string]: unknown;
@@ -538,14 +538,14 @@ export interface operations {
 				};
 				content?: never;
 			};
-			/** @description Bookings have ended */
+			/** @description Registrations have ended */
 			410: {
 				headers: {
 					[name: string]: unknown;
 				};
 				content?: never;
 			};
-			/** @description Bookings have not started yet */
+			/** @description Registrations have not started yet */
 			425: {
 				headers: {
 					[name: string]: unknown;
@@ -595,14 +595,14 @@ export interface operations {
 				};
 				content?: never;
 			};
-			/** @description Bookings have ended */
+			/** @description Registrations have ended */
 			410: {
 				headers: {
 					[name: string]: unknown;
 				};
 				content?: never;
 			};
-			/** @description Bookings have not started yet */
+			/** @description Registrations have not started yet */
 			425: {
 				headers: {
 					[name: string]: unknown;
@@ -650,7 +650,7 @@ export interface operations {
 				};
 				content?: never;
 			};
-			/** @description Bookings have not started yet */
+			/** @description Registrations have not started yet */
 			425: {
 				headers: {
 					[name: string]: unknown;
@@ -709,7 +709,7 @@ export interface operations {
 				};
 				content?: never;
 			};
-			/** @description Bookings have not started yet */
+			/** @description Registrations have not started yet */
 			425: {
 				headers: {
 					[name: string]: unknown;
@@ -763,7 +763,7 @@ export interface operations {
 				};
 				content?: never;
 			};
-			/** @description Bookings have not started yet */
+			/** @description Registrations have not started yet */
 			425: {
 				headers: {
 					[name: string]: unknown;
@@ -813,7 +813,7 @@ export interface operations {
 				};
 				content?: never;
 			};
-			/** @description Bookings have not started yet */
+			/** @description Registrations have not started yet */
 			425: {
 				headers: {
 					[name: string]: unknown;
@@ -923,26 +923,6 @@ export interface operations {
 			};
 		};
 	};
-	bookings_start_date: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Returns the start date of the bookings */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['BookingsStartDateResponse'];
-				};
-			};
-		};
-	};
 	healthcheck: {
 		parameters: {
 			query?: never;
@@ -959,6 +939,26 @@ export interface operations {
 				};
 				content: {
 					'text/plain': string;
+				};
+			};
+		};
+	};
+	registrations_start_date: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Returns the start date of the registrations */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['RegistrationsStartDateResponse'];
 				};
 			};
 		};
