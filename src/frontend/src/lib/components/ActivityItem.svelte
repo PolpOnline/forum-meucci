@@ -62,7 +62,7 @@
 				{/if}
 			</div>
 		</div>
-	{:else}
+	{:else if canEdit}
 		<ActivitySelectorDrawer
 			{formattedDate}
 			{round}
@@ -75,6 +75,12 @@
 				+ Seleziona un'attività
 			{/snippet}
 		</ActivitySelectorDrawer>
+	{:else}
+		<div
+			class="flex h-full min-h-[4.25rem] w-full items-center justify-center rounded-xl text-lg text-muted-foreground"
+		>
+			Nessuna attività selezionata
+		</div>
 	{/if}
 
 	{#if name && canEdit}
