@@ -8,12 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@fontsource-variable/geist':
-        specifier: ^5.0.1
-        version: 5.0.1
-      '@fontsource-variable/montserrat':
-        specifier: ^5.1.1
-        version: 5.1.1
       '@fontsource-variable/nunito-sans':
         specifier: ^5.1.1
         version: 5.1.1
@@ -346,12 +340,6 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
-
-  '@fontsource-variable/geist@5.0.1':
-    resolution: {integrity: sha512-TDSL3iy47DFGM8go1hejvloGaTFD7bxTjh9Oy9KXpC9z55eBcTueziPlyEqVVb9Sn1OkiW4lPgXQkc+BNOzFvA==}
-
-  '@fontsource-variable/montserrat@5.1.1':
-    resolution: {integrity: sha512-eHmSruS3B+4wVaHk6ShNUJj1MbWEohOuriwN/oYR2VY8jRS83a5SKQeG1wu4Eku3v3f5cXTIbfd1tHeQ7GXkiA==}
 
   '@fontsource-variable/nunito-sans@5.1.1':
     resolution: {integrity: sha512-BjtLqBKa+ZwxkZf7mAwZSEmX6VOC9Bvri1hXAAHPjkrwq6rXBG9THX3kl4hZQE+U0rT3febuSxSa84zAvzZUQg==}
@@ -2070,10 +2058,6 @@ snapshots:
       '@floating-ui/utils': 0.2.9
 
   '@floating-ui/utils@0.2.9': {}
-
-  '@fontsource-variable/geist@5.0.1': {}
-
-  '@fontsource-variable/montserrat@5.1.1': {}
 
   '@fontsource-variable/nunito-sans@5.1.1': {}
 
