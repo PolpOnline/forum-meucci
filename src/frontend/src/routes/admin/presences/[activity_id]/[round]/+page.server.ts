@@ -12,6 +12,11 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 		params: { path: { activity_id, round } }
 	});
 
+	// Too early to set activities
+	if (response.status === 425) {
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/countdown');
+	}
+
 	if (response.status === StatusCodes.FORBIDDEN) {
 		error(StatusCodes.FORBIDDEN, getReasonPhrase(StatusCodes.FORBIDDEN));
 	}

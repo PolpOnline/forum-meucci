@@ -30,7 +30,8 @@ pub struct AdminActivity {
         (status = OK, description = "List of the activities the user has access to, if admin all activities, if host only those they are hosting", body = AdminActivityResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = FORBIDDEN, description = "Not an admin or host"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
+        (status = 425, description = "Bookings have not started yet"),
     ),
     security(
         ("session" = [])

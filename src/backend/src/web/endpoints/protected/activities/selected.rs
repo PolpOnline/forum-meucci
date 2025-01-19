@@ -6,6 +6,7 @@ use utoipa::ToSchema;
 
 use crate::{
     app::openapi::ACTIVITIES_TAG,
+    models::user::UserType,
     users::AuthSession,
     web::schemas::activity::{Activity, ActivityWithoutDate},
 };
@@ -23,7 +24,9 @@ pub struct SelectedActivityResponse {
         (status = OK, description = "Returns the selected activities", body = SelectedActivityResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
+        (status = FORBIDDEN, description = "You are an admin"),
         (status = 425, description = "Bookings have not started yet"),
+        (status = GONE, description = "Bookings have ended"),
     ),
     security(
         ("session" = [])
@@ -31,9 +34,12 @@ pub struct SelectedActivityResponse {
     tag = ACTIVITIES_TAG,
 )]
 pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
-    let user_id = match auth_session.user {
-        Some(user) => user.id,
+    let user = match auth_session.user {
         None => return StatusCode::UNAUTHORIZED.into_response(),
+        Some(user) if user.r#type == UserType::Admin || user.r#type == UserType::Host => {
+            return StatusCode::FORBIDDEN.into_response()
+        }
+        Some(user) => user,
     };
 
     let activities = match sqlx::query_as!(
@@ -57,7 +63,7 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
                  activity_user.joined_at
         ORDER BY activity_user.round;
         "#,
-        user_id
+        user.id
     )
         .fetch_all(&auth_session.backend.db)
         .await

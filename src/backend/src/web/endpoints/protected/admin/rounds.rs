@@ -70,7 +70,8 @@ pub struct AdminRoundWithoutDate {
         (status = OK, description = "List of the rounds for an activity the user has access to", body = AdminRoundResponse),
         (status = UNAUTHORIZED, description = "Not logged in"),
         (status = FORBIDDEN, description = "Not an admin or host"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error"),
+        (status = 425, description = "Bookings have not started yet"),
     ),
     security(
         ("session" = [])

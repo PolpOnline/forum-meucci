@@ -3,7 +3,7 @@ use http::StatusCode;
 
 use crate::users::AuthSession;
 
-pub async fn booking_start_date(
+pub async fn start_date_routing(
     auth_session: AuthSession,
     request: Request,
     next: Next,
