@@ -7,7 +7,7 @@
 	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import DropdownMenuLinkItem from '$lib/components/DropdownMenuLinkItem.svelte';
 	import type { LoginStatus } from '../../app';
-	import ItisMeucciLogo from '$lib/images/ItisMeucciLogo.svelte';
+	import ITISMeucciLogo from '$lib/images/ITISMeucciLogo.svelte';
 
 	const { loginStatus }: { loginStatus: LoginStatus } = $props();
 
@@ -17,7 +17,7 @@
 <nav class="grid h-20 grid-cols-12">
 	<div class="grid-span-2 col-span-2 flex items-center">
 		<a href="/">
-			<ItisMeucciLogo class="ml-3 h-20 w-20 max-w-full" />
+			<ITISMeucciLogo class="ml-3 h-20 w-20 max-w-full" />
 		</a>
 	</div>
 	<div class="col-span-8 flex items-center justify-center font-black">
