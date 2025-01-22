@@ -1,8 +1,8 @@
 use async_trait::async_trait;
 use axum_login::{AuthnBackend, UserId};
 use openidconnect::{
-    core::{CoreClient, CoreResponseType, CoreUserInfoClaims},
-    reqwest::async_http_client,
+    core::{CoreResponseType, CoreUserInfoClaims},
+    reqwest::Client,
     url::Url,
     AuthorizationCode, CsrfToken, Nonce, OAuth2TokenResponse, Scope,
 };
@@ -12,6 +12,7 @@ use tracing::log::trace;
 
 use crate::{
     app::config::Config,
+    auth::google_oauth::CoreClient,
     models::{credentials::Credentials, user::User},
 };
 
@@ -19,13 +20,20 @@ use crate::{
 pub struct LoginBackend {
     pub(crate) db: PgPool,
     google_oauth_client: CoreClient,
+    unredirectable_async_http_client: Client,
     pub config: Config,
 }
 
 impl LoginBackend {
-    pub fn new(db: PgPool, client: CoreClient, config: Config) -> Self {
+    pub fn new(
+        db: PgPool,
+        unredirectable_async_http_client: Client,
+        client: CoreClient,
+        config: Config,
+    ) -> Self {
         Self {
             db,
+            unredirectable_async_http_client,
             google_oauth_client: client,
             config,
         }
@@ -61,6 +69,9 @@ pub enum BackendError {
 
     #[error(transparent)]
     TaskJoin(#[from] task::JoinError),
+
+    #[error(transparent)]
+    ConfigurationError(#[from] openidconnect::ConfigurationError),
 }
 
 #[async_trait]
@@ -80,16 +91,15 @@ impl AuthnBackend for LoginBackend {
         // Process authorization code, expecting a token response back
         let token = self
             .google_oauth_client
-            .exchange_code(AuthorizationCode::new(creds.code))
-            .request_async(async_http_client)
+            .exchange_code(AuthorizationCode::new(creds.code))?
+            .request_async(&self.unredirectable_async_http_client)
             .await
             .unwrap();
 
         let profile: CoreUserInfoClaims = self
             .google_oauth_client
-            .user_info(token.access_token().clone(), None)
-            .unwrap()
-            .request_async(async_http_client)
+            .user_info(token.access_token().clone(), None)?
+            .request_async(&self.unredirectable_async_http_client)
             .await
             .unwrap();
 
@@ -99,9 +109,8 @@ impl AuthnBackend for LoginBackend {
         trace!("Got name: {}", name);
 
         self.google_oauth_client
-            .revoke_token(token.access_token().into())
-            .unwrap()
-            .request_async(async_http_client)
+            .revoke_token(token.access_token().into())?
+            .request_async(&self.unredirectable_async_http_client)
             .await
             .expect("Failed to revoke token");
 

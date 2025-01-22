@@ -3,6 +3,7 @@ pub mod config;
 mod db;
 pub mod openapi;
 mod redis;
+mod unredirectable_async_http_client;
 
 use std::str::FromStr;
 
@@ -12,7 +13,6 @@ use axum_login::{
     AuthManagerLayerBuilder,
 };
 use http::StatusCode;
-use openidconnect::core::CoreClient;
 use sqlx::PgPool;
 use tower::ServiceBuilder;
 use tower_http::{
@@ -29,7 +29,7 @@ use utoipa_scalar::{Scalar, Servable};
 
 use crate::{
     app::{config::Config, openapi::ApiDoc},
-    auth::google_oauth::build_google_oauth_client,
+    auth::google_oauth::{build_google_oauth_client, CoreClient},
     custom_login_required,
     middleware::set_cache_control::set_cache_control,
     users::LoginBackend,
@@ -40,6 +40,7 @@ use crate::{
 pub struct App {
     pub db: PgPool,
     redis_fred: FredPool,
+    unredirectable_async_http_client: reqwest::Client,
     google_oauth_client: CoreClient,
     config: Config,
 }
@@ -49,15 +50,18 @@ impl App {
         let backend_url = BACKEND_URL.clone();
         let redirect_uri = format!("{}/auth/callback", backend_url);
 
+        let unredirectable_async_http_client = Self::get_unredirectable_async_client()?;
+
         let (db, redis_fred, google_oauth_client) = tokio::try_join!(
             Self::setup_db(),
             Self::setup_redis_fred(),
-            build_google_oauth_client(redirect_uri)
+            build_google_oauth_client(redirect_uri, &unredirectable_async_http_client)
         )?;
 
         Ok(Self {
             db,
             redis_fred,
+            unredirectable_async_http_client,
             google_oauth_client,
             config: Config::init(),
         })
@@ -91,7 +95,12 @@ impl App {
         //
         // This combines the session layer with our backendOld to establish the auth
         // service which will provide the auth session as a request extension.
-        let backend = LoginBackend::new(self.db, self.google_oauth_client, self.config);
+        let backend = LoginBackend::new(
+            self.db,
+            self.unredirectable_async_http_client,
+            self.google_oauth_client,
+            self.config,
+        );
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())

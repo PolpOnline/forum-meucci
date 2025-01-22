@@ -27,7 +27,7 @@ sysinfo = { version = "0.33.1", features = ["serde", "system"], default-features
 futures = "0.3"
 ahash = "0.8"
 reqwest = { version = "0.12", features = ["zstd", "rustls-tls", "brotli", "json", "http2"], default-features = false }
-openidconnect = "3.5"
+openidconnect = "4.0.0"
 utoipa = { version = "5.2", features = ["uuid", "chrono", "axum_extras", "auto_into_responses"] }
 utoipa-axum = { version = "0.2.0" }
 utoipa-scalar = { version = "0.3.0", features = ["axum"] }
