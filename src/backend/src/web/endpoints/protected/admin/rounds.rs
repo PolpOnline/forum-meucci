@@ -112,6 +112,7 @@ pub async fn rounds(
                                AND round_max_users.round = activity_user.round
         WHERE round_max_users.activity_id = $1
         GROUP BY round_max_users.round, round_max_users.max_users
+        ORDER BY round_max_users.round
         "#,
         req.activity_id
     )
