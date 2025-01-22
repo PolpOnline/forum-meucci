@@ -14,6 +14,7 @@ use axum_login::{
 };
 use http::StatusCode;
 use sqlx::PgPool;
+use tokio::signal;
 use tower::ServiceBuilder;
 use tower_http::{
     compression::CompressionLayer,
@@ -96,7 +97,8 @@ impl App {
         // This combines the session layer with our backendOld to establish the auth
         // service which will provide the auth session as a request extension.
         let backend = LoginBackend::new(
-            self.db,
+            // Clone the pool to shut it down later.
+            self.db.clone(),
             self.unredirectable_async_http_client,
             self.google_oauth_client,
             self.config,
@@ -139,11 +141,42 @@ impl App {
 
         info!("Axum: Listening on {}", listener.local_addr()?);
 
-        // Ensure we use a shutdown signal to abort the deletion task.
-        axum::serve(listener, router.into_make_service()).await?;
+        axum::serve(listener, router.into_make_service())
+            .with_graceful_shutdown(shutdown_signal())
+            .await?;
+
+        let pool_close_fut = self.db.close();
+
+        futures::future::join_all(vec![pool_close_fut]).await;
 
         Ok(())
     }
+}
+
+async fn shutdown_signal() {
+    let ctrl_c = async {
+        signal::ctrl_c()
+            .await
+            .expect("failed to install Ctrl+C handler");
+    };
+
+    #[cfg(unix)]
+    let terminate = async {
+        signal::unix::signal(signal::unix::SignalKind::terminate())
+            .expect("failed to install signal handler")
+            .recv()
+            .await;
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending::<()>();
+
+    tokio::select! {
+        _ = ctrl_c => {},
+        _ = terminate => {},
+    }
+
+    info!("Shutting down...");
 }
 
 fn parse_cookie_key(cookie_key: &str) -> Key {
