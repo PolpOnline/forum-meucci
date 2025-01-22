@@ -19,7 +19,7 @@ impl App {
         };
 
         let pool = PgPoolOptions::new()
-            .max_connections(5)
+            .max_connections(50)
             .connect(&database_url)
             .await?;
 
