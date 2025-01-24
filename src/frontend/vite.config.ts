@@ -15,5 +15,8 @@ export default defineConfig({
 				families: ['Nunito Sans Variable']
 			}
 		})
-	]
+	],
+	build: {
+		sourcemap: 'hidden'
+	}
 });
