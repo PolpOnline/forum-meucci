@@ -33,12 +33,12 @@
 	class:custom-absent={name === 'absent'}
 >
 	{#if name === 'absent'}
-		<div class="text-lg">Assente</div>
+		<div class="text-lg tracking-wide">Assente</div>
 	{:else if name}
 		<div>
-			<div class="text-lg">{name}</div>
+			<div class="text-lg tracking-wide">{name}</div>
 			{#if description}
-				<div class="text-sm text-muted-foreground">{description}</div>
+				<div class="text-muted-foreground text-sm">{description}</div>
 			{/if}
 			<div class="space-x-1">
 				<Badge class="pointer-events-none mt-2" variant="secondary">
@@ -68,7 +68,7 @@
 			{round}
 			class={cn(
 				buttonVariants({ variant: 'ghost' }),
-				'h-full min-h-[4.25rem] w-full rounded-xl text-lg text-muted-foreground'
+				'text-muted-foreground h-full min-h-[4.25rem] w-full rounded-xl text-lg tracking-wide'
 			)}
 		>
 			{#snippet trigger()}
@@ -77,7 +77,7 @@
 		</ActivitySelectorDrawer>
 	{:else}
 		<div
-			class="flex h-full min-h-[4.25rem] w-full items-center justify-center rounded-xl text-lg text-muted-foreground"
+			class="text-muted-foreground flex h-full min-h-[4.25rem] w-full items-center justify-center rounded-xl text-lg"
 		>
 			Nessuna attività selezionata
 		</div>
