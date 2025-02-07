@@ -1,6 +1,8 @@
 <script lang="ts">
 	import AdminActivity from './AdminActivity.svelte';
 	import { Input } from '$lib/components/ui/input/index.js';
+	import { flip } from 'svelte/animate';
+	import { scale } from 'svelte/transition';
 
 	let { data } = $props();
 
@@ -26,7 +28,9 @@
 		{/if}
 
 		{#each filteredActivities as activity (activity.id)}
-			<AdminActivity {activity} />
+			<div animate:flip={{ delay: 50, duration: 200 }} transition:scale={{ duration: 200 }}>
+				<AdminActivity {activity} />
+			</div>
 		{/each}
 	</div>
 </main>
