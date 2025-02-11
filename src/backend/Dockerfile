@@ -17,7 +17,7 @@ COPY . .
 RUN cargo build --release
 
 # Use a minimal base image for the final stage
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim AS runtime
 
 # Set the working directory
 WORKDIR /usr/src/app
