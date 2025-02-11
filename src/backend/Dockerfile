@@ -1,5 +1,6 @@
 # Use an official Rust image as a parent image
-FROM rust:latest AS builder
+FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
+WORKDIR /app
 
 # Install mold linker
 RUN apt-get update && apt-get install -y mold
@@ -7,26 +8,29 @@ RUN apt-get update && apt-get install -y mold
 # Set mold as the linker
 ENV RUSTFLAGS="-C link-arg=-fuse-ld=mold"
 
-# Set the working directory
-WORKDIR /usr/src/app
-
-# Copy the files into the container
+FROM chef AS planner
 COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
 
-# Create the bin directory and build the Rust project with mold linker
-RUN cargo build --release
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+# Build dependencies - this is the caching Docker layer!
+RUN cargo chef cook --release --recipe-path recipe.json
+# Build application
+COPY . .
+RUN cargo build --release --bin forum_meucci
 
 # Use a minimal base image for the final stage
 FROM debian:bookworm-slim AS runtime
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy the built binary from the builder stage
-COPY --from=builder /usr/src/app/target/release/forum_meucci ./bin/forum_meucci
+COPY --from=builder /app/target/release/forum_meucci ./bin/forum_meucci
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Run the binary
-CMD ["./bin/forum_meucci"]
+ENTRYPOINT ["./bin/forum_meucci"]
