@@ -57,7 +57,7 @@ pub async fn call_register(
     match sqlx::query!(
         r#"
         UPDATE activity_user
-        SET last_edited_by = $1
+        SET joined_at_last_edited_by = $1
         WHERE activity_id = $2
           AND round = $3
         "#,
