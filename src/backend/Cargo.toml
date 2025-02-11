@@ -8,7 +8,6 @@ async-trait = "0.1"
 axum = { version = "0.8", features = ["http2", "macros"] }
 axum-login = "0.17"
 http = "1.0"
-password-auth = "1.0"
 serde = "1"
 sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "uuid", "chrono"] }
 chrono = { version = "0.4", features = ["serde"] }
