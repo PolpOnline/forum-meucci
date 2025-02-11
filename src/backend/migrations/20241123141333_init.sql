@@ -12,13 +12,12 @@ CREATE TYPE user_type AS enum ('normal', 'host', 'admin');
 
 CREATE TABLE "user"
 (
-    id               SERIAL PRIMARY KEY,
-    name             TEXT,
-    email            TEXT      NOT NULL UNIQUE,
-    interactive_done BOOLEAN   NOT NULL DEFAULT FALSE,
-    class            INT       NOT NULL DEFAULT 1 CHECK ( class > 0 ),
-    section          TEXT,
-    type             user_type NOT NULL DEFAULT 'normal'
+    id      SERIAL PRIMARY KEY,
+    name    TEXT,
+    email   TEXT      NOT NULL UNIQUE,
+    class   INT       NOT NULL DEFAULT 1 CHECK ( class > 0 ),
+    section TEXT,
+    type    user_type NOT NULL DEFAULT 'normal'
 );
 
 CREATE INDEX ON "user" (email);

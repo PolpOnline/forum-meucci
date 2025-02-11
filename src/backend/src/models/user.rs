@@ -8,7 +8,6 @@ pub struct User {
     pub id: i32,
     pub name: Option<String>,
     pub email: String,
-    pub interactive_done: bool,
     pub section: Option<String>,
     pub class: i32,
     pub r#type: UserType,
@@ -32,7 +31,7 @@ impl User {
         let user = sqlx::query_as!(
             User,
             r#"
-            SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType" FROM "user" WHERE email = $1
+            SELECT id, name, email, section, class, type AS "type!: UserType" FROM "user" WHERE email = $1
             "#,
             email
         )
@@ -45,7 +44,7 @@ impl User {
                     user = sqlx::query_as!(
                             User,
                             r#"
-                            UPDATE "user" SET name = $1 WHERE email = $2 RETURNING id, name, email, interactive_done, section, class, type AS "type!: UserType"
+                            UPDATE "user" SET name = $1 WHERE email = $2 RETURNING id, name, email, section, class, type AS "type!: UserType"
                             "#,
                             name,
                             email
@@ -60,7 +59,7 @@ impl User {
                 let user = sqlx::query_as!(
                     User,
                     r#"
-                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING  id, name, email, interactive_done, section, class, type AS "type!: UserType"
+                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING  id, name, email, section, class, type AS "type!: UserType"
                     "#,
                     email,
                     name
@@ -77,7 +76,7 @@ impl User {
         let user = sqlx::query_as!(
             User,
             r#"
-            SELECT id, name, email, interactive_done, section, class, type AS "type!: UserType"
+            SELECT id, name, email, section, class, type AS "type!: UserType"
             FROM "user"
             WHERE id = $1
             "#,
