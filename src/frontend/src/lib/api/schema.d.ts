@@ -72,6 +72,23 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	'/admin/call_register': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/** Call Register */
+		patch: operations['call_register'];
+		trace?: never;
+	};
 	'/admin/presences/{activity_id}/{round}': {
 		parameters: {
 			query?: never;
@@ -375,6 +392,20 @@ export interface components {
 			system_name: string;
 			system_os_version: string;
 		};
+		CallRegisterRequest: {
+			/**
+			 * Format: int32
+			 * @description The ID of the activity
+			 * @example 1
+			 */
+			activity_id: number;
+			/**
+			 * Format: int32
+			 * @description The round number
+			 * @example 1
+			 */
+			round: number;
+		};
 		CpuInfo: {
 			brand: string;
 			frequency: string;
@@ -635,6 +666,56 @@ export interface operations {
 				content: {
 					'application/json': components['schemas']['AdminActivityResponse'];
 				};
+			};
+			/** @description Not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Not an admin or host */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Registrations have not started yet */
+			425: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	call_register: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['CallRegisterRequest'];
+			};
+		};
+		responses: {
+			/** @description Last edited by updated */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
 			};
 			/** @description Not logged in */
 			401: {

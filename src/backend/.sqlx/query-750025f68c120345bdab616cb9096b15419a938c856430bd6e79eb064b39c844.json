@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE activity_user\n        SET last_edited_by = $1\n        WHERE activity_id = $2\n          AND round = $3\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "750025f68c120345bdab616cb9096b15419a938c856430bd6e79eb064b39c844"
+}

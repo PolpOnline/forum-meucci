@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n                    INSERT INTO \"user\" (email, name) VALUES ($1, $2) RETURNING  id, name, email, interactive_done, section, class, type AS \"type!: UserType\"\n                    ",
+  "query": "\n                            UPDATE \"user\" SET name = $1 WHERE email = $2 RETURNING id, name, email, section, class, type AS \"type!: UserType\"\n                            ",
   "describe": {
     "columns": [
       {
@@ -20,21 +20,16 @@
       },
       {
         "ordinal": 3,
-        "name": "interactive_done",
-        "type_info": "Bool"
-      },
-      {
-        "ordinal": 4,
         "name": "section",
         "type_info": "Text"
       },
       {
-        "ordinal": 5,
+        "ordinal": 4,
         "name": "class",
         "type_info": "Int4"
       },
       {
-        "ordinal": 6,
+        "ordinal": 5,
         "name": "type!: UserType",
         "type_info": {
           "Custom": {
@@ -60,11 +55,10 @@
       false,
       true,
       false,
-      false,
       true,
       false,
       false
     ]
   },
-  "hash": "5204c4b27430765bfbed0bbfc490779243edf95d95fc4f05279b49db6ada8125"
+  "hash": "f39c8eba76589ab130839417d3a3209a60bda6bd2eb5e802d69792be03f07c84"
 }

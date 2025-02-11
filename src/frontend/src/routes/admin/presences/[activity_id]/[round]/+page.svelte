@@ -15,6 +15,8 @@
 	import LucideUsers from '~icons/lucide/users';
 	import { formatItalianDate } from '$lib/utils/dates.js';
 	import LucideDice5 from '~icons/lucide/dice-5';
+	import LucidePen from '~icons/lucide/pen';
+	import { slide } from 'svelte/transition';
 
 	let { data } = $props();
 
@@ -58,6 +60,22 @@
 
 		await invalidateAll();
 	}
+
+	async function callRegister() {
+		const res = await fetch(`/api/admin/call_register`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ activity_id, round })
+		});
+
+		if (!res.ok) {
+			toast.error('Errore durante la richiesta di modifica delle presenze');
+		}
+	}
+
+	let editMode = $state(false);
 </script>
 
 <main>
@@ -85,52 +103,71 @@
 		</div>
 		<div class="col-span-2"></div>
 	</div>
-	<Table.Root class="mx-auto mt-5 w-[95%] max-w-[800px]">
-		<Table.Header>
-			<Table.Row>
-				<Table.Head>Nome</Table.Head>
-				<Table.Head class="text-center">Classe</Table.Head>
-				<Table.Head class="text-right">Presente?</Table.Head>
-			</Table.Row>
-		</Table.Header>
-		<Table.Body>
-			{#each presences as presence, i (presence.name)}
-				<Table.Row class="rounded-xl">
-					<Table.Cell>
-						<Label for={'p' + i}>
-							{presence.name}
-						</Label>
-						{#if presence.randomized}
-							<LucideDice5 class="ml-1 inline h-4 w-4 text-muted-foreground" />
-						{/if}
-					</Table.Cell>
-					<Table.Cell class="text-center">
-						<Label for={'p' + i}>
-							{presence.class}{presence.section}
-						</Label>
-					</Table.Cell>
-					<Table.Cell class="flex items-center justify-end">
-						<div class="mr-2 h-6 w-6">
-							{#if spinnerStates[i] === 'idle'}
-								<div class="h-full w-full"></div>
-							{:else if spinnerStates[i] === 'loading'}
-								<LineMdLoadingLoop class="h-full w-full" />
-							{:else if spinnerStates[i] === 'success'}
-								<LineMdConfirm class="h-full w-full text-green-500" />
-							{:else if spinnerStates[i] === 'error'}
-								<LineMdClose class="h-full w-full text-red-500" />
-							{/if}
-						</div>
+	<div class="mx-auto mt-5 w-[95%] max-w-[800px]">
+		{#if !editMode}
+			<div out:slide class="flex items-center justify-center">
+				<Button
+					class="mb-5 w-full"
+					onclick={async () => {
+						await callRegister();
+						editMode = true;
+					}}
+					variant="secondary"
+				>
+					<LucidePen class="mr-1 h-4 w-4" />
+					Modifica presenze
+				</Button>
+			</div>
+		{/if}
 
-						<Switch
-							id={'p' + i}
-							bind:checked={presence.present}
-							onCheckedChange={() => setPresence(i)}
-							class="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
-						/>
-					</Table.Cell>
+		<Table.Root>
+			<Table.Header>
+				<Table.Row>
+					<Table.Head>Nome</Table.Head>
+					<Table.Head class="text-center">Classe</Table.Head>
+					<Table.Head class="text-right">Presente?</Table.Head>
 				</Table.Row>
-			{/each}
-		</Table.Body>
-	</Table.Root>
+			</Table.Header>
+			<Table.Body>
+				{#each presences as presence, i (presence.name)}
+					<Table.Row class="rounded-xl">
+						<Table.Cell>
+							<Label for={'p' + i}>
+								{presence.name}
+							</Label>
+							{#if presence.randomized}
+								<LucideDice5 class="text-muted-foreground ml-1 inline h-4 w-4" />
+							{/if}
+						</Table.Cell>
+						<Table.Cell class="text-center">
+							<Label for={'p' + i}>
+								{presence.class}{presence.section}
+							</Label>
+						</Table.Cell>
+						<Table.Cell class="flex items-center justify-end">
+							<div class="mr-2 h-6 w-6">
+								{#if spinnerStates[i] === 'idle'}
+									<div class="h-full w-full"></div>
+								{:else if spinnerStates[i] === 'loading'}
+									<LineMdLoadingLoop class="h-full w-full" />
+								{:else if spinnerStates[i] === 'success'}
+									<LineMdConfirm class="h-full w-full text-green-500" />
+								{:else if spinnerStates[i] === 'error'}
+									<LineMdClose class="h-full w-full text-red-500" />
+								{/if}
+							</div>
+
+							<Switch
+								id={'p' + i}
+								bind:checked={presence.present}
+								onCheckedChange={() => setPresence(i)}
+								disabled={!editMode}
+								class="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+							/>
+						</Table.Cell>
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	</div>
 </main>
