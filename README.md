@@ -73,7 +73,7 @@ Then run the following command to start the containers:
 
 ```bash
 docker run -d -p 5173:5173 forum-meucci-frontend
-docker run -d -p 3000:300 --env-file .env forum-meucci-backend
+docker run -d -p 3000:3009 --env-file .env forum-meucci-backend
 ```
 
 Remember to set the environment variables
