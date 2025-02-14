@@ -12,7 +12,10 @@
 	import { invalidateAll } from '$app/navigation';
 	import LucideRefreshCw from '~icons/lucide/refresh-cw';
 
-	const { loginStatus }: { loginStatus: LoginStatus } = $props();
+	const {
+		loginStatus,
+		loggedInEmail
+	}: { loginStatus: LoginStatus; loggedInEmail: string | undefined } = $props();
 
 	const loggedIn = $derived(loginStatus === 'logged_in');
 </script>
@@ -32,6 +35,10 @@
 				<LucideSettings />
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
+				{#if loggedInEmail}
+					<DropdownMenu.Label>{loggedInEmail}</DropdownMenu.Label>
+					<DropdownMenu.Separator />
+				{/if}
 				<DropdownMenu.Item
 					onclick={async () => {
 						await invalidateAll();

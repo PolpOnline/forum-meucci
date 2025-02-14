@@ -72,5 +72,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');
 	}
 
+	event.locals.email = event.cookies.get('meucci_forum_user_email');
+
 	return resolve(event, resolveOptions);
 };

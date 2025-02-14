@@ -32,7 +32,7 @@ use crate::{
     app::{config::Config, openapi::ApiDoc},
     auth::google_oauth::{build_google_oauth_client, CoreClient},
     custom_login_required,
-    middleware::set_cache_control::set_cache_control,
+    middleware::{set_cache_control::set_cache_control, set_user_info::set_user_info},
     users::LoginBackend,
     web::endpoints::{auth, protected, public},
     BACKEND_URL,
@@ -113,6 +113,7 @@ impl App {
             ))
             .nest("/auth", auth::router())
             .merge(public::router())
+            .layer(middleware::from_fn(set_user_info))
             .layer(
                 ServiceBuilder::new()
                     .layer(auth_layer)

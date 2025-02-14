@@ -49,7 +49,7 @@
 <div data-vaul-drawer-wrapper>
 	<ProgressBar class="text-white" zIndex={100} />
 
-	<Navbar loginStatus={data.loginStatus} />
+	<Navbar loggedInEmail={data.loggedInEmail} loginStatus={data.loginStatus} />
 
 	{#key data.pathname}
 		<div in:fly={transitionIn} out:fly={transitionOut}>

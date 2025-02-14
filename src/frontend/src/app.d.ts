@@ -7,8 +7,8 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			loginStatus: LoginStatus;
+			email?: string;
 		}
-
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
