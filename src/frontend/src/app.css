@@ -93,3 +93,16 @@
 		hsl(var(--destructive) / 50%) 20px
 	);
 }
+
+/* Modernize scrollbar */
+::-webkit-scrollbar {
+	width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply rounded-full bg-border;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-background;
+}
