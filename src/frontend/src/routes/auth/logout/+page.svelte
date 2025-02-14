@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import { trackEvent } from '@lukulent/svelte-umami';
 
-	onMount(() => {
-		trackEvent('Logout');
+	onMount(async () => {
+		await trackEvent('Logout');
 	});
 </script>
 
