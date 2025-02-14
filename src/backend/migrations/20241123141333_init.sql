@@ -47,3 +47,11 @@ CREATE TABLE round_max_users
     max_users   INT NOT NULL CHECK ( max_users >= 0 ),
     PRIMARY KEY (round, activity_id)
 );
+
+CREATE TABLE admin_register_call
+(
+    user_id     INT       NOT NULL REFERENCES "user" (id) ON DELETE CASCADE,
+    activity_id INT       NOT NULL REFERENCES activity (id) ON DELETE CASCADE,
+    round       INT       NOT NULL CHECK ( round >= 0 ),
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

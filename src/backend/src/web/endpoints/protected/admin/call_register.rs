@@ -54,6 +54,11 @@ pub async fn call_register(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
 
+    let mut txn = match auth_session.backend.db.begin().await {
+        Ok(txn) => txn,
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+    };
+
     match sqlx::query!(
         r#"
         UPDATE activity_user
@@ -65,12 +70,32 @@ pub async fn call_register(
         req.activity_id,
         req.round,
     )
-    .execute(&auth_session.backend.db)
+    .execute(&mut *txn)
     .await
     {
         Ok(_) => {}
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
+
+    match sqlx::query!(
+        r#"
+        INSERT INTO admin_register_call
+            (user_id, activity_id, round)
+        VALUES
+            ($1, $2, $3)
+        "#,
+        user_id,
+        req.activity_id,
+        req.round,
+    )
+    .execute(&mut *txn)
+    .await
+    {
+        Ok(_) => {}
+        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+    };
+
+    txn.commit().await.unwrap();
 
     StatusCode::OK.into_response()
 }
