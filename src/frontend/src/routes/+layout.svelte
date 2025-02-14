@@ -3,7 +3,7 @@
 	import 'unfonts.css';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import type { LayoutData } from './$types';
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import { title } from '$lib/stores/title.store';
@@ -23,6 +23,11 @@
 
 	const transitionIn = { easing: cubicOut, y, duration, delay };
 	const transitionOut = { easing: cubicIn, y: -y, duration };
+
+	onMount(() => {
+		// noinspection TypeScriptUnresolvedReference
+		window.umami.identify({ email: data.loggedInEmail });
+	});
 </script>
 
 <UmamiAnalytics
