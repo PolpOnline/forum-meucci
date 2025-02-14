@@ -12,6 +12,7 @@
 	import { StatusCodes } from 'http-status-codes';
 	import { activityFullDialogOpen } from '$lib/stores/dialogs.store';
 	import { slide, type SlideParams } from 'svelte/transition';
+	import { trackEvent } from '@lukulent/svelte-umami';
 
 	const {
 		trigger,
@@ -84,6 +85,8 @@
 		open = false;
 
 		await invalidateAll();
+
+		await trackEvent('Set Activity', { round, activity_id: activity_id || 'absent' });
 	}
 
 	let isSaving = $state(false);
