@@ -12,6 +12,7 @@
 	import { links } from 'unplugin-fonts/head';
 	import ActivityFullDialog from '$lib/components/dialogs/ActivityFullDialog.svelte';
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
+	import { UmamiAnalytics } from '@lukulent/svelte-umami';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -24,8 +25,15 @@
 	const transitionOut = { easing: cubicIn, y: -y, duration };
 </script>
 
+<UmamiAnalytics
+	srcURL="https://umami.polp.online/script.js"
+	websiteID="274e1db8-93c1-4f34-b11d-82520c31d8b4"
+/>
+
 <svelte:head>
 	<title>{$title}</title>
+	<!-- preconnect the Umami instance -->
+	<link href="https://umami.polp.online" rel="preconnect" />
 	<link rel="icon" type="image/svg+xml" href={Favicon} />
 	<!-- for Safari -->
 	<link rel="mask-icon" href={Favicon} color="#000000" />
