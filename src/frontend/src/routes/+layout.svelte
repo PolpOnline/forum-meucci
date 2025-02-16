@@ -13,7 +13,6 @@
 	import ActivityFullDialog from '$lib/components/dialogs/ActivityFullDialog.svelte';
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 	import { UmamiAnalytics } from '@lukulent/svelte-umami';
-	import { dev } from '$app/environment';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -26,24 +25,20 @@
 	const transitionOut = { easing: cubicIn, y: -y, duration };
 
 	onMount(() => {
-		// @ts-expect-error - window.umami is defined by the Umami script
+		// noinspection TypeScriptUnresolvedReference
 		window.umami.identify({ email: data.loggedInEmail });
 	});
 </script>
 
-{#if !dev}
-	<UmamiAnalytics
-		srcURL="https://umami.polp.online/script.js"
-		websiteID="274e1db8-93c1-4f34-b11d-82520c31d8b4"
-	/>
-{/if}
+<UmamiAnalytics
+	srcURL="https://umami.polp.online/script.js"
+	websiteID="274e1db8-93c1-4f34-b11d-82520c31d8b4"
+/>
 
 <svelte:head>
 	<title>{$title}</title>
-	{#if !dev}
-		<!-- preconnect the Umami instance -->
-		<link href="https://umami.polp.online" rel="preconnect" />
-	{/if}
+	<!-- preconnect the Umami instance -->
+	<link href="https://umami.polp.online" rel="preconnect" />
 	<link rel="icon" type="image/svg+xml" href={Favicon} />
 	<!-- for Safari -->
 	<link rel="mask-icon" href={Favicon} color="#000000" />
