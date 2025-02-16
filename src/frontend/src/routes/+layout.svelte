@@ -33,6 +33,9 @@
 <UmamiAnalytics
 	srcURL="https://umami.polp.online/script.js"
 	websiteID="274e1db8-93c1-4f34-b11d-82520c31d8b4"
+	configuration={{
+		'data-domains': 'forum-test.meucci.party, forum.meucci.party'
+	}}
 />
 
 <svelte:head>
