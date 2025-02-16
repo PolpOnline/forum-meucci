@@ -40,5 +40,6 @@ RUN pnpm install --prod
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Run the SvelteKit app
-CMD ["node", "build"]
+# Set the API endpoint and run the SvelteKit app
+# (temporary solution till coolify supports --add-host, https://github.com/coollabsio/coolify/discussions/5136)
+ENTRYPOINT ["/bin/sh", "-c" , "echo 172.17.0.1 forum-api.meucci.party >> /etc/hosts && exec node build" ]
