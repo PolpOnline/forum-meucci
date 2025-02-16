@@ -42,4 +42,4 @@ EXPOSE 3000
 
 # Set the API endpoint and run the SvelteKit app
 # (temporary solution till coolify supports --add-host, https://github.com/coollabsio/coolify/discussions/5136)
-ENTRYPOINT ["/bin/sh", "-c" , "echo 172.17.0.1 forum-api.meucci.party >> /etc/hosts && exec node build" ]
+ENTRYPOINT ["/bin/sh", "-c" , "echo 172.18.0.1 forum-api.meucci.party >> /etc/hosts && exec node build" ]
