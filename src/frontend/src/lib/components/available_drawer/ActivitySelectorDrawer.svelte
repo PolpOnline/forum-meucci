@@ -117,11 +117,21 @@
 					<LineMdLoadingLoop />
 				</div>
 			{:then availableActivities}
-				<div transition:slide={slideParams}>
-					<ActivitySelectorForm
-						availableActivities={availableActivities.activities}
-						bind:selectedId
-					/>
+				<div transition:slide={slideParams} class="min-h-16">
+					{#if availableActivities.activities.length !== 0}
+						<div>
+							<ActivitySelectorForm
+								availableActivities={availableActivities.activities}
+								bind:selectedId
+							/>
+						</div>
+					{:else}
+						<div
+							class="text-muted-foreground flex h-full w-full flex-col items-center justify-center"
+						>
+							<p>Non sono disponibili più attività</p>
+						</div>
+					{/if}
 				</div>
 			{:catch error}
 				<div class="text-destructive-foreground">
