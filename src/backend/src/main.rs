@@ -2,6 +2,7 @@ use std::sync::LazyLock;
 
 use color_eyre::Result;
 use dotenvy::dotenv;
+use tracing_indicatif::IndicatifLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
 
@@ -25,6 +26,8 @@ pub static EMAIL_DOMAIN: LazyLock<String> =
 async fn main() -> Result<()> {
     color_eyre::install()?;
 
+    let indicatif_layer = IndicatifLayer::new();
+
     tracing_subscriber::registry()
         .with(EnvFilter::new(std::env::var("RUST_LOG").unwrap_or_else(
             |_| {
@@ -32,7 +35,8 @@ async fn main() -> Result<()> {
                     .into()
             },
         )))
-        .with(tracing_subscriber::fmt::layer())
+        .with(tracing_subscriber::fmt::layer().with_writer(indicatif_layer.get_stderr_writer()))
+        .with(indicatif_layer)
         .try_init()?;
 
     dotenv().unwrap_or_default();
@@ -54,6 +58,7 @@ async fn main() -> Result<()> {
                 fixtures::user::seed(app.db.clone()).await?;
                 fixtures::activity::seed(app.db).await
             }
+            Some(Command::SortOutUsers) => fixtures::sort_out::sort_out_users(app.db).await,
         }
     }
 

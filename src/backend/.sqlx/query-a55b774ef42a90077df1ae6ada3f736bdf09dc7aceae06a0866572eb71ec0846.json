@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO activity_user (activity_id, user_id, round, randomized)\n            VALUES ($1, $2, $3, TRUE)\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "a55b774ef42a90077df1ae6ada3f736bdf09dc7aceae06a0866572eb71ec0846"
+}

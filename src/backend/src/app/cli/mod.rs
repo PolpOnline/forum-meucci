@@ -10,6 +10,9 @@ pub struct Args {
 
 #[derive(Parser, Debug)]
 pub enum Command {
+    /// Sort out the users
+    #[command(name = "sort-out-users")]
+    SortOutUsers,
     /// Seed the user table
     #[command(name = "seed-user")]
     SeedUser,
