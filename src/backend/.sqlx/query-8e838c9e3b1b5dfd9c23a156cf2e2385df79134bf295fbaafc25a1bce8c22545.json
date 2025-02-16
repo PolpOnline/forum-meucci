@@ -1,0 +1,64 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT activity.id                            AS id,\n               activity_user.round                    AS round,\n               activity.name                          AS name,\n               activity.description                   AS description,\n               activity.room                          AS \"room!: String\",\n               (SELECT COUNT(*)\n                FROM activity_user au\n                WHERE au.activity_id = activity.id\n                  AND au.round = activity_user.round) AS \"used_seats!: i64\",\n               round_max_users.max_users              AS total_seats,\n               activity_user.joined_at IS NOT NULL    AS \"present!: bool\"\n        FROM activity_user\n                 JOIN activity ON activity_user.activity_id = activity.id\n                 JOIN round_max_users\n                      ON activity.id = round_max_users.activity_id\n                          AND activity_user.round = round_max_users.round\n        WHERE activity_user.user_id = $1\n        GROUP BY activity.id, activity_user.round, activity.name, activity.description, activity.room,\n                 round_max_users.max_users,\n                 activity_user.joined_at\n        ORDER BY activity_user.round;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "round",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "room!: String",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "used_seats!: i64",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 6,
+        "name": "total_seats",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 7,
+        "name": "present!: bool",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      null,
+      false,
+      null
+    ]
+  },
+  "hash": "8e838c9e3b1b5dfd9c23a156cf2e2385df79134bf295fbaafc25a1bce8c22545"
+}

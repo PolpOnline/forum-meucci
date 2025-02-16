@@ -47,18 +47,22 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
     let activities = match sqlx::query_as!(
         ActivityWithoutDate,
         r#"
-        SELECT activity.id                         AS id,
-               activity_user.round                 AS round,
-               activity.name                       AS name,
-               activity.description                AS description,
-               activity.room                       AS "room!: String",
-               COUNT(activity_user.user_id)        AS "used_seats!: i64",
-               round_max_users.max_users           AS total_seats,
-               activity_user.joined_at IS NOT NULL AS "present!: bool"
+        SELECT activity.id                            AS id,
+               activity_user.round                    AS round,
+               activity.name                          AS name,
+               activity.description                   AS description,
+               activity.room                          AS "room!: String",
+               (SELECT COUNT(*)
+                FROM activity_user au
+                WHERE au.activity_id = activity.id
+                  AND au.round = activity_user.round) AS "used_seats!: i64",
+               round_max_users.max_users              AS total_seats,
+               activity_user.joined_at IS NOT NULL    AS "present!: bool"
         FROM activity_user
                  JOIN activity ON activity_user.activity_id = activity.id
                  JOIN round_max_users
-                      ON activity.id = round_max_users.activity_id AND activity_user.round = round_max_users.round
+                      ON activity.id = round_max_users.activity_id
+                          AND activity_user.round = round_max_users.round
         WHERE activity_user.user_id = $1
         GROUP BY activity.id, activity_user.round, activity.name, activity.description, activity.room,
                  round_max_users.max_users,
