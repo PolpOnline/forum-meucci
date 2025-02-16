@@ -103,7 +103,7 @@
 		</div>
 		<div class="col-span-2"></div>
 	</div>
-	<div class="mx-auto mt-5 w-[95%] max-w-[800px]">
+	<div class="mx-auto mt-5 w-[95%] max-w-[800px] pb-1">
 		{#if !editMode}
 			<div out:slide class="flex items-center justify-center">
 				<Button
