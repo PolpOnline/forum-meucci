@@ -25,7 +25,7 @@
 	const transitionOut = { easing: cubicIn, y: -y, duration };
 
 	onMount(() => {
-		// noinspection TypeScriptUnresolvedReference
+		// @ts-expect-error - window.umami is defined by the Umami script
 		window.umami.identify({ email: data.loggedInEmail });
 	});
 </script>
