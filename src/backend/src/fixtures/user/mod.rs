@@ -13,7 +13,7 @@ struct UserData {
     section: String,
 }
 
-pub async fn seed(db: &PgPool) -> Result<()> {
+pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
     info!("Seeding the user table...");
 
     let mut rdr = csv::Reader::from_path("./src/fixtures/user/studenti_24_25.csv")?;
@@ -39,9 +39,20 @@ pub async fn seed(db: &PgPool) -> Result<()> {
             .push_bind(user.section);
     });
 
-    query_builder.build().execute(db).await?;
+    let mut txn = db.begin().await?;
 
-    info!("User table seeded");
+    query_builder.build().execute(&mut *txn).await?;
+
+    if write {
+        txn.commit().await?;
+    } else {
+        txn.rollback().await?;
+    }
+
+    info!(
+        "User table seeded ({})",
+        if write { "Committed" } else { "Rolled Back" }
+    );
 
     Ok(())
 }

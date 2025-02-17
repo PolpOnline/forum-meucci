@@ -52,15 +52,19 @@ async fn main() -> Result<()> {
 
         match args.command {
             None => app.serve().await,
-            Some(Command::SeedUser) => fixtures::user::seed(&app.db).await,
-            Some(Command::SeedActivity) => fixtures::activity::seed(&app.db).await,
-            Some(Command::SeedAdmin) => fixtures::admin::seed(&app.db).await,
-            Some(Command::SeedAll) => {
-                fixtures::user::seed(&app.db).await?;
-                fixtures::activity::seed(&app.db).await?;
-                fixtures::admin::seed(&app.db).await
+            Some(Command::SeedUser(args)) => fixtures::user::seed(&app.db, args.write).await,
+            Some(Command::SeedActivity(args)) => {
+                fixtures::activity::seed(&app.db, args.write).await
             }
-            Some(Command::SortOutUsers) => fixtures::sort_out::sort_out_users(&app.db).await,
+            Some(Command::SeedAdmin(args)) => fixtures::admin::seed(&app.db, args.write).await,
+            Some(Command::SeedAll(args)) => {
+                fixtures::user::seed(&app.db, args.write).await?;
+                fixtures::activity::seed(&app.db, args.write).await?;
+                fixtures::admin::seed(&app.db, args.write).await
+            }
+            Some(Command::SortOutUsers(args)) => {
+                fixtures::sort_out::sort_out_users(&app.db, args.write).await
+            }
         }
     }
 

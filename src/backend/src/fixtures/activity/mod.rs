@@ -19,7 +19,7 @@ struct ActivityData {
     massimo_utenti_round: Vec<i32>,
 }
 
-pub async fn seed(db: &PgPool) -> Result<()> {
+pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
     info!("Seeding the activity table...");
 
     let mut rdr =
@@ -130,9 +130,17 @@ pub async fn seed(db: &PgPool) -> Result<()> {
     }
 
     bar.finish_and_clear();
-    info!("Activity table seeded");
 
-    txn.commit().await?;
+    if write {
+        txn.commit().await?;
+    } else {
+        txn.rollback().await?;
+    }
+
+    info!(
+        "Activity table seeded ({})",
+        if write { "Committed" } else { "Rolled Back" }
+    );
 
     Ok(())
 }

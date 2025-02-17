@@ -12,14 +12,21 @@ pub struct Args {
 pub enum Command {
     /// Sort out the users
     #[command(name = "sort-out-users")]
-    SortOutUsers,
+    SortOutUsers(SeedArgs),
     /// Seed the user table
     #[command(name = "seed-user")]
-    SeedUser,
+    SeedUser(SeedArgs),
     /// Seed the activity table
     #[command(name = "seed-activity")]
-    SeedActivity,
+    SeedActivity(SeedArgs),
     #[command(name = "seed-all")]
-    SeedAll,
-    SeedAdmin,
+    SeedAll(SeedArgs),
+    SeedAdmin(SeedArgs),
+}
+
+#[derive(Parser, Debug)]
+pub struct SeedArgs {
+    /// Set to true if you intend to actually writing to the database
+    #[clap(short, long)]
+    pub write: bool,
 }

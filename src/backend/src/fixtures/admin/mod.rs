@@ -8,7 +8,7 @@ struct AdminsData {
     email_admin: String,
 }
 
-pub async fn seed(db: &PgPool) -> Result<()> {
+pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
     info!("Setting admins...");
 
     let mut rdr = csv::Reader::from_path("./src/fixtures/admin/admin.csv")?;
@@ -28,6 +28,8 @@ pub async fn seed(db: &PgPool) -> Result<()> {
 
     debug!("Admins: {:?}", admins);
 
+    let mut txn = db.begin().await?;
+
     sqlx::query!(
         r#"
         UPDATE "user"
@@ -36,10 +38,19 @@ pub async fn seed(db: &PgPool) -> Result<()> {
         "#,
         &admins
     )
-    .execute(db)
+    .execute(&mut *txn)
     .await?;
 
-    info!("Admins set successfully");
+    if write {
+        txn.commit().await?;
+    } else {
+        txn.rollback().await?;
+    }
+
+    info!(
+        "Admins set ({})",
+        if write { "Committed" } else { "Rolled Back" }
+    );
 
     Ok(())
 }

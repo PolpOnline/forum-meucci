@@ -23,10 +23,10 @@ struct RoundData {
     round: i32,
 }
 
-pub async fn sort_out_users(db: &PgPool) -> color_eyre::Result<()> {
+pub async fn sort_out_users(db: &PgPool, write: bool) -> color_eyre::Result<()> {
     info!("Sorting out users...");
 
-    let activities_map = get_activities_map(&db).await?;
+    let activities_map = get_activities_map(db).await?;
 
     // Get the available activities and unselected users for each round
     let round_data = (0..ROUND_NUMBER)
@@ -63,11 +63,18 @@ pub async fn sort_out_users(db: &PgPool) -> color_eyre::Result<()> {
         .await?;
     }
 
-    info!("Committing transaction ({} inserts)...", num_inserts);
+    info!("Transaction will be of {} inserts", num_inserts);
 
-    txn.commit().await?;
+    if write {
+        txn.commit().await?;
+    } else {
+        txn.rollback().await?;
+    }
 
-    info!("Users sorted out successfully");
+    info!(
+        "Users sorted out ({})",
+        if write { "Committed" } else { "Rolled Back" }
+    );
 
     Ok(())
 }
