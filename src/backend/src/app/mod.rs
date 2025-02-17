@@ -138,20 +138,6 @@ impl App {
                 .layer(CompressionLayer::new()),
         );
 
-        // Add api analytics if the key is set and we are not in debug mode.
-        #[cfg(not(debug_assertions))]
-        let router = {
-            use axum_analytics::Analytics;
-
-            let api_analytics_api_key = std::env::var("API_ANALYTICS_API_KEY")?;
-
-            if api_analytics_api_key.is_empty() {
-                router
-            } else {
-                router.layer(Analytics::new(api_analytics_api_key))
-            }
-        };
-
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
         info!("Axum: Listening on {}", listener.local_addr()?);
