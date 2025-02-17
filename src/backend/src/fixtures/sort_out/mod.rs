@@ -23,14 +23,14 @@ struct RoundData {
     round: i32,
 }
 
-pub async fn sort_out_users(db: PgPool) -> color_eyre::Result<()> {
+pub async fn sort_out_users(db: &PgPool) -> color_eyre::Result<()> {
     info!("Sorting out users...");
 
     let activities_map = get_activities_map(&db).await?;
 
     // Get the available activities and unselected users for each round
     let round_data = (0..ROUND_NUMBER)
-        .map(|round| get_round_data(db.clone(), round))
+        .map(|round| get_round_data(db, round))
         .collect::<Vec<_>>();
 
     // Wait for all the futures to complete
@@ -73,9 +73,9 @@ pub async fn sort_out_users(db: PgPool) -> color_eyre::Result<()> {
 }
 
 /// Returns the available activities and unselected users for a given round.
-async fn get_round_data(db: PgPool, round: i32) -> color_eyre::Result<RoundData> {
-    let available_activity_ids = get_available_activities(&db, round).await?;
-    let unselected_users = get_unselected_users(&db, round).await?;
+async fn get_round_data(db: &PgPool, round: i32) -> color_eyre::Result<RoundData> {
+    let available_activity_ids = get_available_activities(db, round).await?;
+    let unselected_users = get_unselected_users(db, round).await?;
 
     Ok(RoundData {
         available_activity_ids,

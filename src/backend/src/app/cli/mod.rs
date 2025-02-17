@@ -21,4 +21,5 @@ pub enum Command {
     SeedActivity,
     #[command(name = "seed-all")]
     SeedAll,
+    SeedAdmin,
 }

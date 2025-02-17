@@ -19,7 +19,7 @@ struct ActivityData {
     massimo_utenti_round: Vec<i32>,
 }
 
-pub async fn seed(db: PgPool) -> Result<()> {
+pub async fn seed(db: &PgPool) -> Result<()> {
     info!("Seeding the activity table...");
 
     let mut rdr =
@@ -64,7 +64,7 @@ pub async fn seed(db: PgPool) -> Result<()> {
             "#,
             &activity_data.email_host
         )
-        .fetch_all(&db);
+        .fetch_all(db);
 
         // Insert the activity basic information
         let event_id_fut = sqlx::query!(
