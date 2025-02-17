@@ -9,5 +9,5 @@
 	<!--	<span class="text-center text-2xl font-bold"> Le iscrizioni apriranno tra: </span>-->
 
 	<!--	<Countdown timeUntil={new Date(data.startDate)} />-->
-	<span class="text-center text-2xl font-bold"> Le iscrizioni non sono ancora aperte </span>
+	<span class="text-center text-xl font-bold"> Le iscrizioni non sono ancora aperte </span>
 </div>
