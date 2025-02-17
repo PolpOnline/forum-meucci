@@ -129,7 +129,7 @@
 						<div
 							class="text-muted-foreground flex h-full w-full flex-col items-center justify-center"
 						>
-							<p>Non sono più disponibili attività</p>
+							<p>Nessuna attività disponibile</p>
 						</div>
 					{/if}
 				</div>
