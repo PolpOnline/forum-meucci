@@ -8,9 +8,6 @@
 	import DropdownMenuLinkItem from '$lib/components/DropdownMenuLinkItem.svelte';
 	import type { LoginStatus } from '../../app';
 	import ITISMeucciLogo from '$lib/images/ITISMeucciLogo.svelte';
-	import { toast } from 'svelte-sonner';
-	import { invalidateAll } from '$app/navigation';
-	import LucideRefreshCw from '~icons/lucide/refresh-cw';
 
 	const {
 		loginStatus,
@@ -39,15 +36,6 @@
 					<DropdownMenu.Label>{loggedInEmail}</DropdownMenu.Label>
 					<DropdownMenu.Separator />
 				{/if}
-				<DropdownMenu.Item
-					onclick={async () => {
-						await invalidateAll();
-						toast.success('Pagina ricaricata');
-					}}
-				>
-					<LucideRefreshCw class="mr-2 h-4 w-4" />
-					Ricarica
-				</DropdownMenu.Item>
 				{#if loggedIn}
 					<DropdownMenu.Group>
 						<div data-sveltekit-preload-data="off">
