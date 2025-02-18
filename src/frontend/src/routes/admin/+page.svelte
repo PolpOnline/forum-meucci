@@ -24,7 +24,7 @@
 
 	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4 pb-1">
 		{#if adminActivities.length > 1}
-			<Input placeholder="Cerca un'attività..." class="w-full" bind:value={filterKey} />
+			<Input placeholder="Cerca un'attività..." class="w-full" bind:value={filterKey} autofocus />
 		{/if}
 
 		{#each filteredActivities as activity (activity.id)}
