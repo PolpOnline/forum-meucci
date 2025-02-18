@@ -27,15 +27,15 @@
 </script>
 
 <div
-	class="relative flex w-full items-center rounded-xl border"
+	class="grid w-full grid-cols-12 rounded-xl border"
 	class:p-5={name}
 	class:border-dashed={!name}
 	class:custom-absent={name === 'absent'}
 >
 	{#if name === 'absent'}
-		<div class="text-lg tracking-wide">Assente</div>
+		<div class="col-span-10 flex items-center text-lg tracking-wide">Assente</div>
 	{:else if name}
-		<div>
+		<div class="col-span-10">
 			<div class="text-lg tracking-wide">{name}</div>
 			{#if description}
 				<div class="text-muted-foreground text-sm">{description}</div>
@@ -68,7 +68,7 @@
 			{round}
 			class={cn(
 				buttonVariants({ variant: 'ghost' }),
-				'text-muted-foreground h-full min-h-[4.25rem] w-full rounded-xl text-lg tracking-wide'
+				'text-muted-foreground col-span-12 flex h-full min-h-[4.25rem] w-full items-center rounded-xl text-lg tracking-wide'
 			)}
 		>
 			{#snippet trigger()}
@@ -84,15 +84,17 @@
 	{/if}
 
 	{#if name && canEdit}
-		<ActivitySelectorDrawer
-			{formattedDate}
-			{round}
-			class={cn('absolute right-5', buttonVariants({ variant: 'outline', size: 'icon' }))}
-			initialId={id}
-		>
-			{#snippet trigger()}
-				<LucidePencil />
-			{/snippet}
-		</ActivitySelectorDrawer>
+		<div class="col-span-2 flex items-center justify-center">
+			<ActivitySelectorDrawer
+				{formattedDate}
+				{round}
+				class={buttonVariants({ variant: 'outline', size: 'icon' })}
+				initialId={id}
+			>
+				{#snippet trigger()}
+					<LucidePencil />
+				{/snippet}
+			</ActivitySelectorDrawer>
+		</div>
 	{/if}
 </div>

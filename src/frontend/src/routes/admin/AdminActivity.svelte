@@ -11,8 +11,8 @@
 	const { id, name, description, room } = $derived(activity);
 </script>
 
-<div class="relative flex w-full items-center rounded-xl border p-5">
-	<div>
+<div class="grid w-full grid-cols-12 items-center rounded-xl border p-5">
+	<div class="col-span-10">
 		<div class="text-lg">{name}</div>
 		{#if description}
 			<div class="text-muted-foreground text-sm">{description}</div>
@@ -25,13 +25,12 @@
 		{/if}
 	</div>
 
-	<Button
-		class={cn(
-			'text-primary absolute right-5',
-			buttonVariants({ variant: 'outline', size: 'icon' })
-		)}
-		href="/admin/rounds/{id}"
-	>
-		<LucideClock />
-	</Button>
+	<div class="col-span-2 flex items-center justify-center">
+		<Button
+			class={cn('text-primary', buttonVariants({ variant: 'outline', size: 'icon' }))}
+			href="/admin/rounds/{id}"
+		>
+			<LucideClock />
+		</Button>
+	</div>
 </div>
