@@ -11,16 +11,11 @@
 	const { id, name, description, room } = $derived(activity);
 </script>
 
-<div
-	class="relative flex w-full items-center rounded-xl border"
-	class:border-dashed={!name}
-	class:custom-absent={name === 'absent'}
-	class:p-5={name}
->
+<div class="relative flex w-full items-center rounded-xl border p-5">
 	<div>
 		<div class="text-lg">{name}</div>
 		{#if description}
-			<div class="text-sm text-muted-foreground">{description}</div>
+			<div class="text-muted-foreground text-sm">{description}</div>
 		{/if}
 		{#if room}
 			<Badge class="pointer-events-none mt-2" variant="secondary">
@@ -32,7 +27,7 @@
 
 	<Button
 		class={cn(
-			'absolute right-5 text-primary',
+			'text-primary absolute right-5',
 			buttonVariants({ variant: 'outline', size: 'icon' })
 		)}
 		href="/admin/rounds/{id}"
