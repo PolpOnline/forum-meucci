@@ -20,7 +20,7 @@ pub(super) async fn get_unselected_users(
                           FROM activity_user au
                           WHERE au.user_id = u.id
                             AND au.round = $1 -- Filter for the input round
-        );
+        ) AND u.type = 'normal' -- Only normal users
         "#,
         round
     )
