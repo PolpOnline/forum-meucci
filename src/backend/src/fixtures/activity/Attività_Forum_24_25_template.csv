@@ -1,10 +1,10 @@
 nome,descrizione,stanza,classe_minima,email_host,massimo_utenti_round
-Basket,Partite di Basket a mezzo campo.,Palestra,1,,48 0 48 0
+Basket,Partite di Basket a mezzo campo,Palestra,1,,48 0 48 0
 Calcio A7,Tre Partite di calcio A7 da mezz'ora l'una,Palestra,1,,0 42 0 42
 Ping Pong,Torneo di Ping-Pong,Ping Pong,1,,18 18 18 18
 Palzzina Laf,Film inerente la prossima assemblea,18-TW,1,,30 30 30 30
 Video Editing,Lezione videoediting tenuta da Lorenzo Pieri,09-TW,1,,30 30 30 30
-Bastardi Senza Gloria,Capolavoro di Tarantino sulla seconda guerra mondiale.,16-TW,1,,30 30 30 30
+Bastardi Senza Gloria,Capolavoro di Tarantino sulla seconda guerra mondiale,16-TW,1,,30 30 30 30
 Scacchi S1,Torneo di scacchi,07-TW,1,,30 30 30 30
 Scacchi S2,Torneo di scacchi,05-TW,1,,30 30 30 30
 Giochi da Tavolo,"Monopoli, Risiko",14-TW,1,,30 30 30 30
@@ -13,7 +13,7 @@ Briscola,Torneo di Briscola,14-2W,1,,30 30 30 30
 Scopa,Torneo di Scopa,12-2W,1,,30 30 30 30
 ClashRoyale,Torneo ClashRoyale,10-2W,1,,24 24 24 24
 Canto,Lezione di canto e coro,08-2W,1,,20 20 20 20
-Lezione Body Bilding,Lezione tenuta da alcuni studenti su body bilding e doping,13-TC\CIATTI,1,,60 60 0 0
+Lezione Body Building,Lezione tenuta da alcuni studenti su body building e doping,13-TC\CIATTI,1,,60 60 0 0
 Schrödinger,Lezione start-up informatica Schrödinger,13-TC\CIATTI,1,,0 0 60 60
 Disegno,Aula gestita da studenti per disegno artistico,09-TC,1,,15 15 15 15
 Scuola Guida ,Aula quiz patente,04B-TC,1,,30 30 30 30
@@ -41,3 +41,4 @@ Gioco d'azzardo,Lezione tenuta dal professor Mastrolembo contro il gioco d'azzar
 Aula maturandi,Aula per coloro che vogliono studiare per la maturità,14-2E,5,,15 15 15 15
 Accoglienza,Accoglienza tramite associazione Mar Ionio,04-2E,1,,30 30 0 0
 Teatro,Lezione Teatrale ad opera di Andrea Yuki Parigi,04-2E,1,,0 0 20 20
+Sicurezza,,,1,burberi.andrea@itismeucci.com baratti.francesco@itismeucci.com pieri.lorenzo@itismeucci.com sanna.iris@itismeucci.com gallori.davide@itismeucci.com calota.alvaro@itismeucci.com lalli.emanuele@itismeucci.com tumminaro.filippo@itismeucci.com buono.mattia@itismeucci.com miglietta.nicolas@itismeucci.com barbetta.francesco@itismeucci.com zhang.alessio@itismeucci.com bottai.gaia@itismeucci.com pratesi.giacomo@itismeucci.com bigliazzi.leonardo@itismeucci.com cappelli.beatrice@itismeucci.com torre.alessandro@itismeucci.com nati.mattia@itismeucci.com regi.diego@itismeucci.com conticini.alessio@itismeucci.com mancini.lapo@itismeucci.com laurenzano.tommaso@itismeucci.com liguori.edoardo@itismeucci.com zanieri.dario@itismeucci.com dalbero.giacomo@itismeucci.com cardillo.lorenzo@itismeucci.com barbierato.giovanni@itismeucci.com spataro.gianlorenzo@itismeucci.com cerreti.paolo@itismeucci.com mangone.ruben@itismeucci.com scarsi.giulia@itismeucci.com leoni.andrea@itismeucci.com perrotta.francesco@itismeucci.com cipriani.federico@itismeucci.com cirillo.sara@itismeucci.com boncinelli.lorenzo@itismeucci.com innocenti.samuele@itismeucci.com salvestrini.paolo@itismeucci.com lenzerini.tommaso@itismeucci.com viligiardi.yuri@itismeucci.com shtylla.saimon@itismeucci.com sobredoechevarria.ivan@itismeucci.com andolfipasotto.guglielmo@itismeucci.com pomicino.diegoernesto@itismeucci.com kerchoun.marwan@itismeucci.com deglinnocenti.christian@itismeucci.com grignano.enea@itismeucci.com bellanca.maya@itismeucci.com iacob.mattia@itismeucci.com cannavacciuolo.dario@itismeucci.com,0 0 0 0
