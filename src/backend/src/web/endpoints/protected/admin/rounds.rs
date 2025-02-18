@@ -105,12 +105,13 @@ pub async fn rounds(
         r#"
         SELECT round_max_users.round,
                COUNT(activity_user.user_id) AS used_seats,
-               round_max_users.max_users AS total_seats
+               round_max_users.max_users    AS total_seats
         FROM round_max_users
                  LEFT JOIN activity_user
                            ON round_max_users.activity_id = activity_user.activity_id
                                AND round_max_users.round = activity_user.round
         WHERE round_max_users.activity_id = $1
+          AND round_max_users.max_users > 0
         GROUP BY round_max_users.round, round_max_users.max_users
         ORDER BY round_max_users.round
         "#,
