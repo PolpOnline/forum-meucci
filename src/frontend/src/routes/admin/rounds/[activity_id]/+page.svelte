@@ -9,6 +9,7 @@
 
 	const { activity_id, adminRounds } = $derived(data.data);
 	const { name, room, rounds } = $derived(adminRounds);
+	const filteredRounds = $derived(rounds.filter((round) => round.total_seats !== 0));
 </script>
 
 <main>
@@ -29,7 +30,7 @@
 		<div class="col-span-2"></div>
 	</div>
 	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
-		{#each rounds as round (round.round)}
+		{#each filteredRounds as round (round.round)}
 			<AdminRound {round} {activity_id} />
 		{/each}
 	</div>
