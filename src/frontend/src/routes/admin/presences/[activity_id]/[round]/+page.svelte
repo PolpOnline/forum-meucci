@@ -22,7 +22,7 @@
 
 	// Use a state to be able to update the data reactively
 	const { activity_id, round, adminPresences } = $state(data.data);
-	const { name, room, date, presences, total_seats } = $state(adminPresences);
+	const { name, description, room, date, presences, total_seats } = $state(adminPresences);
 	const used_seats = adminPresences.presences.length;
 
 	type SpinnerState = 'loading' | 'success' | 'error' | 'idle';
@@ -89,9 +89,12 @@
 			<h1>
 				{name}
 			</h1>
-			<h2 class="text-lg text-gray-500">
+			<h2 class="text-muted-foreground text-lg">
 				{formatItalianDate(date)}
 			</h2>
+			<div class="mt-1 text-sm text-gray-500">
+				{description}
+			</div>
 			<Badge class="pointer-events-none mt-2" variant="secondary">
 				<LucideMapPin class="mr-1 h-4 w-4" />
 				<div class="text-sm">{room}</div>

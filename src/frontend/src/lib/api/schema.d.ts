@@ -298,6 +298,8 @@ export interface components {
 		AdminPresenceResponse: {
 			/** Format: date-time */
 			date: string;
+			/** @example This is the description of activity 1 */
+			description: string;
 			/** @example Activity 1 */
 			name: string;
 			presences: components['schemas']['Presence'][];
@@ -329,6 +331,8 @@ export interface components {
 			used_seats?: number | null;
 		};
 		AdminRoundResponse: {
+			/** @example This is the description of activity 1 */
+			description: string;
 			/** @example Activity 1 */
 			name: string;
 			/** @example Room 1 */

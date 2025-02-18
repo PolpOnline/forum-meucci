@@ -2,6 +2,7 @@ use crate::{models::user::UserType, users::AuthSession};
 
 pub struct ActivityBasicInfo {
     pub(crate) name: String,
+    pub(crate) description: String,
     pub(crate) room: String,
 }
 
@@ -14,7 +15,7 @@ pub async fn get_admin_activity(
     let name = sqlx::query_as!(
         ActivityBasicInfo,
         r#"
-        SELECT name, room
+        SELECT name, description, room
         FROM activity
         WHERE activity.id = $1
         "#,
@@ -38,7 +39,7 @@ pub async fn get_host_activity(
     let name = sqlx::query_as!(
         ActivityBasicInfo,
         r#"
-        SELECT name, room
+        SELECT name, description, room
         FROM activity
         JOIN activity_admin ON activity.id = activity_admin.activity_id
         WHERE activity_admin.user_id = $1 AND activity.id = $2 AND activity.should_display IS TRUE

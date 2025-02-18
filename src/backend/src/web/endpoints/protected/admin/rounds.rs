@@ -25,6 +25,8 @@ pub struct AdminRoundRequest {
 pub struct AdminRoundResponse {
     #[schema(example = "Activity 1")]
     name: String,
+    #[schema(example = "This is the description of activity 1")]
+    description: String,
     #[schema(example = "Room 1")]
     room: String,
     rounds: Vec<AdminRound>,
@@ -136,6 +138,7 @@ pub async fn rounds(
 
     Json(AdminRoundResponse {
         name: activity.name,
+        description: activity.description,
         room: activity.room,
         rounds,
     })

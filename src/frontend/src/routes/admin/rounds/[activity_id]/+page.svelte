@@ -8,7 +8,7 @@
 	let { data } = $props();
 
 	const { activity_id, adminRounds } = $derived(data.data);
-	const { name, room, rounds } = $derived(adminRounds);
+	const { name, description, room, rounds } = $derived(adminRounds);
 </script>
 
 <main>
@@ -18,14 +18,18 @@
 				<LucideArrowLeft />
 			</Button>
 		</div>
-		<h1 class="col-span-8 mt-5 text-center text-3xl font-bold">
-			{name}
-			<br />
+		<div class="col-span-8 mt-5 text-center font-bold">
+			<h1 class="text-3xl">
+				{name}
+			</h1>
+			<div class="mt-1 text-sm text-gray-500">
+				{description}
+			</div>
 			<Badge class="pointer-events-none mt-2" variant="secondary">
 				<LucideMapPin class="mr-1 h-4 w-4" />
 				<div class="text-sm">{room}</div>
 			</Badge>
-		</h1>
+		</div>
 		<div class="col-span-2"></div>
 	</div>
 	<div class="mx-auto mt-5 flex w-[95%] max-w-[800px] flex-col space-y-4">
