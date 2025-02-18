@@ -84,7 +84,7 @@
 	{/if}
 
 	{#if name && canEdit}
-		<div class="col-span-2 flex items-center justify-center">
+		<div class="col-span-2 flex items-center justify-end">
 			<ActivitySelectorDrawer
 				{formattedDate}
 				{round}

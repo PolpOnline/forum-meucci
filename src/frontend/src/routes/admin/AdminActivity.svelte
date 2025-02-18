@@ -25,7 +25,7 @@
 		{/if}
 	</div>
 
-	<div class="col-span-2 flex items-center justify-center">
+	<div class="col-span-2 flex items-center justify-end">
 		<Button
 			class={cn('text-primary', buttonVariants({ variant: 'outline', size: 'icon' }))}
 			href="/admin/rounds/{id}"
