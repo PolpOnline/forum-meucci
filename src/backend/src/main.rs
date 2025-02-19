@@ -62,6 +62,9 @@ async fn main() -> Result<()> {
                 fixtures::activity::seed(&app.db, args.write).await?;
                 fixtures::admin::seed(&app.db, args.write).await
             }
+            Some(Command::SeedHosts(args)) => {
+                fixtures::activity_host::seed(&app.db, args.write).await
+            }
             Some(Command::SortOutUsers(args)) => {
                 fixtures::sort_out::sort_out_users(&app.db, args.write).await
             }

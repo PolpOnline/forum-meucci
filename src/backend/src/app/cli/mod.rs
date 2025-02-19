@@ -21,7 +21,14 @@ pub enum Command {
     SeedActivity(SeedArgs),
     #[command(name = "seed-all")]
     SeedAll(SeedArgs),
+    /// Seed the admin table
+    #[command(name = "seed-admin")]
     SeedAdmin(SeedArgs),
+    /// Seed the hosts
+    /// (extracted from the activity table,
+    /// do not use this if hosts were already seeded with that)
+    #[command(name = "seed-hosts")]
+    SeedHosts(SeedArgs),
 }
 
 #[derive(Parser, Debug)]

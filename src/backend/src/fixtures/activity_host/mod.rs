@@ -1,26 +1,11 @@
-mod space_deserialize;
-
-use color_eyre::{eyre::eyre, Result};
+use color_eyre::eyre::eyre;
 use indicatif::ProgressBar;
-use serde::Deserialize;
-use space_deserialize::space_deserialize;
 use sqlx::PgPool;
 use tracing::info;
 
-#[derive(Debug, Deserialize)]
-pub(super) struct ActivityData {
-    pub(super) nome: String,
-    pub(super) descrizione: String,
-    pub(super) stanza: String,
-    pub(super) classe_minima: i32,
-    #[serde(deserialize_with = "space_deserialize")]
-    pub(super) email_host: Vec<String>,
-    #[serde(deserialize_with = "space_deserialize")]
-    pub(super) massimo_utenti_round: Vec<i32>,
-}
-
-pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
-    info!("Seeding the activity table...");
+//noinspection DuplicatedCode
+pub async fn seed(db: &PgPool, write: bool) -> color_eyre::Result<()> {
+    info!("Seeding the hosts...");
 
     let mut rdr =
         csv::Reader::from_path("./src/fixtures/activity/Attività_Forum_24_25_template.csv")?;
@@ -31,20 +16,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
             let record = result?;
             Ok(record)
         })
-        .collect::<Result<Vec<ActivityData>>>()?;
-
-    // Check that the number of rounds is the same for all activities
-    let rounds = data
-        .iter()
-        .map(|activity| activity.massimo_utenti_round.len())
-        .collect::<Vec<_>>();
-
-    if !(rounds.iter().all(|round| *round == rounds[0])) {
-        return Err(eyre!(
-            "The number of rounds is different for some activities: {:?}",
-            rounds
-        ));
-    }
+        .collect::<color_eyre::Result<Vec<crate::fixtures::activity::ActivityData>>>()?;
 
     let bar = ProgressBar::new(data.len() as u64);
 
@@ -66,23 +38,19 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
         )
         .fetch_all(db);
 
-        // Insert the activity basic information
+        // Get the event id
         let event_id_fut = sqlx::query!(
             r#"
-            INSERT INTO activity (name, description, room, minimum_class)
-            VALUES ($1, $2, $3, $4)
-            RETURNING id
+            SELECT id FROM activity
+            WHERE name = $1
             "#,
-            activity_data.nome,
-            activity_data.descrizione,
-            activity_data.stanza,
-            activity_data.classe_minima
+            activity_data.nome
         )
-        .fetch_one(&mut *txn);
+        .fetch_one(db);
 
         let (host_ids, event_id) = futures::future::try_join(host_ids_fut, event_id_fut).await?;
 
-        // Check that the number of hosts is the same as the number of emails
+        // Check if the number of hosts is the same as the number of emails
         if activity_data.email_host.len() != host_ids.len() {
             return Err(eyre!(
                 "Some hosts were not found in the database: {:?}",
@@ -112,21 +80,6 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
             .execute(&mut *txn)
             .await?;
         }
-
-        // Add the maximum users per round
-        for (idx, max_users) in activity_data.massimo_utenti_round.into_iter().enumerate() {
-            sqlx::query!(
-                r#"
-                INSERT INTO round_max_users (round, activity_id, max_users)
-                VALUES ($1, $2, $3)
-                "#,
-                idx as i32,
-                event_id.id,
-                max_users
-            )
-            .execute(&mut *txn)
-            .await?;
-        }
     }
 
     bar.finish_and_clear();
@@ -138,7 +91,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
     }
 
     info!(
-        "Activity table seeded ({})",
+        "Admins set ({})",
         if write { "Committed" } else { "Rolled Back" }
     );
 
