@@ -26,6 +26,15 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
         })
         .collect::<Result<Vec<UserData>>>()?;
 
+    // lowercase all emails
+    let users = users
+        .into_iter()
+        .map(|user| UserData {
+            email: user.email.to_lowercase(),
+            ..user
+        })
+        .collect::<Vec<_>>();
+
     let mut query_builder: QueryBuilder<Postgres> = QueryBuilder::new(
         r#"
         INSERT INTO "user" (name, email, class, section)
