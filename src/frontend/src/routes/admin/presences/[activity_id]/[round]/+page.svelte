@@ -144,7 +144,8 @@
 						</Table.Cell>
 						<Table.Cell class="text-center">
 							<Label for={'p' + i}>
-								{presence.class}{presence.section}
+								{presence.class}
+								{presence.section}
 							</Label>
 						</Table.Cell>
 						<Table.Cell class="flex items-center justify-end">
