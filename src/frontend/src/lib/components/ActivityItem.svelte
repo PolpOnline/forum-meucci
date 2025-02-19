@@ -77,7 +77,7 @@
 		</ActivitySelectorDrawer>
 	{:else}
 		<div
-			class="text-muted-foreground flex h-full min-h-[4.25rem] w-full items-center justify-center rounded-xl text-lg"
+			class="text-muted-foreground col-span-12 flex h-full min-h-[4.25rem] w-full items-center justify-center rounded-xl text-lg"
 		>
 			Nessuna attività selezionata
 		</div>
