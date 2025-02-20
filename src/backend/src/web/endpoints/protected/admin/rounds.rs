@@ -37,6 +37,8 @@ pub struct AdminRound {
     #[schema(example = 0, minimum = 0)]
     round: i32,
     date: DateTime<Utc>,
+    #[schema(example = 8)]
+    present_seats: Option<i64>,
     #[schema(example = 10)]
     used_seats: Option<i64>,
     #[schema(example = 20)]
@@ -51,6 +53,7 @@ impl AdminRound {
         Ok(AdminRound {
             round: activity.round,
             date: round_to_date(config, activity.round)?,
+            present_seats: activity.present_seats,
             used_seats: activity.used_seats,
             total_seats: activity.total_seats,
         })
@@ -59,6 +62,7 @@ impl AdminRound {
 
 pub struct AdminRoundWithoutDate {
     round: i32,
+    present_seats: Option<i64>,
     used_seats: Option<i64>,
     total_seats: i64,
 }
@@ -106,6 +110,7 @@ pub async fn rounds(
         AdminRoundWithoutDate,
         r#"
         SELECT round_max_users.round,
+               COUNT(CASE WHEN activity_user.joined_at IS NOT NULL THEN 1 END) AS present_seats,
                COUNT(activity_user.user_id) AS used_seats,
                round_max_users.max_users    AS total_seats
         FROM round_max_users

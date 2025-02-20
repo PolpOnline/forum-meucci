@@ -315,6 +315,11 @@ export interface components {
 			/** Format: date-time */
 			date: string;
 			/**
+			 * Format: int64
+			 * @example 8
+			 */
+			present_seats?: number | null;
+			/**
 			 * Format: int32
 			 * @example 0
 			 */

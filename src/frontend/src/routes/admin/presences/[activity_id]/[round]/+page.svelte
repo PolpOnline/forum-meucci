@@ -75,7 +75,10 @@
 		}
 	}
 
+	const present_seats = $derived(presences.filter((p) => p.present).length);
+
 	let editMode = $state(false);
+	const badgeGreen = $derived(present_seats! > used_seats! / 2);
 </script>
 
 <main>
@@ -103,6 +106,16 @@
 				<LucideUsers class="mr-1 h-4 w-4" />
 				<div class="text-sm">{used_seats} / {total_seats}</div>
 			</Badge>
+			{#if new Date(date) < new Date()}
+				<Badge
+					class="pointer-events-none mt-2
+				{badgeGreen ? 'border-green-500 text-green-500' : 'border-red-500 text-red-500'}"
+					variant="outline"
+				>
+					<LucideUsers class="mr-1 h-4 w-4" />
+					<div class="text-sm">{present_seats} / {used_seats}</div>
+				</Badge>
+			{/if}
 		</div>
 		<div class="col-span-2"></div>
 	</div>
