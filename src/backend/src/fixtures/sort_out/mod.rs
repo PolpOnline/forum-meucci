@@ -81,8 +81,11 @@ pub async fn sort_out_users(db: &PgPool, write: bool) -> color_eyre::Result<()> 
 
 /// Returns the available activities and unselected users for a given round.
 async fn get_round_data(db: &PgPool, round: i32) -> color_eyre::Result<RoundData> {
-    let available_activity_ids = get_available_activities(db, round).await?;
-    let unselected_users = get_unselected_users(db, round).await?;
+    let available_activity_ids_fut = get_available_activities(db, round);
+    let unselected_users_fut = get_unselected_users(db, round);
+
+    let (available_activity_ids, unselected_users) =
+        futures::future::try_join(available_activity_ids_fut, unselected_users_fut).await?;
 
     Ok(RoundData {
         available_activity_ids,
