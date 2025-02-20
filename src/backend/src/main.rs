@@ -41,14 +41,14 @@ async fn main() -> Result<()> {
 
     dotenv().unwrap_or_default();
 
+    let app = App::new().await?;
+
     #[cfg(debug_assertions)]
     {
         use app::cli::{Args, Command};
         use clap::Parser;
 
         let args = Args::parse();
-
-        let app = App::new().await?;
 
         match args.command {
             None => app.serve().await,
@@ -77,6 +77,6 @@ async fn main() -> Result<()> {
     // Run the app in production without the CLI
     #[cfg(not(debug_assertions))]
     {
-        App::new().await?.serve().await
+        app.serve().await
     }
 }
