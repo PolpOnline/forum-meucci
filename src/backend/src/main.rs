@@ -68,6 +68,9 @@ async fn main() -> Result<()> {
             Some(Command::SortOutUsers(args)) => {
                 fixtures::sort_out::sort_out_users(&app.db, args.write).await
             }
+            Some(Command::ExportPresences) => {
+                fixtures::export_presences::export_presences(&app.db, &app.config).await
+            }
         }
     }
 

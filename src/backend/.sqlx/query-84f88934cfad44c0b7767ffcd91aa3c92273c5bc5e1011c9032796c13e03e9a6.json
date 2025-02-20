@@ -1,0 +1,41 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT \"user\".section,\n                       \"user\".class,\n                       COALESCE(\"user\".name, \"user\".email) AS \"name!: String\",\n                       activity_user.randomized\n                FROM activity_user\n                         JOIN \"user\" ON activity_user.user_id = \"user\".id\n                WHERE activity_user.activity_id = $1\n                  AND activity_user.round = $2\n                ORDER BY name;\n                ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "section",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "class",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "name!: String",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "randomized",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      true,
+      false,
+      null,
+      false
+    ]
+  },
+  "hash": "84f88934cfad44c0b7767ffcd91aa3c92273c5bc5e1011c9032796c13e03e9a6"
+}

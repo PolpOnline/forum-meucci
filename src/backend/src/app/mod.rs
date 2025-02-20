@@ -43,7 +43,7 @@ pub struct App {
     redis_fred: FredPool,
     unredirectable_async_http_client: reqwest::Client,
     google_oauth_client: CoreClient,
-    config: Config,
+    pub config: Config,
 }
 
 impl App {

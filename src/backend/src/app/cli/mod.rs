@@ -29,6 +29,9 @@ pub enum Command {
     /// do not use this if hosts were already seeded with that)
     #[command(name = "seed-hosts")]
     SeedHosts(SeedArgs),
+    /// Generate an excel file with the presences
+    #[command(name = "export-presences")]
+    ExportPresences,
 }
 
 #[derive(Parser, Debug)]
