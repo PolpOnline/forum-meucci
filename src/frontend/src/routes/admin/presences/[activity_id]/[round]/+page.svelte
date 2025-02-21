@@ -17,6 +17,7 @@
 	import LucideDice5 from '~icons/lucide/dice-5';
 	import LucidePen from '~icons/lucide/pen';
 	import { slide } from 'svelte/transition';
+	import { title } from '$lib/stores/title.store';
 
 	let { data } = $props();
 
@@ -79,6 +80,12 @@
 
 	let editMode = $state(false);
 	const badgeGreen = $derived(present_seats! > used_seats! / 2);
+
+	const formattedDate = $derived(formatItalianDate(date));
+
+	$effect(() => {
+		title.set(`${name} - ${formattedDate} - Presenze - Forum Meucci`);
+	});
 </script>
 
 <main>
@@ -93,7 +100,7 @@
 				{name}
 			</h1>
 			<h2 class="text-muted-foreground text-lg">
-				{formatItalianDate(date)}
+				{formattedDate}
 			</h2>
 			<div class="mt-1 text-sm text-gray-500">
 				{description}

@@ -4,11 +4,16 @@
 	import LucideArrowLeft from '~icons/lucide/arrow-left';
 	import AdminRound from './AdminRound.svelte';
 	import { Button } from '$lib/components/ui/button';
+	import { title } from '$lib/stores/title.store';
 
 	let { data } = $props();
 
 	const { activity_id, adminRounds } = $derived(data.data);
 	const { name, description, room, rounds } = $derived(adminRounds);
+
+	$effect(() => {
+		title.set(`${name} - Turni - Forum Meucci`);
+	});
 </script>
 
 <main>
