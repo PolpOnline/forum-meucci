@@ -71,6 +71,7 @@ async fn query_users_info(db: &PgPool, round: i32) -> Result<Vec<PresencesColumn
                            ON au.activity_id = a.id
                  LEFT JOIN "user" editor
                            ON au.joined_at_last_edited_by = editor.id
+        WHERE u.type = 'normal'
         ORDER BY u.name;
         "#,
         round

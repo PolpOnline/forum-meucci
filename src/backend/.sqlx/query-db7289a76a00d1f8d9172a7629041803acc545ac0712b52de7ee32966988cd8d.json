@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT u.name          AS \"name!: String\",\n               u.class         AS class,\n               u.section       AS section,\n               a.name          AS \"activity!: Option<String>\",\n               au.scheduled_at AS \"scheduled_at!: Option<DateTime<Utc>>\",\n               au.joined_at    AS \"joined_at!: Option<DateTime<Utc>>\",\n               editor.name     AS joined_at_edited_by,\n               au.randomized   AS \"randomized!: Option<bool>\"\n        FROM \"user\" u\n                 LEFT JOIN activity_user au\n                           ON u.id = au.user_id\n                               AND au.round = $1\n                 LEFT JOIN activity a\n                           ON au.activity_id = a.id\n                 LEFT JOIN \"user\" editor\n                           ON au.joined_at_last_edited_by = editor.id\n        ORDER BY u.name;\n        ",
+  "query": "\n        SELECT u.name          AS \"name!: String\",\n               u.class         AS class,\n               u.section       AS section,\n               a.name          AS \"activity!: Option<String>\",\n               au.scheduled_at AS \"scheduled_at!: Option<DateTime<Utc>>\",\n               au.joined_at    AS \"joined_at!: Option<DateTime<Utc>>\",\n               editor.name     AS joined_at_edited_by,\n               au.randomized   AS \"randomized!: Option<bool>\"\n        FROM \"user\" u\n                 LEFT JOIN activity_user au\n                           ON u.id = au.user_id\n                               AND au.round = $1\n                 LEFT JOIN activity a\n                           ON au.activity_id = a.id\n                 LEFT JOIN \"user\" editor\n                           ON au.joined_at_last_edited_by = editor.id\n        WHERE u.type = 'normal'\n        ORDER BY u.name;\n        ",
   "describe": {
     "columns": [
       {
@@ -60,5 +60,5 @@
       false
     ]
   },
-  "hash": "505475f53ef1f5889c0c2e851dd4c97de4e3584563ed2e4269941ddc932c70a7"
+  "hash": "db7289a76a00d1f8d9172a7629041803acc545ac0712b52de7ee32966988cd8d"
 }
