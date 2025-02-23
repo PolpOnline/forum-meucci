@@ -1,0 +1,64 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT u.name          AS \"name!: String\",\n               u.class         AS class,\n               u.section       AS section,\n               a.name          AS \"activity!: Option<String>\",\n               au.scheduled_at AS \"scheduled_at!: Option<DateTime<Utc>>\",\n               au.joined_at    AS \"joined_at!: Option<DateTime<Utc>>\",\n               editor.name     AS joined_at_edited_by,\n               au.randomized   AS \"randomized!: Option<bool>\"\n        FROM \"user\" u\n                 LEFT JOIN activity_user au\n                           ON u.id = au.user_id\n                               AND au.round = $1\n                 LEFT JOIN activity a\n                           ON au.activity_id = a.id\n                 LEFT JOIN \"user\" editor\n                           ON au.joined_at_last_edited_by = editor.id\n        ORDER BY u.name;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name!: String",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "class",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "section",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "activity!: Option<String>",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "scheduled_at!: Option<DateTime<Utc>>",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 5,
+        "name": "joined_at!: Option<DateTime<Utc>>",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 6,
+        "name": "joined_at_edited_by",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 7,
+        "name": "randomized!: Option<bool>",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      true,
+      false,
+      true,
+      false,
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "505475f53ef1f5889c0c2e851dd4c97de4e3584563ed2e4269941ddc932c70a7"
+}

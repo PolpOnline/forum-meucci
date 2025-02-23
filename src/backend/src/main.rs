@@ -71,6 +71,9 @@ async fn main() -> Result<()> {
             Some(Command::ExportRounds) => {
                 fixtures::export_rounds::export_rounds(&app.db, &app.config).await
             }
+            Some(Command::ExportPresences) => {
+                fixtures::export_presences::export_presences(&app.db, &app.config).await
+            }
         }
     }
 

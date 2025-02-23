@@ -33,6 +33,8 @@ pub enum Command {
     /// subscribed to those activities
     #[command(name = "export-rounds")]
     ExportRounds,
+    #[command(name = "export-presences")]
+    ExportPresences,
 }
 
 #[derive(Parser, Debug)]
