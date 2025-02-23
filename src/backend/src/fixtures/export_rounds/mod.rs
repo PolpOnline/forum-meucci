@@ -13,7 +13,7 @@ struct ActivityExcelUserInfo {
     randomized: bool,
 }
 
-pub async fn export_presences(db: &PgPool, config: &Config) -> color_eyre::Result<()> {
+pub async fn export_rounds(db: &PgPool, config: &Config) -> color_eyre::Result<()> {
     let mut workbook = Workbook::new();
 
     let format_header = Format::new().set_bold().set_border(FormatBorder::Medium);
@@ -83,7 +83,7 @@ pub async fn export_presences(db: &PgPool, config: &Config) -> color_eyre::Resul
         }
     }
 
-    workbook.save("./Presenze.xlsx")?;
+    workbook.save("./AttivitàTurni.xlsx")?;
 
     Ok(())
 }
