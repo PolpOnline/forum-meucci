@@ -32,7 +32,8 @@ pub struct AdminRoundResponse {
     rounds: Vec<AdminRound>,
 }
 
-#[derive(Serialize, ToSchema)]
+#[derive(Serialize, ToSchema, restructed::Models)]
+#[view(AdminRoundWithoutDate, omit(date))]
 pub struct AdminRound {
     #[schema(example = 0, minimum = 0)]
     round: i32,
@@ -58,13 +59,6 @@ impl AdminRound {
             total_seats: activity.total_seats,
         })
     }
-}
-
-pub struct AdminRoundWithoutDate {
-    round: i32,
-    present_seats: Option<i64>,
-    used_seats: Option<i64>,
-    total_seats: i64,
 }
 
 #[utoipa::path(

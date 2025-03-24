@@ -38,6 +38,7 @@ tower = "0.5"
 tracing-indicatif = "0.3.9"
 rust_xlsxwriter = { version = "0.84.0", features = ["serde"] }
 chrono-tz = { version = "0.10.1", features = ["serde"] }
+restructed = "0.2.1"
 
 [profile.dev.package.backtrace]
 opt-level = 3

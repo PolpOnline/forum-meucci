@@ -5,19 +5,8 @@ use utoipa::ToSchema;
 
 use crate::app::config::Config;
 
-#[derive(Default)]
-pub struct ActivityWithoutDate {
-    pub id: i32,
-    pub round: i32,
-    pub name: String,
-    pub description: Option<String>,
-    pub room: String,
-    pub used_seats: i64,
-    pub total_seats: i64,
-    pub present: bool,
-}
-
-#[derive(Serialize, ToSchema)]
+#[derive(Serialize, ToSchema, restructed::Models)]
+#[view(ActivityWithoutDate, omit(date), derive(Default))]
 pub struct Activity {
     #[schema(example = 1)]
     pub id: i32,
