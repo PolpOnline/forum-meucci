@@ -9,7 +9,7 @@ axum = { version = "0.8", features = ["http2", "macros"] }
 axum-login = "0.17"
 http = "1.0"
 serde = "1"
-sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "uuid", "chrono"] }
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "uuid", "chrono", "tls-rustls-aws-lc-rs"] }
 chrono = { version = "0.4", features = ["serde"] }
 tokio = { version = "1.34", features = ["full"] }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
