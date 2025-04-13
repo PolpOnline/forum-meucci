@@ -64,7 +64,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.cookies.get('meucci_forum_id') ? 'logged_in' : 'logged_out'
 	) as LoginStatus;
 
-	if (requestedPath.startsWith('/auth')) {
+	if (requestedPath.startsWith('/auth') || requestedPath.startsWith('/api/public')) {
 		return resolve(event, resolveOptions);
 	}
 
