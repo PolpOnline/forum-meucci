@@ -22,6 +22,9 @@ RUN pnpm build
 # Use a minimal base image for the final stage
 FROM node:alpine
 
+# Install curl
+RUN apk add --no-cache curl
+
 # Set the working directory
 WORKDIR /app
 

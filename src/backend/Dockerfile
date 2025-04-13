@@ -23,6 +23,9 @@ RUN cargo build --release --bin forum_meucci
 # Use a minimal base image for the final stage
 FROM debian:bookworm-slim AS runtime
 
+# Install curl
+RUN apt-get update && apt-get install -y curl
+
 # Set the working directory
 WORKDIR /app
 
