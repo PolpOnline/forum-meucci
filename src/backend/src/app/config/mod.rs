@@ -17,7 +17,7 @@ pub struct Config {
 impl Config {
     pub(crate) fn init() -> Config {
         let config = include_str!("../../../config/config.json");
-        serde_json::from_str(config).unwrap()
+        sonic_rs::from_str(config).unwrap()
     }
 
     pub(crate) fn get_num_rounds(&self) -> usize {

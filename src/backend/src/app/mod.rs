@@ -123,8 +123,7 @@ impl App {
             .split_for_parts();
 
         let router = {
-            let api_json =
-                serde_json::to_value(api.clone()).expect("Failed to convert api to JSON");
+            let api_json = sonic_rs::to_value(&api.clone()).expect("Failed to convert api to JSON");
 
             router
                 .route("/openapi.json", get(move || async { axum::Json(api_json) }))

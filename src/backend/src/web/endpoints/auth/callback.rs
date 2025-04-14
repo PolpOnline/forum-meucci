@@ -24,7 +24,7 @@ pub(in crate::web) struct AuthzResp {
 #[serde(untagged)]
 pub(in crate::web) enum AuthParams {
     Valid(AuthzResp),
-    Invalid(#[allow(dead_code)] serde_json::Value),
+    Invalid(#[allow(dead_code)] sonic_rs::Value),
 }
 
 #[utoipa::path(
