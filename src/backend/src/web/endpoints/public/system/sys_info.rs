@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use serde::Serialize;
 use sysinfo::System;
 use tokio::time::sleep;
@@ -118,7 +119,7 @@ pub async fn sys_info() -> impl IntoResponse {
     // Refresh CPUs again.
     s.refresh_cpu_all();
 
-    Json(SystemInfoResponse::new(&s))
+    Sonic(SystemInfoResponse::new(&s))
 }
 
 fn fmt_bytes(bytes: u64) -> String {

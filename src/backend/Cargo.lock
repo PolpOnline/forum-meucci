@@ -365,6 +365,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "axum-serde"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "29617f4d5e0ec3c0fc486b3facd9d04f82742822bef65fa9ff461fde69e248e1"
+dependencies = [
+ "axum-core 0.5.2",
+ "bytes",
+ "http",
+ "mime",
+ "serde",
+ "sonic-rs 0.3.17",
+ "thiserror 1.0.69",
+]
+
+[[package]]
 name = "axum_thiserror"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1181,6 +1196,7 @@ dependencies = [
  "async-trait",
  "axum 0.8.3",
  "axum-login",
+ "axum-serde",
  "axum_thiserror",
  "chrono",
  "chrono-tz",
@@ -1196,7 +1212,7 @@ dependencies = [
  "restructed",
  "rust_xlsxwriter",
  "serde",
- "sonic-rs",
+ "sonic-rs 0.5.0",
  "sqlx",
  "sysinfo",
  "thiserror 2.0.12",
@@ -3305,6 +3321,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8a74044c092f4f43ca7a6cfd62854cf9fb5ac8502b131347c990bf22bef1dfe"
 dependencies = [
  "cfg-if",
+]
+
+[[package]]
+name = "sonic-rs"
+version = "0.3.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0275f9f2f07d47556fe60c2759da8bc4be6083b047b491b2d476aa0bfa558eb1"
+dependencies = [
+ "bumpalo",
+ "bytes",
+ "cfg-if",
+ "faststr",
+ "itoa",
+ "ref-cast",
+ "ryu",
+ "serde",
+ "simdutf8",
+ "sonic-number",
+ "sonic-simd",
+ "thiserror 2.0.12",
 ]
 
 [[package]]

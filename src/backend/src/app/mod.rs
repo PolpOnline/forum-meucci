@@ -126,7 +126,10 @@ impl App {
             let api_json = sonic_rs::to_value(&api.clone()).expect("Failed to convert api to JSON");
 
             router
-                .route("/openapi.json", get(move || async { axum::Json(api_json) }))
+                .route(
+                    "/openapi.json",
+                    get(move || async { axum_serde::Sonic(api_json) }),
+                )
                 .merge(Scalar::with_url("/scalar", api))
         };
 

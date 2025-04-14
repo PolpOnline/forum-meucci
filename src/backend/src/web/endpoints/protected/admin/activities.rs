@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::Serialize;
 use utoipa::ToSchema;
@@ -55,7 +56,7 @@ pub(super) async fn activities(auth_session: AuthSession) -> impl IntoResponse {
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    Json(AdminActivityResponse { activities }).into_response()
+    Sonic(AdminActivityResponse { activities }).into_response()
 }
 
 /// Get all activities for an admin user (all activities)

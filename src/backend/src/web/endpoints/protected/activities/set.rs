@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::Deserialize;
 use tracing::info;
@@ -37,7 +38,7 @@ pub struct SetActivityRequest {
 )]
 pub async fn set(
     auth_session: AuthSession,
-    Json(req): Json<SetActivityRequest>,
+    Sonic(req): Sonic<SetActivityRequest>,
 ) -> impl IntoResponse {
     let user_id = match auth_session.user {
         Some(user) => user.id,

@@ -1,5 +1,6 @@
 use ahash::AHashMap;
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use chrono::{DateTime, Utc};
 use http::StatusCode;
 use serde::Serialize;
@@ -94,7 +95,7 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
 
     let registrations_end_date = auth_session.backend.config.registrations_end_date;
 
-    Json(SelectedActivityResponse {
+    Sonic(SelectedActivityResponse {
         activities,
         registrations_end_date,
     })

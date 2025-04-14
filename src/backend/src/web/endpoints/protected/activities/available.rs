@@ -1,4 +1,5 @@
-use axum::{extract::Path, response::IntoResponse, Json};
+use axum::{extract::Path, response::IntoResponse};
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -87,5 +88,5 @@ pub async fn available(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    Json(AvailableActivityResponse { activities }).into_response()
+    Sonic(AvailableActivityResponse { activities }).into_response()
 }

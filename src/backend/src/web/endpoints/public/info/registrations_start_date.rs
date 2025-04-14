@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use chrono::{DateTime, Utc};
 use serde::Serialize;
 use utoipa::ToSchema;
@@ -22,7 +23,7 @@ pub struct RegistrationsStartDateResponse {
 pub async fn registrations_start_date(auth_session: AuthSession) -> impl IntoResponse {
     let registrations_start_date = auth_session.backend.config.registrations_start_date;
 
-    Json(RegistrationsStartDateResponse {
+    Sonic(RegistrationsStartDateResponse {
         registrations_start_date,
     })
 }

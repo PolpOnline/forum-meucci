@@ -1,4 +1,5 @@
-use axum::{extract::Path, response::IntoResponse, Json};
+use axum::{extract::Path, response::IntoResponse};
+use axum_serde::Sonic;
 use chrono::{DateTime, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
@@ -132,7 +133,7 @@ pub async fn presences(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    Json(AdminPresenceResponse {
+    Sonic(AdminPresenceResponse {
         name: activity.name,
         description: activity.description,
         room: activity.room,

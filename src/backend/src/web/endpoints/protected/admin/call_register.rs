@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::Deserialize;
 use utoipa::ToSchema;
@@ -37,7 +38,7 @@ pub struct CallRegisterRequest {
 )]
 pub async fn call_register(
     auth_session: AuthSession,
-    Json(req): Json<CallRegisterRequest>,
+    Sonic(req): Sonic<CallRegisterRequest>,
 ) -> impl IntoResponse {
     let (user_type, user_id) = match auth_session.user {
         Some(ref user) => (user.r#type, user.id),
