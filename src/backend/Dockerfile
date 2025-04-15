@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y mold
 
 # Set mold as the linker and set the target CPU to x86_64-v3
-ENV RUSTFLAGS="-C link-arg=-fuse-ld=mold -C target-cpu=x86_64-v3"
+ENV RUSTFLAGS="-C link-arg=-fuse-ld=mold -C target-cpu=x86-64-v3"
 
 FROM chef AS planner
 COPY . .
