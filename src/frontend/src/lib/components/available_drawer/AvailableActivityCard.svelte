@@ -7,9 +7,9 @@
 
 <div class="relative w-full rounded-xl py-2">
 	<div class="text-lg">{activity.name}</div>
-	<div class="text-sm text-muted-foreground">{activity.description}</div>
-	<div class="text-sm text-muted-foreground">{activity.room}</div>
-	<div class="absolute right-2 top-2 flex items-center text-sm text-muted-foreground">
+	<div class="text-muted-foreground text-sm">{activity.description}</div>
+	<div class="text-muted-foreground text-sm">{activity.room}</div>
+	<div class="text-muted-foreground absolute top-2 right-2 flex items-center text-sm">
 		{activity.used_seats} / {activity.total_seats}
 		<LucideUsers class="ml-1 inline" />
 	</div>

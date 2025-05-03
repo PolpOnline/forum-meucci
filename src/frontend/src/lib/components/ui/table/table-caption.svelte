@@ -11,6 +11,6 @@
 	}: WithElementRef<HTMLAttributes<HTMLElement>> = $props();
 </script>
 
-<caption {...restProps} bind:this={ref} class={cn('mt-4 text-sm text-muted-foreground', className)}>
+<caption {...restProps} bind:this={ref} class={cn("text-muted-foreground mt-4 text-sm", className)}>
 	{@render children?.()}
 </caption>

@@ -45,7 +45,7 @@
 	<link rel="icon" type="image/svg+xml" href={Favicon} />
 	<!-- for Safari -->
 	<link rel="mask-icon" href={Favicon} color="#000000" />
-	{#each links as link}
+	{#each links as link (link)}
 		<link {...link?.attrs || {}} />
 	{/each}
 </svelte:head>

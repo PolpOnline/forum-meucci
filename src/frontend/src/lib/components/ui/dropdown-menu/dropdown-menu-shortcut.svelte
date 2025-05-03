@@ -13,7 +13,7 @@
 
 <span
 	bind:this={ref}
-	class={cn('ml-auto text-xs tracking-widest opacity-60', className)}
+	class={cn("ml-auto text-xs tracking-widest opacity-60", className)}
 	{...restProps}
 >
 	{@render children?.()}
