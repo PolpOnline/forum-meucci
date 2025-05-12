@@ -3,9 +3,9 @@ use openidconnect::{
         CoreAuthDisplay, CoreClaimName, CoreClaimType, CoreClientAuthMethod, CoreGrantType,
         CoreJsonWebKey, CoreJweContentEncryptionAlgorithm, CoreJweKeyManagementAlgorithm,
         CoreResponseMode, CoreResponseType, CoreSubjectIdentifierType,
-    },
-    AdditionalProviderMetadata, ClientId, ClientSecret, EndpointMaybeSet, EndpointNotSet,
-    EndpointSet, IssuerUrl, ProviderMetadata, RedirectUrl, RevocationUrl,
+    }, AdditionalProviderMetadata, ClientId, ClientSecret, EndpointMaybeSet,
+    EndpointNotSet, EndpointSet, IssuerUrl, ProviderMetadata, RedirectUrl,
+    RevocationUrl,
 };
 use serde::{Deserialize, Serialize};
 

@@ -40,7 +40,7 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
     let user = match auth_session.user {
         None => return StatusCode::UNAUTHORIZED.into_response(),
         Some(user) if user.r#type == UserType::Admin || user.r#type == UserType::Host => {
-            return StatusCode::FORBIDDEN.into_response()
+            return StatusCode::FORBIDDEN.into_response();
         }
         Some(user) => user,
     };

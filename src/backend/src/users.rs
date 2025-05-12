@@ -1,10 +1,10 @@
 use async_trait::async_trait;
 use axum_login::{AuthnBackend, UserId};
 use openidconnect::{
-    core::{CoreResponseType, CoreUserInfoClaims},
-    reqwest::Client,
-    url::Url,
-    AuthorizationCode, CsrfToken, Nonce, OAuth2TokenResponse, Scope,
+    core::{CoreResponseType, CoreUserInfoClaims}, reqwest::Client, url::Url, AuthorizationCode, CsrfToken,
+    Nonce,
+    OAuth2TokenResponse,
+    Scope,
 };
 use sqlx::PgPool;
 use tokio::task;

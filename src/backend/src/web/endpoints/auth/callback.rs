@@ -70,7 +70,7 @@ pub(in crate::web) async fn google_oauth_callback_handler(
     let user = match auth_session.authenticate(creds).await {
         Ok(Some(user)) => user,
         Ok(None) => {
-            return (StatusCode::UNAUTHORIZED, "Invalid CSRF state".to_string()).into_response()
+            return (StatusCode::UNAUTHORIZED, "Invalid CSRF state".to_string()).into_response();
         }
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
