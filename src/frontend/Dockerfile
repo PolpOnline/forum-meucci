@@ -1,47 +1,23 @@
-# Use an official Node.js image as a parent image
-FROM node:alpine AS builder
-
-# Install pnpm
-RUN npm install -g pnpm
-
-# Set the working directory
+FROM node:alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-# Copy the package.json and pnpm-lock.yaml files
-COPY package.json pnpm-lock.yaml ./
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Install dependencies
-RUN pnpm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the SvelteKit project
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm build
 
-# Use a minimal base image for the final stage
-FROM node:alpine
+FROM base
 
-# Install curl
+# Install curl for healthcheck
 RUN apk add --no-cache curl
 
-# Set the working directory
-WORKDIR /app
-
-# Copy the built files from the builder stage
-COPY --from=builder /app/build /app/build
-
-# Install pnpm in the final stage
-RUN npm install -g pnpm
-
-# Copy the package.json and pnpm-lock.yaml files
-COPY package.json pnpm-lock.yaml ./
-
-# Install only production dependencies
-RUN pnpm install --prod
-
-# Expose the port the app runs on
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/build /app/build
 EXPOSE 3000
-
-# Run the SvelteKit app
-CMD ["node", "build"]
+CMD ["pnpm", "start"]
