@@ -46,10 +46,6 @@ jobs:
             com.github.commit.message=${{ github.event.head_commit.message }}
             com.github.commit.author=${{ github.event.head_commit.author.name }}
 
-      - name: Deploy to Coolify
-        run: |
-          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_BACKEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
-
   frontend:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
@@ -93,6 +89,12 @@ jobs:
             com.github.commit.message=${{ github.event.head_commit.message }}
             com.github.commit.author=${{ github.event.head_commit.author.name }}
 
+  deploy:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Deploy to Coolify
         run: |
-          curl --request GET '${{ secrets.COOLIFY_WEBHOOK_FRONTEND }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
+          curl --request GET '${{ secrets.COOLIFY_WEBHOOK }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
