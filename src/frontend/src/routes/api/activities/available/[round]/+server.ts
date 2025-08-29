@@ -3,7 +3,7 @@ import { client } from '$lib/api/api';
 export async function GET({ fetch, params }) {
 	const round = Number(params.round);
 
-	const { data, response, error } = await client.GET('/activities/available/{round}', {
+	const { data, response, error } = await client.GET('/forum/activities/available/{round}', {
 		fetch,
 		params: {
 			path: {

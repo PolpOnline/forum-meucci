@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		data,
 		response,
 		error: errorMessage
-	} = await client.GET('/registrations_start_date', { fetch });
+	} = await client.GET('/forum/registrations_start_date', { fetch });
 
 	if (response.status === StatusCodes.UNAUTHORIZED) {
 		redirect(StatusCodes.MOVED_TEMPORARILY, '/auth/login');

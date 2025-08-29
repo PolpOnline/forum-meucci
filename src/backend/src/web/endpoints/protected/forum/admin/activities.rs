@@ -4,7 +4,7 @@ use http::StatusCode;
 use serde::Serialize;
 use utoipa::ToSchema;
 
-use crate::{app::openapi::ADMIN_TAG, models::user::ForumUserRole, users::AuthSession};
+use crate::{app::openapi::FORUM_ADMIN_TAG, models::user::ForumUserRole, users::AuthSession};
 
 #[derive(Serialize, ToSchema)]
 pub struct AdminActivityResponse {
@@ -37,7 +37,7 @@ pub struct AdminActivity {
     security(
         ("session" = [])
     ),
-    tag = ADMIN_TAG,
+    tag = FORUM_ADMIN_TAG,
 )]
 pub(super) async fn activities(auth_session: AuthSession) -> impl IntoResponse {
     let (forum_role, user_id) = match auth_session.user {

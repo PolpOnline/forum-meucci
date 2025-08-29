@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 	const activity_id = Number(params.activity_id);
 	const round = Number(params.round);
 
-	const { data, response } = await client.GET('/admin/presences/{activity_id}/{round}', {
+	const { data, response } = await client.GET('/forum/admin/presences/{activity_id}/{round}', {
 		fetch,
 		params: { path: { activity_id, round } }
 	});

@@ -4,7 +4,7 @@ import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import { error, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const { data, response } = await client.GET('/admin/activities', { fetch });
+	const { data, response } = await client.GET('/forum/admin/activities', { fetch });
 
 	// Too early to set activities
 	if (response.status === 425) {

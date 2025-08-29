@@ -1,13 +1,13 @@
 use utoipa::{
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme}, Modify,
-    OpenApi,
+    Modify, OpenApi,
+    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
 };
 
 pub const AUTH_TAG: &str = "Auth";
 pub const SYSTEM_TAG: &str = "System";
-pub const ACTIVITIES_TAG: &str = "Activities";
-pub const ADMIN_TAG: &str = "Admin";
-pub const INFO_TAG: &str = "Info";
+pub const FORUM_ACTIVITIES_TAG: &str = "Forum Activities";
+pub const FORUM_ADMIN_TAG: &str = "Forum Admin";
+pub const FORUM_INFO_TAG: &str = "Forum Info";
 
 #[derive(OpenApi)]
 #[openapi(
@@ -15,9 +15,9 @@ pub const INFO_TAG: &str = "Info";
     tags(
         (name = AUTH_TAG, description = "Endpoints to authenticate users"),
         (name = SYSTEM_TAG, description = "Endpoints to monitor the system"),
-        (name = ACTIVITIES_TAG, description = "Endpoints related to activities"),
-        (name = ADMIN_TAG, description = "Endpoints for host/administrators of the activities"),
-        (name = INFO_TAG, description = "Endpoints to get general information about the events"),
+        (name = FORUM_ACTIVITIES_TAG, description = "Endpoints related to activities"),
+        (name = FORUM_ADMIN_TAG, description = "Endpoints for host/administrators of the activities"),
+        (name = FORUM_INFO_TAG, description = "Endpoints to get public information about activities"),
     )
 )]
 pub(super) struct ApiDoc;

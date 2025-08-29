@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		data,
 		response,
 		error: errorMessage
-	} = await client.GET('/activities/selected', { fetch });
+	} = await client.GET('/forum/activities/selected', { fetch });
 
 	// Too early to set activities
 	if (response.status === 425) {

@@ -7,7 +7,7 @@ use serde::Serialize;
 use utoipa::ToSchema;
 
 use crate::{
-    app::openapi::ACTIVITIES_TAG,
+    app::openapi::FORUM_ACTIVITIES_TAG,
     models::user::ForumUserRole,
     users::AuthSession,
     web::schemas::activity::{Activity, ActivityWithoutDate},
@@ -34,7 +34,7 @@ pub struct SelectedActivityResponse {
     security(
         ("session" = [])
     ),
-    tag = ACTIVITIES_TAG,
+    tag = FORUM_ACTIVITIES_TAG,
 )]
 pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
     let user = match auth_session.user {

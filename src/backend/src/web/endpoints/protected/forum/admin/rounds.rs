@@ -6,11 +6,11 @@ use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
 use crate::{
-    app::{config::Config, openapi::ADMIN_TAG},
+    app::{config::Config, openapi::FORUM_ADMIN_TAG},
     models::user::ForumUserRole,
     users::AuthSession,
     web::{
-        endpoints::protected::admin::shared::get_activity,
+        endpoints::protected::forum::admin::shared::get_activity,
         schemas::activity::{RoundConversionError, round_to_date},
     },
 };
@@ -77,7 +77,7 @@ impl AdminRound {
     security(
         ("session" = [])
     ),
-    tag = ADMIN_TAG,
+    tag = FORUM_ADMIN_TAG,
 )]
 pub async fn rounds(
     auth_session: AuthSession,

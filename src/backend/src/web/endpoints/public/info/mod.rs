@@ -1,7 +1,7 @@
-mod registrations_start_date;
+mod forum;
 
-use utoipa_axum::{router::OpenApiRouter, routes};
+use utoipa_axum::router::OpenApiRouter;
 
 pub fn router() -> OpenApiRouter {
-    OpenApiRouter::new().routes(routes!(registrations_start_date::registrations_start_date))
+    OpenApiRouter::new().nest("/forum", forum::router())
 }

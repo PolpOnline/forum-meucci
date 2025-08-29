@@ -6,10 +6,12 @@ use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
 use crate::{
-    app::openapi::ADMIN_TAG,
+    app::openapi::FORUM_ADMIN_TAG,
     models::user::ForumUserRole,
     users::AuthSession,
-    web::{endpoints::protected::admin::shared::get_activity, schemas::activity::round_to_date},
+    web::{
+        endpoints::protected::forum::admin::shared::get_activity, schemas::activity::round_to_date,
+    },
 };
 
 #[derive(Deserialize, IntoParams)]
@@ -67,7 +69,7 @@ pub struct Presence {
     security(
         ("session" = [])
     ),
-    tag = ADMIN_TAG,
+    tag = FORUM_ADMIN_TAG,
 )]
 pub async fn presences(
     auth_session: AuthSession,

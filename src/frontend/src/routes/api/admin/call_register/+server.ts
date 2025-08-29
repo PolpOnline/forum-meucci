@@ -3,7 +3,7 @@ import { client } from '$lib/api/api';
 export async function PATCH({ fetch, request }) {
 	const { activity_id, round } = await request.json();
 
-	const { data, response, error } = await client.PATCH('/admin/call_register', {
+	const { data, response, error } = await client.PATCH('/forum/admin/call_register', {
 		fetch,
 		body: { activity_id, round }
 	});

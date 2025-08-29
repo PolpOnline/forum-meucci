@@ -5,7 +5,7 @@ use serde::Deserialize;
 use tracing::info;
 use utoipa::ToSchema;
 
-use crate::{app::openapi::ACTIVITIES_TAG, users::AuthSession};
+use crate::{app::openapi::FORUM_ACTIVITIES_TAG, users::AuthSession};
 
 #[derive(Deserialize, ToSchema)]
 pub struct SetActivityRequest {
@@ -34,7 +34,7 @@ pub struct SetActivityRequest {
     security(
         ("session" = [])
     ),
-    tag = ACTIVITIES_TAG,
+    tag = FORUM_ACTIVITIES_TAG,
 )]
 pub async fn set(
     auth_session: AuthSession,

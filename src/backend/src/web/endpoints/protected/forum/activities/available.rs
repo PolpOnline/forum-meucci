@@ -4,7 +4,7 @@ use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
-use crate::{app::openapi::ACTIVITIES_TAG, users::AuthSession};
+use crate::{app::openapi::FORUM_ACTIVITIES_TAG, users::AuthSession};
 
 #[derive(Deserialize, IntoParams)]
 pub struct AvailableActivityRequest {
@@ -49,7 +49,7 @@ pub struct AvailableActivity {
     security(
         ("session" = [])
     ),
-    tag = ACTIVITIES_TAG,
+    tag = FORUM_ACTIVITIES_TAG,
 )]
 pub async fn available(
     auth_session: AuthSession,
