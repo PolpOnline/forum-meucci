@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 
 	// Too early to set activities
 	if (response.status === 425) {
-		redirect(StatusCodes.MOVED_TEMPORARILY, '/countdown');
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/forum/countdown');
 	}
 
 	if (response.status === StatusCodes.FORBIDDEN) {

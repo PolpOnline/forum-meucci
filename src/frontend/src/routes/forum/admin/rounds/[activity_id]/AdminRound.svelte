@@ -40,7 +40,7 @@
 			'text-primary absolute right-5',
 			buttonVariants({ variant: 'outline', size: 'icon' })
 		)}
-		href="/admin/presences/{activity_id}/{round}"
+		href="/forum/admin/presences/{activity_id}/{round}"
 	>
 		<LucideUsers />
 	</Button>

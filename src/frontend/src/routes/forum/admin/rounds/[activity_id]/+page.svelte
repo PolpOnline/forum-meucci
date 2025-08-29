@@ -19,7 +19,7 @@
 <main>
 	<div class="grid grid-cols-12">
 		<div class="col-span-2 flex items-center justify-center">
-			<Button class="text-primary" href="/admin" size="icon" variant="outline">
+			<Button class="text-primary" href="/forum/admin" size="icon" variant="outline">
 				<LucideArrowLeft />
 			</Button>
 		</div>
