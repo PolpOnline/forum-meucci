@@ -9,7 +9,7 @@ pub(super) async fn get_activities_map(db: &PgPool) -> color_eyre::Result<AHashM
             id,
             name
         FROM
-            activity
+            forum_activity
         "#,
     )
     .fetch_all(db)

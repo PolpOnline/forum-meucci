@@ -1,0 +1,53 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT forum_activity.id,\n               forum_activity.name,\n               forum_activity.description,\n               forum_activity.room,\n               COUNT(forum_activity_user.user_id) AS used_seats,\n               forum_round_max_users.max_users AS total_seats\n        FROM forum_activity\n                 JOIN\n             forum_round_max_users ON forum_activity.id = forum_round_max_users.activity_id\n                 LEFT JOIN\n             forum_activity_user ON forum_activity.id = forum_activity_user.activity_id AND forum_round_max_users.round = forum_activity_user.round\n        WHERE forum_activity.should_display IS TRUE\n          AND forum_round_max_users.round = $1\n          AND $2 >= forum_activity.minimum_class\n        GROUP BY forum_activity.id, forum_activity.name, forum_activity.description, forum_activity.room, forum_round_max_users.max_users\n        HAVING (forum_round_max_users.max_users - COUNT(forum_activity_user.user_id)) > 0\n        ORDER BY LOWER(forum_activity.name)\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "room",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "used_seats",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 5,
+        "name": "total_seats",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      null,
+      false
+    ]
+  },
+  "hash": "c656a378457d470ab960bfc7729a42f3db54f2e522daaa53c73e7b78723f9485"
+}

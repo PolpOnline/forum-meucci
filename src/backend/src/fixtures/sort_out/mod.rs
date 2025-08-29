@@ -6,13 +6,13 @@ use ahash::AHashMap;
 use color_eyre::owo_colors::OwoColorize;
 use indicatif::ProgressStyle;
 use sqlx::{PgPool, Postgres, Transaction};
-use tracing::{debug, info, info_span, Span};
+use tracing::{Span, debug, info, info_span};
 use tracing_indicatif::span_ext::IndicatifSpanExt;
 
 use crate::fixtures::sort_out::{
     activities_map::get_activities_map,
     available_activity::get_available_activities,
-    unselected_users::{get_unselected_users, UnselectedUser},
+    unselected_users::{UnselectedUser, get_unselected_users},
 };
 
 const ROUND_NUMBER: i32 = 4;
@@ -127,7 +127,7 @@ async fn sort_out_users_round(
 
         sqlx::query!(
             r#"
-            INSERT INTO activity_user (activity_id, user_id, round, randomized)
+            INSERT INTO forum_activity_user (activity_id, user_id, round, randomized)
             VALUES ($1, $2, $3, TRUE)
             "#,
             available_activity_id,

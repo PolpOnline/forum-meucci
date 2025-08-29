@@ -1,4 +1,4 @@
-use crate::{models::user::UserType, users::AuthSession};
+use crate::{models::user::ForumUserRole, users::AuthSession};
 
 pub struct ActivityBasicInfo {
     pub(crate) name: String,
@@ -16,8 +16,8 @@ pub async fn get_admin_activity(
         ActivityBasicInfo,
         r#"
         SELECT name, description, room
-        FROM activity
-        WHERE activity.id = $1
+        FROM forum_activity
+        WHERE forum_activity.id = $1
         "#,
         activity_id
     )
@@ -40,9 +40,9 @@ pub async fn get_host_activity(
         ActivityBasicInfo,
         r#"
         SELECT name, description, room
-        FROM activity
-        JOIN activity_admin ON activity.id = activity_admin.activity_id
-        WHERE activity_admin.user_id = $1 AND activity.id = $2 AND activity.should_display IS TRUE
+        FROM forum_activity
+        JOIN forum_activity_host ON forum_activity.id = forum_activity_host.activity_id
+        WHERE forum_activity_host.user_id = $1 AND forum_activity.id = $2 AND forum_activity.should_display IS TRUE
         "#,
         user_id,
         activity_id
@@ -57,14 +57,14 @@ pub async fn get_host_activity(
 /// DO NOT PASS NON-ADMIN/HOST USERS TO THIS FUNCTION
 pub async fn get_activity(
     auth_session: &AuthSession,
-    user_type: UserType,
+    forum_role: ForumUserRole,
     user_id: i32,
     activity_id: i32,
 ) -> Result<Option<ActivityBasicInfo>, sqlx::Error> {
-    match user_type {
-        UserType::Admin => get_admin_activity(auth_session, activity_id).await,
-        UserType::Host => get_host_activity(auth_session, user_id, activity_id).await,
-        UserType::Normal => unreachable!(),
+    match forum_role {
+        ForumUserRole::Admin => get_admin_activity(auth_session, activity_id).await,
+        ForumUserRole::Host => get_host_activity(auth_session, user_id, activity_id).await,
+        ForumUserRole::Normal => unreachable!(),
     }
 }
 
@@ -77,8 +77,8 @@ pub async fn check_host_activity(
     let matches = sqlx::query!(
         r#"
         SELECT activity_id
-        FROM activity_admin
-        JOIN activity ON activity_admin.activity_id = activity.id
+        FROM forum_activity_host
+        JOIN forum_activity ON forum_activity_host.activity_id = forum_activity.id
         WHERE user_id = $1 AND activity_id = $2 AND should_display IS TRUE
         "#,
         user_id,
@@ -92,14 +92,14 @@ pub async fn check_host_activity(
 
 pub async fn user_has_access_to_activity(
     auth_session: &AuthSession,
-    user_type: UserType,
+    user_role: ForumUserRole,
     user_id: i32,
     activity_id: i32,
 ) -> Result<bool, sqlx::Error> {
-    let has_access = match user_type {
-        UserType::Admin => true,
-        UserType::Host => check_host_activity(auth_session, user_id, activity_id).await?,
-        UserType::Normal => unreachable!(),
+    let has_access = match user_role {
+        ForumUserRole::Admin => true,
+        ForumUserRole::Host => check_host_activity(auth_session, user_id, activity_id).await?,
+        ForumUserRole::Normal => unreachable!(),
     };
 
     Ok(has_access)

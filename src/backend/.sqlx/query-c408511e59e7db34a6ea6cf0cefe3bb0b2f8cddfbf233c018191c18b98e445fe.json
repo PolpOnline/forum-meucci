@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT activity_id\n        FROM forum_activity_host\n        JOIN forum_activity ON forum_activity_host.activity_id = forum_activity.id\n        WHERE user_id = $1 AND activity_id = $2 AND should_display IS TRUE\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "activity_id",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "c408511e59e7db34a6ea6cf0cefe3bb0b2f8cddfbf233c018191c18b98e445fe"
+}

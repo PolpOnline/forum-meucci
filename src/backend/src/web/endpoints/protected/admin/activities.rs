@@ -4,7 +4,7 @@ use http::StatusCode;
 use serde::Serialize;
 use utoipa::ToSchema;
 
-use crate::{app::openapi::ADMIN_TAG, models::user::UserType, users::AuthSession};
+use crate::{app::openapi::ADMIN_TAG, models::user::ForumUserRole, users::AuthSession};
 
 #[derive(Serialize, ToSchema)]
 pub struct AdminActivityResponse {
@@ -40,15 +40,15 @@ pub struct AdminActivity {
     tag = ADMIN_TAG,
 )]
 pub(super) async fn activities(auth_session: AuthSession) -> impl IntoResponse {
-    let (user_type, user_id) = match auth_session.user {
-        Some(ref user) => (user.r#type, user.id),
+    let (forum_role, user_id) = match auth_session.user {
+        Some(ref user) => (user.forum_role, user.id),
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
-    let activities = match user_type {
-        UserType::Admin => admin_activities(&auth_session).await,
-        UserType::Host => host_activities(&auth_session, user_id).await,
-        UserType::Normal => return StatusCode::FORBIDDEN.into_response(),
+    let activities = match forum_role {
+        ForumUserRole::Admin => admin_activities(&auth_session).await,
+        ForumUserRole::Host => host_activities(&auth_session, user_id).await,
+        ForumUserRole::Normal => return StatusCode::FORBIDDEN.into_response(),
     };
 
     let activities = match activities {
@@ -64,13 +64,13 @@ async fn admin_activities(auth_session: &AuthSession) -> Result<Vec<AdminActivit
     let activities = sqlx::query_as!(
         AdminActivity,
         r#"
-        SELECT activity.id            AS id,
-               activity.name          AS name,
-               activity.description   AS description,
-               activity.room          AS room
-        FROM activity
-        WHERE activity.should_display IS TRUE
-        ORDER BY activity.name;
+        SELECT id,
+               name,
+               description,
+               room
+        FROM forum_activity
+        WHERE should_display IS TRUE
+        ORDER BY name;
         "#
     )
     .fetch_all(&auth_session.backend.db)
@@ -88,14 +88,14 @@ async fn host_activities(
     let activities = sqlx::query_as!(
         AdminActivity,
         r#"
-        SELECT activity.id            AS id,
-               activity.name          AS name,
-               activity.description   AS description,
-               activity.room          AS room
-        FROM activity
-                 JOIN activity_admin ON activity.id = activity_admin.activity_id
-        WHERE activity.should_display IS TRUE AND activity_admin.user_id = $1
-        ORDER BY activity.name;
+        SELECT id,
+               name,
+               description,
+               room
+        FROM forum_activity
+                 JOIN forum_activity_host ON forum_activity.id = forum_activity_host.activity_id
+        WHERE should_display IS TRUE AND user_id = $1
+        ORDER BY name;
         "#,
         user_id
     )

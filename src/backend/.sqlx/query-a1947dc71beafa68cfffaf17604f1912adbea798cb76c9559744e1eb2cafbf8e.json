@@ -1,0 +1,35 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT name, description, room\n        FROM forum_activity\n        JOIN forum_activity_host ON forum_activity.id = forum_activity_host.activity_id\n        WHERE forum_activity_host.user_id = $1 AND forum_activity.id = $2 AND forum_activity.should_display IS TRUE\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "room",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "a1947dc71beafa68cfffaf17604f1912adbea798cb76c9559744e1eb2cafbf8e"
+}

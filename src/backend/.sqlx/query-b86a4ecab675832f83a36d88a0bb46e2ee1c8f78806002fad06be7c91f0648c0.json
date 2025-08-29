@@ -1,0 +1,64 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT forum_activity.id                            AS id,\n               forum_activity_user.round                    AS round,\n               forum_activity.name                          AS name,\n               forum_activity.description                   AS description,\n               forum_activity.room                          AS \"room!: String\",\n               (SELECT COUNT(*)\n                FROM forum_activity_user au\n                WHERE au.activity_id = forum_activity.id\n                  AND au.round = forum_activity_user.round) AS \"used_seats!: i64\",\n               forum_round_max_users.max_users              AS total_seats,\n               forum_activity_user.joined_at IS NOT NULL    AS \"present!: bool\"\n        FROM forum_activity_user\n                 JOIN forum_activity ON forum_activity_user.activity_id = forum_activity.id\n                 JOIN forum_round_max_users\n                      ON forum_activity.id = forum_round_max_users.activity_id\n                          AND forum_activity_user.round = forum_round_max_users.round\n        WHERE forum_activity_user.user_id = $1\n        GROUP BY forum_activity.id, forum_activity_user.round, forum_activity.name, forum_activity.description, forum_activity.room,\n                 forum_round_max_users.max_users,\n                 forum_activity_user.joined_at\n        ORDER BY forum_activity_user.round;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "round",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "room!: String",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "used_seats!: i64",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 6,
+        "name": "total_seats",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 7,
+        "name": "present!: bool",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      null,
+      false,
+      null
+    ]
+  },
+  "hash": "b86a4ecab675832f83a36d88a0bb46e2ee1c8f78806002fad06be7c91f0648c0"
+}

@@ -8,7 +8,7 @@ use utoipa::ToSchema;
 
 use crate::{
     app::openapi::ACTIVITIES_TAG,
-    models::user::UserType,
+    models::user::ForumUserRole,
     users::AuthSession,
     web::schemas::activity::{Activity, ActivityWithoutDate},
 };
@@ -39,7 +39,10 @@ pub struct SelectedActivityResponse {
 pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
     let user = match auth_session.user {
         None => return StatusCode::UNAUTHORIZED.into_response(),
-        Some(user) if user.r#type == UserType::Admin || user.r#type == UserType::Host => {
+        Some(user)
+            if user.forum_role == ForumUserRole::Admin
+                || user.forum_role == ForumUserRole::Host =>
+        {
             return StatusCode::FORBIDDEN.into_response();
         }
         Some(user) => user,
@@ -48,27 +51,27 @@ pub async fn selected(auth_session: AuthSession) -> impl IntoResponse {
     let activities = match sqlx::query_as!(
         ActivityWithoutDate,
         r#"
-        SELECT activity.id                            AS id,
-               activity_user.round                    AS round,
-               activity.name                          AS name,
-               activity.description                   AS description,
-               activity.room                          AS "room!: String",
+        SELECT forum_activity.id                            AS id,
+               forum_activity_user.round                    AS round,
+               forum_activity.name                          AS name,
+               forum_activity.description                   AS description,
+               forum_activity.room                          AS "room!: String",
                (SELECT COUNT(*)
-                FROM activity_user au
-                WHERE au.activity_id = activity.id
-                  AND au.round = activity_user.round) AS "used_seats!: i64",
-               round_max_users.max_users              AS total_seats,
-               activity_user.joined_at IS NOT NULL    AS "present!: bool"
-        FROM activity_user
-                 JOIN activity ON activity_user.activity_id = activity.id
-                 JOIN round_max_users
-                      ON activity.id = round_max_users.activity_id
-                          AND activity_user.round = round_max_users.round
-        WHERE activity_user.user_id = $1
-        GROUP BY activity.id, activity_user.round, activity.name, activity.description, activity.room,
-                 round_max_users.max_users,
-                 activity_user.joined_at
-        ORDER BY activity_user.round;
+                FROM forum_activity_user au
+                WHERE au.activity_id = forum_activity.id
+                  AND au.round = forum_activity_user.round) AS "used_seats!: i64",
+               forum_round_max_users.max_users              AS total_seats,
+               forum_activity_user.joined_at IS NOT NULL    AS "present!: bool"
+        FROM forum_activity_user
+                 JOIN forum_activity ON forum_activity_user.activity_id = forum_activity.id
+                 JOIN forum_round_max_users
+                      ON forum_activity.id = forum_round_max_users.activity_id
+                          AND forum_activity_user.round = forum_round_max_users.round
+        WHERE forum_activity_user.user_id = $1
+        GROUP BY forum_activity.id, forum_activity_user.round, forum_activity.name, forum_activity.description, forum_activity.room,
+                 forum_round_max_users.max_users,
+                 forum_activity_user.joined_at
+        ORDER BY forum_activity_user.round;
         "#,
         user.id
     )

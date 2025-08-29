@@ -5,7 +5,7 @@ use serde::Deserialize;
 use utoipa::ToSchema;
 
 use crate::{
-    app::openapi::ADMIN_TAG, models::user::UserType, users::AuthSession,
+    app::openapi::ADMIN_TAG, models::user::ForumUserRole, users::AuthSession,
     web::endpoints::protected::admin::shared::user_has_access_to_activity,
 };
 
@@ -40,16 +40,16 @@ pub async fn call_register(
     auth_session: AuthSession,
     Sonic(req): Sonic<CallRegisterRequest>,
 ) -> impl IntoResponse {
-    let (user_type, user_id) = match auth_session.user {
-        Some(ref user) => (user.r#type, user.id),
+    let (forum_role, user_id) = match auth_session.user {
+        Some(ref user) => (user.forum_role, user.id),
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
-    if user_type == UserType::Normal {
+    if forum_role == ForumUserRole::Normal {
         return StatusCode::FORBIDDEN.into_response();
     }
 
-    match user_has_access_to_activity(&auth_session, user_type, user_id, req.activity_id).await {
+    match user_has_access_to_activity(&auth_session, forum_role, user_id, req.activity_id).await {
         Ok(true) => {}
         Ok(false) => return StatusCode::FORBIDDEN.into_response(),
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -62,7 +62,7 @@ pub async fn call_register(
 
     match sqlx::query!(
         r#"
-        UPDATE activity_user
+        UPDATE forum_activity_user
         SET joined_at_last_edited_by = $1
         WHERE activity_id = $2
           AND round = $3
@@ -80,7 +80,7 @@ pub async fn call_register(
 
     match sqlx::query!(
         r#"
-        INSERT INTO admin_register_call
+        INSERT INTO forum_host_register_call
             (user_id, activity_id, round)
         VALUES
             ($1, $2, $3)

@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        WITH slot_counts AS (SELECT rm.activity_id,\n                                    GREATEST(rm.max_users - COUNT(au.user_id), 0) AS available_slots\n                             FROM forum_round_max_users rm\n                                      LEFT JOIN forum_activity_user au\n                                                ON rm.activity_id = au.activity_id\n                                                    AND rm.round = au.round\n                                      JOIN forum_activity a\n                                           ON rm.activity_id = a.id\n                                               AND a.should_display\n                             WHERE rm.round = $1 -- Input round parameter\n                             GROUP BY rm.activity_id,\n                                      rm.max_users)\n        SELECT activity_id -- Only return activity_id\n        FROM slot_counts\n                 CROSS JOIN LATERAL GENERATE_SERIES(1, available_slots)\n        ORDER BY available_slots DESC, -- Prioritize activities needing more slots\n                 activity_id;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "activity_id",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "bbbddcf78ddefdbcf2c583af1516cb97e61a1c3f39d8f0285f8064314c1e9618"
+}

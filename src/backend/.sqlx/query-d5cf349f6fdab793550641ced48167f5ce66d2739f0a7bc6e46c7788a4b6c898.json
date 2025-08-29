@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT max_users\n        FROM forum_round_max_users\n        WHERE activity_id = $1 AND round = $2;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "max_users",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "d5cf349f6fdab793550641ced48167f5ce66d2739f0a7bc6e46c7788a4b6c898"
+}

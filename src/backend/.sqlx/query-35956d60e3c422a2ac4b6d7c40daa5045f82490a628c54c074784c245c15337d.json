@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE \"user\"\n        SET forum_role = 'admin'\n        WHERE email = ANY($1)\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "TextArray"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "35956d60e3c422a2ac4b6d7c40daa5045f82490a628c54c074784c245c15337d"
+}

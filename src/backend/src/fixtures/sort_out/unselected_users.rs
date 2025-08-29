@@ -17,10 +17,10 @@ pub(super) async fn get_unselected_users(
                u.email AS user_email
         FROM "user" u
         WHERE NOT EXISTS (SELECT 1
-                          FROM activity_user au
+                          FROM forum_activity_user au
                           WHERE au.user_id = u.id
                             AND au.round = $1 -- Filter for the input round
-        ) AND u.type = 'normal' -- Only normal users
+        ) AND u.forum_role = 'normal' -- Only normal users
         "#,
         round
     )

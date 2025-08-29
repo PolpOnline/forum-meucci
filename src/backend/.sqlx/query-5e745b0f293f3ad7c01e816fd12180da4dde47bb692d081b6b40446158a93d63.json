@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT id,\n               name,\n               description,\n               room\n        FROM forum_activity\n                 JOIN forum_activity_host ON forum_activity.id = forum_activity_host.activity_id\n        WHERE should_display IS TRUE AND user_id = $1\n        ORDER BY name;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "room",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "5e745b0f293f3ad7c01e816fd12180da4dde47bb692d081b6b40446158a93d63"
+}

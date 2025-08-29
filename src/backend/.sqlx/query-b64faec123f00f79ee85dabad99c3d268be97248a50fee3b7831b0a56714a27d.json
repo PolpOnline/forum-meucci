@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE forum_activity_user\n        SET joined_at_last_edited_by = $1\n        WHERE activity_id = $2\n          AND round = $3\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "b64faec123f00f79ee85dabad99c3d268be97248a50fee3b7831b0a56714a27d"
+}

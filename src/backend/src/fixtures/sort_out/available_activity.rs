@@ -12,11 +12,11 @@ pub(super) async fn get_available_activities(
         r#"
         WITH slot_counts AS (SELECT rm.activity_id,
                                     GREATEST(rm.max_users - COUNT(au.user_id), 0) AS available_slots
-                             FROM round_max_users rm
-                                      LEFT JOIN activity_user au
+                             FROM forum_round_max_users rm
+                                      LEFT JOIN forum_activity_user au
                                                 ON rm.activity_id = au.activity_id
                                                     AND rm.round = au.round
-                                      JOIN activity a
+                                      JOIN forum_activity a
                                            ON rm.activity_id = a.id
                                                AND a.should_display
                              WHERE rm.round = $1 -- Input round parameter

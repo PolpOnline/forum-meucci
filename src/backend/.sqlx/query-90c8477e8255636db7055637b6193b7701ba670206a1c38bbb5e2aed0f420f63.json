@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                UPDATE \"user\" SET forum_role = 'host' WHERE id = $1\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "90c8477e8255636db7055637b6193b7701ba670206a1c38bbb5e2aed0f420f63"
+}

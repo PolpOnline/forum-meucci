@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        INSERT INTO forum_host_register_call\n            (user_id, activity_id, round)\n        VALUES\n            ($1, $2, $3)\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "854565b4212b150d1faf49dd42a151198765444f05915372a2264674cf457f10"
+}

@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                INSERT INTO forum_round_max_users (round, activity_id, max_users)\n                VALUES ($1, $2, $3)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "3834190499410a89de5b5d894a263aeb76446f96b8d00e9fd50ac5c8d9eb3e01"
+}

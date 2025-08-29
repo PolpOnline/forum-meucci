@@ -7,11 +7,11 @@ use utoipa::{IntoParams, ToSchema};
 
 use crate::{
     app::{config::Config, openapi::ADMIN_TAG},
-    models::user::UserType,
+    models::user::ForumUserRole,
     users::AuthSession,
     web::{
         endpoints::protected::admin::shared::get_activity,
-        schemas::activity::{round_to_date, RoundConversionError},
+        schemas::activity::{RoundConversionError, round_to_date},
     },
 };
 
@@ -83,16 +83,16 @@ pub async fn rounds(
     auth_session: AuthSession,
     Path(req): Path<AdminRoundRequest>,
 ) -> impl IntoResponse {
-    let (user_type, user_id) = match auth_session.user {
-        Some(ref user) => (user.r#type, user.id),
+    let (forum_role, user_id) = match auth_session.user {
+        Some(ref user) => (user.forum_role, user.id),
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
-    if user_type == UserType::Normal {
+    if forum_role == ForumUserRole::Normal {
         return StatusCode::FORBIDDEN.into_response();
     }
 
-    let activity = get_activity(&auth_session, user_type, user_id, req.activity_id).await;
+    let activity = get_activity(&auth_session, forum_role, user_id, req.activity_id).await;
 
     let activity = match activity {
         Ok(Some(r)) => r,
@@ -104,18 +104,18 @@ pub async fn rounds(
     let rounds = match sqlx::query_as!(
         AdminRoundWithoutDate,
         r#"
-        SELECT round_max_users.round,
-               COUNT(CASE WHEN activity_user.joined_at IS NOT NULL THEN 1 END) AS present_seats,
-               COUNT(activity_user.user_id) AS used_seats,
-               round_max_users.max_users    AS total_seats
-        FROM round_max_users
-                 LEFT JOIN activity_user
-                           ON round_max_users.activity_id = activity_user.activity_id
-                               AND round_max_users.round = activity_user.round
-        WHERE round_max_users.activity_id = $1
-          AND round_max_users.max_users > 0
-        GROUP BY round_max_users.round, round_max_users.max_users
-        ORDER BY round_max_users.round
+        SELECT forum_round_max_users.round,
+               COUNT(CASE WHEN forum_activity_user.joined_at IS NOT NULL THEN 1 END) AS present_seats,
+               COUNT(forum_activity_user.user_id) AS used_seats,
+               forum_round_max_users.max_users    AS total_seats
+        FROM forum_round_max_users
+                 LEFT JOIN forum_activity_user
+                           ON forum_round_max_users.activity_id = forum_activity_user.activity_id
+                               AND forum_round_max_users.round = forum_activity_user.round
+        WHERE forum_round_max_users.activity_id = $1
+          AND forum_round_max_users.max_users > 0
+        GROUP BY forum_round_max_users.round, forum_round_max_users.max_users
+        ORDER BY forum_round_max_users.round
         "#,
         req.activity_id
     )

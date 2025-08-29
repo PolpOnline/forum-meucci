@@ -10,13 +10,13 @@ pub struct User {
     pub email: String,
     pub section: Option<String>,
     pub class: i32,
-    pub r#type: UserType,
+    pub forum_role: ForumUserRole,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, sqlx::Type, ToSchema, Eq, Hash, PartialEq, Copy)]
-#[sqlx(type_name = "user_type", rename_all = "snake_case")]
+#[sqlx(type_name = "forum_user_role", rename_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
-pub enum UserType {
+pub enum ForumUserRole {
     Normal = 0,
     Host = 1,
     Admin = 2,
@@ -31,7 +31,7 @@ impl User {
         let user = sqlx::query_as!(
             User,
             r#"
-            SELECT id, name, email, section, class, type AS "type!: UserType" FROM "user" WHERE email = $1
+            SELECT id, name, email, section, class, forum_role AS "forum_role!: ForumUserRole" FROM "user" WHERE email = $1
             "#,
             email
         )
@@ -44,7 +44,7 @@ impl User {
                     user = sqlx::query_as!(
                             User,
                             r#"
-                            UPDATE "user" SET name = $1 WHERE email = $2 RETURNING id, name, email, section, class, type AS "type!: UserType"
+                            UPDATE "user" SET name = $1 WHERE email = $2 RETURNING id, name, email, section, class, forum_role AS "forum_role!: ForumUserRole"
                             "#,
                             name,
                             email
@@ -59,7 +59,7 @@ impl User {
                 let user = sqlx::query_as!(
                     User,
                     r#"
-                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING  id, name, email, section, class, type AS "type!: UserType"
+                    INSERT INTO "user" (email, name) VALUES ($1, $2) RETURNING id, name, email, section, class, forum_role AS "forum_role!: ForumUserRole"
                     "#,
                     email,
                     name
@@ -76,7 +76,7 @@ impl User {
         let user = sqlx::query_as!(
             User,
             r#"
-            SELECT id, name, email, section, class, type AS "type!: UserType"
+            SELECT id, name, email, section, class, forum_role AS "forum_role!: ForumUserRole"
             FROM "user"
             WHERE id = $1
             "#,

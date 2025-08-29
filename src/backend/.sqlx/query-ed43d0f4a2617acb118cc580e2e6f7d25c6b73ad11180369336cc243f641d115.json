@@ -1,0 +1,63 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT id, name, email, section, class, forum_role AS \"forum_role!: ForumUserRole\" FROM \"user\" WHERE email = $1\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "email",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "section",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "class",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "forum_role!: ForumUserRole",
+        "type_info": {
+          "Custom": {
+            "name": "forum_user_role",
+            "kind": {
+              "Enum": [
+                "normal",
+                "host",
+                "admin"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      true,
+      false,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "ed43d0f4a2617acb118cc580e2e6f7d25c6b73ad11180369336cc243f641d115"
+}

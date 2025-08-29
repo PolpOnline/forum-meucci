@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT forum_round_max_users.round,\n               COUNT(CASE WHEN forum_activity_user.joined_at IS NOT NULL THEN 1 END) AS present_seats,\n               COUNT(forum_activity_user.user_id) AS used_seats,\n               forum_round_max_users.max_users    AS total_seats\n        FROM forum_round_max_users\n                 LEFT JOIN forum_activity_user\n                           ON forum_round_max_users.activity_id = forum_activity_user.activity_id\n                               AND forum_round_max_users.round = forum_activity_user.round\n        WHERE forum_round_max_users.activity_id = $1\n          AND forum_round_max_users.max_users > 0\n        GROUP BY forum_round_max_users.round, forum_round_max_users.max_users\n        ORDER BY forum_round_max_users.round\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "round",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "present_seats",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "used_seats",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "total_seats",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      null,
+      null,
+      false
+    ]
+  },
+  "hash": "ab4d3891042507c3c51fed2b3fd2c2f7c6884a3038476434b8b3f5a64b48c90d"
+}

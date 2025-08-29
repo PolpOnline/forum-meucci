@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                INSERT INTO forum_activity_host (activity_id, user_id)\n                VALUES ($1, $2)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "800b36110da405ce9ac1adf85459b30d67158c919d7b75e0da7875edc4837dae"
+}

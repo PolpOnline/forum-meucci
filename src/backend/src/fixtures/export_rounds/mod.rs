@@ -23,7 +23,7 @@ pub async fn export_rounds(db: &PgPool, config: &Config) -> color_eyre::Result<(
     let activities = sqlx::query!(
         // language=PostgreSQL
         r#"
-        SELECT id, name, description, room FROM activity WHERE should_display = TRUE ORDER BY id
+        SELECT id, name, description, room FROM forum_activity WHERE should_display = TRUE ORDER BY id
         "#,
     )
     .fetch_all(db)
@@ -38,11 +38,11 @@ pub async fn export_rounds(db: &PgPool, config: &Config) -> color_eyre::Result<(
                 SELECT "user".section,
                        "user".class,
                        COALESCE("user".name, "user".email) AS "name!: String",
-                       activity_user.randomized
-                FROM activity_user
-                         JOIN "user" ON activity_user.user_id = "user".id
-                WHERE activity_user.activity_id = $1
-                  AND activity_user.round = $2
+                       forum_activity_user.randomized
+                FROM forum_activity_user
+                         JOIN "user" ON forum_activity_user.user_id = "user".id
+                WHERE forum_activity_user.activity_id = $1
+                  AND forum_activity_user.round = $2
                 ORDER BY name;
                 "#,
                 activity.id,

@@ -33,7 +33,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
     sqlx::query!(
         r#"
         UPDATE "user"
-        SET type = 'admin'
+        SET forum_role = 'admin'
         WHERE email = ANY($1)
         "#,
         &admins

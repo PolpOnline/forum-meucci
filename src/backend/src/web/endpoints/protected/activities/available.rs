@@ -63,23 +63,23 @@ pub async fn available(
     let activities = match sqlx::query_as!(
         AvailableActivity,
         r#"
-        SELECT activity.id,
-               activity.name,
-               activity.description,
-               activity.room,
-               COUNT(activity_user.user_id) AS used_seats,
-               round_max_users.max_users AS total_seats
-        FROM activity
+        SELECT forum_activity.id,
+               forum_activity.name,
+               forum_activity.description,
+               forum_activity.room,
+               COUNT(forum_activity_user.user_id) AS used_seats,
+               forum_round_max_users.max_users AS total_seats
+        FROM forum_activity
                  JOIN
-             round_max_users ON activity.id = round_max_users.activity_id
+             forum_round_max_users ON forum_activity.id = forum_round_max_users.activity_id
                  LEFT JOIN
-             activity_user ON activity.id = activity_user.activity_id AND round_max_users.round = activity_user.round
-        WHERE activity.should_display IS TRUE
-          AND round_max_users.round = $1
-          AND $2 >= activity.minimum_class
-        GROUP BY activity.id, activity.name, activity.description, activity.room, round_max_users.max_users
-        HAVING (round_max_users.max_users - COUNT(activity_user.user_id)) > 0
-        ORDER BY LOWER(activity.name)
+             forum_activity_user ON forum_activity.id = forum_activity_user.activity_id AND forum_round_max_users.round = forum_activity_user.round
+        WHERE forum_activity.should_display IS TRUE
+          AND forum_round_max_users.round = $1
+          AND $2 >= forum_activity.minimum_class
+        GROUP BY forum_activity.id, forum_activity.name, forum_activity.description, forum_activity.room, forum_round_max_users.max_users
+        HAVING (forum_round_max_users.max_users - COUNT(forum_activity_user.user_id)) > 0
+        ORDER BY LOWER(forum_activity.name)
         "#,
         req.round,
         user_class,

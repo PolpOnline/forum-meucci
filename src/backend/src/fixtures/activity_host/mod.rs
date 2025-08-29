@@ -41,7 +41,7 @@ pub async fn seed(db: &PgPool, write: bool) -> color_eyre::Result<()> {
         // Get the event id
         let event_id_fut = sqlx::query!(
             r#"
-            SELECT id FROM activity
+            SELECT id FROM forum_activity
             WHERE name = $1
             "#,
             activity_data.nome
@@ -62,7 +62,7 @@ pub async fn seed(db: &PgPool, write: bool) -> color_eyre::Result<()> {
         for event_admin in host_ids {
             sqlx::query!(
                 r#"
-                INSERT INTO activity_admin (activity_id, user_id)
+                INSERT INTO forum_activity_host (activity_id, user_id)
                 VALUES ($1, $2)
                 "#,
                 event_id.id,
@@ -73,7 +73,7 @@ pub async fn seed(db: &PgPool, write: bool) -> color_eyre::Result<()> {
 
             sqlx::query!(
                 r#"
-                UPDATE "user" SET type = 'host' WHERE id = $1
+                UPDATE "user" SET forum_role = 'host' WHERE id = $1
                 "#,
                 event_admin.id
             )

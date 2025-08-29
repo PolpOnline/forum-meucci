@@ -1,6 +1,6 @@
 mod space_deserialize;
 
-use color_eyre::{eyre::eyre, Result};
+use color_eyre::{Result, eyre::eyre};
 use indicatif::ProgressBar;
 use serde::Deserialize;
 use space_deserialize::space_deserialize;
@@ -69,7 +69,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
         // Insert the activity basic information
         let event_id_fut = sqlx::query!(
             r#"
-            INSERT INTO activity (name, description, room, minimum_class)
+            INSERT INTO forum_activity (name, description, room, minimum_class)
             VALUES ($1, $2, $3, $4)
             RETURNING id
             "#,
@@ -94,7 +94,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
         for event_admin in host_ids {
             sqlx::query!(
                 r#"
-                INSERT INTO activity_admin (activity_id, user_id)
+                INSERT INTO forum_activity_host (activity_id, user_id)
                 VALUES ($1, $2)
                 "#,
                 event_id.id,
@@ -105,7 +105,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
 
             sqlx::query!(
                 r#"
-                UPDATE "user" SET type = 'host' WHERE id = $1
+                UPDATE "user" SET forum_role = 'host' WHERE id = $1
                 "#,
                 event_admin.id
             )
@@ -117,7 +117,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
         for (idx, max_users) in activity_data.massimo_utenti_round.into_iter().enumerate() {
             sqlx::query!(
                 r#"
-                INSERT INTO round_max_users (round, activity_id, max_users)
+                INSERT INTO forum_round_max_users (round, activity_id, max_users)
                 VALUES ($1, $2, $3)
                 "#,
                 idx as i32,

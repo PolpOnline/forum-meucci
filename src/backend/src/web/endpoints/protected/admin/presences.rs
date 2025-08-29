@@ -7,7 +7,7 @@ use utoipa::{IntoParams, ToSchema};
 
 use crate::{
     app::openapi::ADMIN_TAG,
-    models::user::UserType,
+    models::user::ForumUserRole,
     users::AuthSession,
     web::{endpoints::protected::admin::shared::get_activity, schemas::activity::round_to_date},
 };
@@ -73,16 +73,16 @@ pub async fn presences(
     auth_session: AuthSession,
     Path(req): Path<AdminPresenceRequest>,
 ) -> impl IntoResponse {
-    let (user_type, user_id) = match auth_session.user {
-        Some(ref user) => (user.r#type, user.id),
+    let (forum_role, user_id) = match auth_session.user {
+        Some(ref user) => (user.forum_role, user.id),
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
-    if user_type == UserType::Normal {
+    if forum_role == ForumUserRole::Normal {
         return StatusCode::FORBIDDEN.into_response();
     }
 
-    let activity = get_activity(&auth_session, user_type, user_id, req.activity_id).await;
+    let activity = get_activity(&auth_session, forum_role, user_id, req.activity_id).await;
 
     let activity = match activity {
         Ok(Some(a)) => a,
@@ -98,12 +98,12 @@ pub async fn presences(
                "user".section,
                "user".class,
                COALESCE("user".name, "user".email) AS "name!: String",
-               activity_user.joined_at IS NOT NULL AS "present!: bool",
-               activity_user.randomized
-        FROM activity_user
-                 JOIN "user" ON activity_user.user_id = "user".id
-        WHERE activity_user.activity_id = $1
-          AND activity_user.round = $2
+               forum_activity_user.joined_at IS NOT NULL AS "present!: bool",
+               forum_activity_user.randomized
+        FROM forum_activity_user
+                 JOIN "user" ON forum_activity_user.user_id = "user".id
+        WHERE forum_activity_user.activity_id = $1
+          AND forum_activity_user.round = $2
         ORDER BY name;
         "#,
         req.activity_id,
@@ -114,7 +114,7 @@ pub async fn presences(
     let total_seats_fut = sqlx::query!(
         r#"
         SELECT max_users
-        FROM round_max_users
+        FROM forum_round_max_users
         WHERE activity_id = $1 AND round = $2;
         "#,
         req.activity_id,

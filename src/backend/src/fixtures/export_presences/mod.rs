@@ -64,14 +64,14 @@ async fn query_users_info(db: &PgPool, round: i32) -> Result<Vec<PresencesColumn
                editor.name     AS joined_at_edited_by,
                au.randomized   AS "randomized!: Option<bool>"
         FROM "user" u
-                 LEFT JOIN activity_user au
+                 LEFT JOIN forum_activity_user au
                            ON u.id = au.user_id
                                AND au.round = $1
-                 LEFT JOIN activity a
+                 LEFT JOIN forum_activity a
                            ON au.activity_id = a.id
                  LEFT JOIN "user" editor
                            ON au.joined_at_last_edited_by = editor.id
-        WHERE u.type = 'normal'
+        WHERE u.forum_role = 'normal'
         ORDER BY u.name;
         "#,
         round

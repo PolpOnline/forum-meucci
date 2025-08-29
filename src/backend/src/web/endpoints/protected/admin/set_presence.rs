@@ -5,7 +5,7 @@ use serde::Deserialize;
 use utoipa::ToSchema;
 
 use crate::{
-    app::openapi::ADMIN_TAG, models::user::UserType, users::AuthSession,
+    app::openapi::ADMIN_TAG, models::user::ForumUserRole, users::AuthSession,
     web::endpoints::protected::admin::shared::user_has_access_to_activity,
 };
 
@@ -46,16 +46,16 @@ pub async fn set_presence(
     auth_session: AuthSession,
     Sonic(req): Sonic<AdminSetPresenceRequest>,
 ) -> impl IntoResponse {
-    let (user_type, user_id) = match auth_session.user {
-        Some(ref user) => (user.r#type, user.id),
+    let (forum_role, user_id) = match auth_session.user {
+        Some(ref user) => (user.forum_role, user.id),
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
-    if user_type == UserType::Normal {
+    if forum_role == ForumUserRole::Normal {
         return StatusCode::FORBIDDEN.into_response();
     }
 
-    match user_has_access_to_activity(&auth_session, user_type, user_id, req.activity_id).await {
+    match user_has_access_to_activity(&auth_session, forum_role, user_id, req.activity_id).await {
         Ok(true) => {}
         Ok(false) => return StatusCode::FORBIDDEN.into_response(),
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -63,7 +63,7 @@ pub async fn set_presence(
 
     match sqlx::query!(
         r#"
-        UPDATE activity_user
+        UPDATE forum_activity_user
         SET joined_at = CASE WHEN $1 IS TRUE THEN CURRENT_TIMESTAMP END
         WHERE activity_id = $2
           AND user_id = $3
