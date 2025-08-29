@@ -3,7 +3,7 @@ use std::sync::LazyLock;
 use color_eyre::Result;
 use dotenvy::dotenv;
 use tracing_indicatif::IndicatifLayer;
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
+use tracing_subscriber::{EnvFilter, layer::SubscriberExt, util::SubscriberInitExt};
 use web::App;
 
 pub mod app;
@@ -53,26 +53,28 @@ async fn main() -> Result<()> {
         match args.command {
             None => app.serve().await,
             Some(Command::SeedUser(args)) => fixtures::user::seed(&app.db, args.write).await,
-            Some(Command::SeedActivity(args)) => {
-                fixtures::activity::seed(&app.db, args.write).await
+            Some(Command::SeedForumActivity(args)) => {
+                fixtures::forum_activity::seed(&app.db, args.write).await
             }
-            Some(Command::SeedAdmin(args)) => fixtures::admin::seed(&app.db, args.write).await,
-            Some(Command::SeedAll(args)) => {
+            Some(Command::SeedForumAdmin(args)) => {
+                fixtures::forum_admin::seed(&app.db, args.write).await
+            }
+            Some(Command::SeedForumAll(args)) => {
                 fixtures::user::seed(&app.db, args.write).await?;
-                fixtures::activity::seed(&app.db, args.write).await?;
-                fixtures::admin::seed(&app.db, args.write).await
+                fixtures::forum_activity::seed(&app.db, args.write).await?;
+                fixtures::forum_admin::seed(&app.db, args.write).await
             }
-            Some(Command::SeedHosts(args)) => {
-                fixtures::activity_host::seed(&app.db, args.write).await
+            Some(Command::SeedForumHosts(args)) => {
+                fixtures::forum_activity_host::seed(&app.db, args.write).await
             }
-            Some(Command::SortOutUsers(args)) => {
-                fixtures::sort_out::sort_out_users(&app.db, args.write).await
+            Some(Command::SortOutForumUsers(args)) => {
+                fixtures::forum_sort_out::sort_out_users(&app.db, args.write).await
             }
-            Some(Command::ExportRounds) => {
-                fixtures::export_rounds::export_rounds(&app.db, &app.config).await
+            Some(Command::ExportForumRounds) => {
+                fixtures::forum_export_rounds::export_rounds(&app.db, &app.config).await
             }
-            Some(Command::ExportPresences) => {
-                fixtures::export_presences::export_presences(&app.db, &app.config).await
+            Some(Command::ExportForumPresences) => {
+                fixtures::forum_export_presences::export_presences(&app.db, &app.config).await
             }
         }
     }

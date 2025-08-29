@@ -9,7 +9,7 @@ use sqlx::{PgPool, Postgres, Transaction};
 use tracing::{Span, debug, info, info_span};
 use tracing_indicatif::span_ext::IndicatifSpanExt;
 
-use crate::fixtures::sort_out::{
+use crate::fixtures::forum_sort_out::{
     activities_map::get_activities_map,
     available_activity::get_available_activities,
     unselected_users::{UnselectedUser, get_unselected_users},
@@ -117,7 +117,7 @@ async fn sort_out_users_round(
         Span::current().pb_inc(1);
 
         debug!(
-            "Assigning user {} ({}) to activity {} ({}) round {}",
+            "Assigning user {} ({}) to forum_activity {} ({}) round {}",
             unselected_user.user_id,
             unselected_user.user_email.red(),
             available_activity_id,

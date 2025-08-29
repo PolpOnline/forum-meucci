@@ -72,7 +72,7 @@ pub async fn export_rounds(db: &PgPool, config: &Config) -> color_eyre::Result<(
 
             let worksheet = workbook.add_worksheet().set_name(&sheet_name)?;
 
-            // Write activity info
+            // Write forum_activity info
             worksheet.write(0, 0, activity.name.clone())?;
             worksheet.write(0, 1, activity.room.clone())?;
             let round_date = round_to_date(config, round)?;

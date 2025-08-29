@@ -1,7 +1,7 @@
-pub mod activity;
-pub mod activity_host;
-pub mod admin;
-pub mod export_presences;
-pub mod export_rounds;
-pub mod sort_out;
+pub mod forum_activity;
+pub mod forum_activity_host;
+pub mod forum_admin;
+pub mod forum_export_presences;
+pub mod forum_export_rounds;
+pub mod forum_sort_out;
 pub mod user;

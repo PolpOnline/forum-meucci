@@ -1,7 +1,7 @@
 use ahash::AHashMap;
 use sqlx::PgPool;
 
-/// Returns a map of activity ids to activity names.
+/// Returns a map of forum_activity ids to forum_activity names.
 pub(super) async fn get_activities_map(db: &PgPool) -> color_eyre::Result<AHashMap<i32, String>> {
     let activities_map = sqlx::query!(
         r#"

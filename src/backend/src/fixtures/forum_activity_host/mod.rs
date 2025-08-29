@@ -7,8 +7,7 @@ use tracing::info;
 pub async fn seed(db: &PgPool, write: bool) -> color_eyre::Result<()> {
     info!("Seeding the hosts...");
 
-    let mut rdr =
-        csv::Reader::from_path("./src/fixtures/activity/Attività_Forum_24_25_template.csv")?;
+    let mut rdr = csv::Reader::from_path("../forum_activity/Attività_Forum_24_25_template.csv")?;
 
     let data = rdr
         .deserialize()
@@ -16,7 +15,7 @@ pub async fn seed(db: &PgPool, write: bool) -> color_eyre::Result<()> {
             let record = result?;
             Ok(record)
         })
-        .collect::<color_eyre::Result<Vec<crate::fixtures::activity::ActivityData>>>()?;
+        .collect::<color_eyre::Result<Vec<crate::fixtures::forum_activity::ActivityData>>>()?;
 
     let bar = ProgressBar::new(data.len() as u64);
 
@@ -58,7 +57,7 @@ pub async fn seed(db: &PgPool, write: bool) -> color_eyre::Result<()> {
             ));
         }
 
-        // Add hosts to the activity
+        // Add hosts to the forum_activity
         for event_admin in host_ids {
             sqlx::query!(
                 r#"

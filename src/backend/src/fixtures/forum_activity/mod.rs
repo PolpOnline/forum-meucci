@@ -20,10 +20,9 @@ pub(super) struct ActivityData {
 }
 
 pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
-    info!("Seeding the activity table...");
+    info!("Seeding the forum_activity table...");
 
-    let mut rdr =
-        csv::Reader::from_path("./src/fixtures/activity/Attività_Forum_24_25_template.csv")?;
+    let mut rdr = csv::Reader::from_path("/Attività_Forum_24_25_template.csv")?;
 
     let data = rdr
         .deserialize()
@@ -66,7 +65,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
         )
         .fetch_all(db);
 
-        // Insert the activity basic information
+        // Insert the forum_activity basic information
         let event_id_fut = sqlx::query!(
             r#"
             INSERT INTO forum_activity (name, description, room, minimum_class)
@@ -90,7 +89,7 @@ pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
             ));
         }
 
-        // Add hosts to the activity
+        // Add hosts to the forum_activity
         for event_admin in host_ids {
             sqlx::query!(
                 r#"

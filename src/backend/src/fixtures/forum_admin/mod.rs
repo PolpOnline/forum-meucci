@@ -11,7 +11,7 @@ struct AdminsData {
 pub async fn seed(db: &PgPool, write: bool) -> Result<()> {
     info!("Setting admins...");
 
-    let mut rdr = csv::Reader::from_path("./src/fixtures/admin/admin.csv")?;
+    let mut rdr = csv::Reader::from_path("/admin.csv")?;
 
     let data = rdr
         .deserialize()
