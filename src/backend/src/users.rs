@@ -1,10 +1,9 @@
-use async_trait::async_trait;
 use axum_login::{AuthnBackend, UserId};
 use openidconnect::{
-    core::{CoreResponseType, CoreUserInfoClaims}, reqwest::Client, url::Url, AuthorizationCode, CsrfToken,
-    Nonce,
-    OAuth2TokenResponse,
-    Scope,
+    AuthorizationCode, CsrfToken, Nonce, OAuth2TokenResponse, Scope,
+    core::{CoreResponseType, CoreUserInfoClaims},
+    reqwest::Client,
+    url::Url,
 };
 use sqlx::PgPool;
 use tokio::task;
@@ -74,7 +73,6 @@ pub enum BackendError {
     ConfigurationError(#[from] openidconnect::ConfigurationError),
 }
 
-#[async_trait]
 impl AuthnBackend for LoginBackend {
     type User = User;
     type Credentials = Credentials;
